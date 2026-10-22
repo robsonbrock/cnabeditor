@@ -71,7 +71,7 @@ describe("EditPane (edição)", () => {
     openA();
     const footer = screen.getByTestId("update-line").parentElement!;
     expect(footer.firstElementChild).toBe(screen.getByTestId("update-line"));
-    expect(screen.getByTestId("update-line").textContent).toContain("←");
+    expect(screen.getByTestId("update-line").querySelector("[data-icon=arrow-left]")).not.toBeNull();
     expect(screen.getByTestId("update-line").textContent).toContain("Atualizar linha");
     expect(screen.getByTestId("update-line").nextElementSibling).toBe(screen.getByTestId("discard"));
   });

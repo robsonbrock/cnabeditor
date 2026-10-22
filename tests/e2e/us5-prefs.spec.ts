@@ -6,7 +6,7 @@ const width = async (page: import("@playwright/test").Page, testId: string) => (
 test("US5-1: primeiro acesso ⇒ dark, quebra ativada, divisórias padrão", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await expect(page.getByTestId("wrap-toggle")).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByTestId("wrap-toggle")).toHaveAttribute("aria-checked", "true");
   await expect(page.getByTestId("split-main")).toHaveAttribute("aria-valuenow", "55");
   await expect(page.getByTestId("split-right")).toHaveAttribute("aria-valuenow", "55");
 });
@@ -43,7 +43,7 @@ test("US5-2/3/4: divisórias, quebra e tema restaurados ao recarregar", async ({
   const mainWidth = await width(page, "main-pane");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  await expect(page.getByTestId("wrap-toggle")).toHaveAttribute("aria-pressed", "false");
+  await expect(page.getByTestId("wrap-toggle")).toHaveAttribute("aria-checked", "false");
   await expect(page.getByTestId("split-main")).toHaveAttribute("aria-valuenow", savedMain!);
   await expect(page.getByTestId("split-right")).toHaveAttribute("aria-valuenow", "59");
   expect(Math.abs((await width(page, "main-pane")) - mainWidth)).toBeLessThan(3);

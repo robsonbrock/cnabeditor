@@ -1,28 +1,34 @@
-import { useRef } from "preact/hooks";
-import { doc, loadFromFile, pasteOpen, recalculate } from "../state/document";
+import { loadFromFile, pasteOpen } from "../state/document";
 import { prefs, setPrefs } from "../state/prefs";
-import { goToNextError, report } from "../state/validation";
+import { Icon, Logo } from "./Icon";
 
-const DIRECTION_TEXT = { remessa: "Remessa", retorno: "Retorno", unknown: "Não identificado" } as const;
+const IMPORT_INPUT_ID = "import-input";
 
+/** Abre o seletor de arquivo do cabeçalho (também usado pelo estado vazio do quadro principal). */
+export const openImport = () => document.getElementById(IMPORT_INPUT_ID)?.click();
+export const openPaste = () => (pasteOpen.value = true);
+
+/** Cabeçalho (FR-002, FR-031): marca, Importar, Colar conteúdo e tema. */
 export function Header() {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const d = doc.value;
-  const r = report.value;
-  const errorText = r.status === "running" ? "validando…" : `${r.total} ${r.total === 1 ? "erro" : "erros"}`;
+  const dark = prefs.value.theme === "dark";
+  const themeLabel = dark ? "Mudar para tema claro" : "Mudar para tema escuro";
 
   return (
     <header class="app-header" data-testid="app-header">
       <div class="brand">
-        <h1>CNAB Editor</h1>
-        <p>Edite arquivos CNAB 240 com validação de campos em tempo real</p>
+        <Logo />
+        <div>
+          <h1>CNAB Editor</h1>
+          <p>Edite arquivos CNAB 240 com validação de campos em tempo real</p>
+        </div>
       </div>
       <div class="header-actions">
-        <button type="button" data-testid="import" onClick={() => fileRef.current?.click()}>
-          Importar
+        <button type="button" class="btn" data-testid="import" onClick={openImport}>
+          <Icon name="upload" />
+          Importar arquivo
         </button>
         <input
-          ref={fileRef}
+          id={IMPORT_INPUT_ID}
           type="file"
           accept=".rem,.ret,.txt"
           data-testid="import-input"
@@ -33,46 +39,20 @@ export function Header() {
             if (file) void loadFromFile(file);
           }}
         />
-        <button type="button" data-testid="paste" onClick={() => (pasteOpen.value = true)}>
+        <button type="button" class="btn" data-testid="paste" onClick={openPaste}>
+          <Icon name="clipboard" />
           Colar conteúdo
         </button>
-        {d && (
-          <span class="direction" data-testid="direction" data-direction={d.direction}>
-            {DIRECTION_TEXT[d.direction]}
-          </span>
-        )}
-        {d && (
-          <button
-            type="button"
-            class="direction error-count"
-            data-testid="error-count"
-            data-count={r.status === "running" ? undefined : r.total}
-            title="Ir para o próximo erro"
-            disabled={r.status === "running" || r.total === 0}
-            onClick={goToNextError}
-          >
-            {errorText}
-          </button>
-        )}
-        <button type="button" data-testid="recalc" disabled={!d || d.records.length === 0} onClick={recalculate}>
-          Recalcular totais
-        </button>
+        <span class="divider" aria-hidden="true" />
         <button
           type="button"
-          data-testid="wrap-toggle"
-          aria-pressed={prefs.value.wrap ? "true" : "false"}
-          title="Quebrar linhas longas ou manter cada registro numa linha com rolagem horizontal"
-          onClick={() => setPrefs({ wrap: !prefs.value.wrap })}
-        >
-          Quebra de linha
-        </button>
-        <button
-          type="button"
+          class="btn btn-icon"
           data-testid="theme-toggle"
-          aria-label={prefs.value.theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
-          onClick={() => setPrefs({ theme: prefs.value.theme === "dark" ? "light" : "dark" })}
+          aria-label={themeLabel}
+          title={themeLabel}
+          onClick={() => setPrefs({ theme: dark ? "light" : "dark" })}
         >
-          {prefs.value.theme === "dark" ? "☀ Tema claro" : "☾ Tema escuro"}
+          <Icon name={dark ? "sun" : "moon"} />
         </button>
       </div>
     </header>

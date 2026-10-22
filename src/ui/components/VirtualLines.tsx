@@ -2,13 +2,19 @@ import type { JSX } from "preact";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "preact/hooks";
 import { FLAG_CHANGED, FLAG_ERROR } from "../../core/types";
 import { doc, flagsVersion, selectedIndex } from "../state/document";
+import { session, sessionFields } from "../state/editSession";
+import { Icon } from "./Icon";
 
 export const LINE_HEIGHT = 20;
 const OVERSCAN = 10;
 /** Viewport assumido quando o ambiente não mede layout (ex.: testes). */
 const FALLBACK_VIEWPORT = { width: 1000, height: 600 };
-/** Largura fixa da linha fora do texto: padding, rótulo (3ch), gaps, marcador e borda (app.css). */
-const fixedWidth = (charWidth: number) => 16 + 3 * charWidth + 16 + 14 + 3;
+/** Largura fixa da linha fora do texto: número, marcador, rótulo e padding direito (.line-row em app.css). */
+const FIXED_WIDTH = 52 + 16 + 40 + 12;
+
+/** Cor do rótulo por tipo de registro; os segmentos de detalhe compartilham uma cor. */
+const LABEL_KIND: Record<string, string> = { HA: "ha", HL: "hl", TL: "tl", TA: "ta", "?": "other" };
+const labelKind = (label: string) => LABEL_KIND[label] ?? "seg";
 
 interface Props {
   wrap: boolean;
@@ -69,7 +75,11 @@ export function VirtualLines({ wrap, onSelect, onKeyDown }: Props) {
   const version = flagsVersion.value;
   const selected = selectedIndex.value;
   const records = d?.records ?? [];
-  const cols = Math.max(1, Math.floor((viewport.width - fixedWidth(charWidth)) / charWidth));
+  // Trecho do campo em foco no quadro de edição, destacado na linha selecionada.
+  const s = session.value;
+  const focusedDef = s?.focusedFieldId ? sessionFields.value.find((v) => v.def.id === s.focusedFieldId)?.def : undefined;
+  const focusRange = focusedDef && s!.recordIndex === selected ? [focusedDef.start - 1, focusedDef.end] : null;
+  const cols = Math.max(1, Math.floor((viewport.width - FIXED_WIDTH) / charWidth));
 
   const offsets = useMemo(() => {
     const out = new Float64Array(records.length + 1);
@@ -119,11 +129,30 @@ export function VirtualLines({ wrap, onSelect, onKeyDown }: Props) {
         style={{ top: `${offsets[i]}px`, height: `${offsets[i + 1] - offsets[i]}px` }}
         onClick={() => onSelect(i)}
       >
-        <span class="line-label" data-testid="line-label">
+        <span class="line-number">{i + 1}</span>
+        <span class="line-marker">
+          {flags & FLAG_ERROR ? (
+            <span class="marker-error" title="Linha com erro(s)">
+              <Icon name="alert-triangle" size={13} />
+            </span>
+          ) : flags & FLAG_CHANGED ? (
+            <span class="marker-changed" title="Linha alterada" />
+          ) : null}
+        </span>
+        <span class="line-label" data-testid="line-label" data-kind={labelKind(rec.label)}>
           {rec.label}
         </span>
-        <span class="line-text">{rec.current}</span>
-        <span class="line-marker">{flags & FLAG_ERROR ? <span class="marker-error" title="Linha com erro(s)" /> : null}</span>
+        <span class="line-text">
+          {isSelected && focusRange ? (
+            <>
+              {rec.current.slice(0, focusRange[0])}
+              <mark class="field-focus">{rec.current.slice(focusRange[0], focusRange[1])}</mark>
+              {rec.current.slice(focusRange[1])}
+            </>
+          ) : (
+            rec.current
+          )}
+        </span>
       </div>,
     );
   }
@@ -146,7 +175,7 @@ export function VirtualLines({ wrap, onSelect, onKeyDown }: Props) {
         class="lines-inner"
         style={{
           height: `${offsets[records.length]}px`,
-          width: wrap ? undefined : `${Math.ceil(maxLen * charWidth + fixedWidth(charWidth))}px`,
+          width: wrap ? undefined : `${Math.ceil(maxLen * charWidth + FIXED_WIDTH)}px`,
         }}
       >
         {rows}

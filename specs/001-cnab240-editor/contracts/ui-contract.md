@@ -6,8 +6,8 @@ Contrato observável da página, usado pelos testes E2E (Playwright). Os seletor
 
 | Região | `data-testid` | Conteúdo | Requisitos |
 |---|---|---|---|
-| Cabeçalho | `app-header` | "CNAB Editor", subtítulo, Importar, Colar conteúdo, indicador de tipo, contador de erros, Recalcular totais, quebra de linha, tema | FR-002, FR-007, FR-016a, FR-023b, FR-012, FR-031 |
-| Quadro principal | `main-pane` | cabeçalho com `line-count` ("8 linhas"); lista virtualizada de linhas | FR-003, FR-006a, FR-009*, FR-009d |
+| Cabeçalho | `app-header` | marca (ícone `</>`), "CNAB Editor", subtítulo, Importar arquivo (`import`), Colar conteúdo (`paste`), tema (`theme-toggle`, botão só com ícone e `aria-label`) | FR-002, FR-031 |
+| Quadro principal | `main-pane` | barra com nome do arquivo, `direction`, `line-count` ("8 linhas"), `error-count`, `recalc` e `wrap-toggle` (`role="switch"`, `aria-checked`); lista virtualizada de linhas | FR-003, FR-006a, FR-007, FR-009*, FR-009d, FR-012, FR-016a, FR-023b |
 | Linha | `line-row` (`data-line="<n>"`) | `line-label` (rótulo), texto da linha; atributos `aria-selected`, `data-changed`, `data-error` | FR-009, FR-009a, FR-009c, FR-009e |
 | Quadro de edição | `edit-pane` | cabeçalho `record-title` + `line-position` ("Linha 3 de 8"); lista de campos; rodapé com `update-line` e `discard` | FR-010, FR-011, FR-018a, FR-022a |
 | Campo | `field` (`data-field-id`) | `field-pos` ("19–32"), `field-name`, `input`, `field-counter` ("9/14"), `field-error` | FR-011, FR-015a |

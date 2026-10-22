@@ -1,12 +1,26 @@
 import type { JSX } from "preact";
 import { useEffect, useRef } from "preact/hooks";
-import { filledCount } from "../../core/fields";
-import type { FieldView } from "../../core/types";
+import { describeDomain, filledCount } from "../../core/fields";
+import type { FieldDefinition, FieldView, LayoutDefinition } from "../../core/types";
+import { layout } from "../state/document";
 import { blurField, session, setFocused, setValue } from "../state/editSession";
 import { focusRequest } from "../state/validation";
 
 /** "19–32": posições 1-based do manual. */
 export const formatPos = (start: number, end: number) => `${start}–${end}`;
+
+/** Leitura do valor ao lado do nome: opção do domínio, valor monetário ou data. */
+export function fieldHint(def: FieldDefinition, value: string, l: LayoutDefinition): string {
+  const match = describeDomain(def, value, l)?.match;
+  if (match) return `${match.code} – ${match.meaning}`;
+  if (!/^\d+$/.test(value) || !/[1-9]/.test(value)) return "";
+  if (def.type === "V") {
+    const n = Number(value) / 10 ** (def.decimals ?? 0);
+    return n.toLocaleString("pt-BR", { minimumFractionDigits: def.decimals ?? 0, maximumFractionDigits: def.decimals ?? 0 });
+  }
+  if (def.type === "D" && value.length === 8) return `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
+  return "";
+}
 
 /**
  * Bloqueia inserção além do tamanho (FR-017): só a parte que cabe é inserida; o que já existe nunca é cortado.
@@ -36,6 +50,7 @@ export function FieldInput({ view, first }: { view: FieldView; first?: boolean }
   const inputId = `field-${def.id}`;
   const errorId = `${inputId}-error`;
   const ref = useRef<HTMLInputElement>(null);
+  const hint = fieldHint(def, value, layout.value);
 
   const request = focusRequest.value;
   useEffect(() => {
@@ -55,9 +70,12 @@ export function FieldInput({ view, first }: { view: FieldView; first?: boolean }
       <span class="field-pos" data-testid="field-pos">
         {formatPos(def.start, def.end)}
       </span>
-      <label class="field-name" data-testid="field-name" for={inputId} title={def.name}>
-        {def.name}
-      </label>
+      <div class="field-name">
+        <label data-testid="field-name" for={inputId} title={def.name}>
+          {def.name}
+        </label>
+        {hint && !errors.length && <span class="field-hint">{hint}</span>}
+      </div>
       <input
         ref={ref}
         id={inputId}

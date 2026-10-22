@@ -28,7 +28,8 @@ test("US3-1/1a/1b: tipo a cada tecla; domínio ao sair do campo", async ({ page 
 
 test("US3-1c/2: botão no canto inferior esquerdo; não aceita além do tamanho", async ({ page }) => {
   const update = page.getByTestId("update-line");
-  await expect(update).toContainText("← Atualizar linha");
+  await expect(update).toContainText("Atualizar linha");
+  await expect(update.locator("[data-icon=arrow-left]")).toHaveCount(1);
   const pane = await page.getByTestId("edit-pane").boundingBox();
   const btn = (await update.boundingBox())!;
   expect(btn.x - pane!.x).toBeLessThan(40);

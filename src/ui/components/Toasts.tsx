@@ -1,6 +1,7 @@
 import { toasts } from "../state/toasts";
+import { Icon } from "./Icon";
 
-const ICON = { success: "✓", error: "✕" } as const;
+const ICON = { success: "check", error: "alert-circle" } as const;
 
 export function Toasts() {
   return (
@@ -14,8 +15,8 @@ export function Toasts() {
           role={t.kind === "error" ? "alert" : "status"}
           style={{ pointerEvents: "auto" }}
         >
-          <span class="toast-icon" aria-hidden="true">
-            {ICON[t.kind]}
+          <span class="toast-icon">
+            <Icon name={ICON[t.kind]} />
           </span>
           <span class="toast-text">{t.text}</span>
         </div>

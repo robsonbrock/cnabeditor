@@ -53,7 +53,8 @@ describe("Toasts", () => {
     expect(ok.dataset.kind).toBe("success");
     expect(err.dataset.kind).toBe("error");
     expect(ok.className).not.toBe(err.className);
-    expect(ok.querySelector(".toast-icon")!.textContent).not.toBe(err.querySelector(".toast-icon")!.textContent);
+    const icon = (t: HTMLElement) => t.querySelector(".toast-icon [data-icon]")!.getAttribute("data-icon");
+    expect(icon(ok)).not.toBe(icon(err));
     expect(ok.style.pointerEvents).toBe("auto");
   });
 });

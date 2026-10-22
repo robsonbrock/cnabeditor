@@ -14,6 +14,10 @@ test("US2-1: Código de Barras do Segmento J mostra nome, posições, tamanho e 
   await expect(detail).toContainText("18 – 61");
   await expect(detail).toContainText("44");
   await expect(detail).toContainText("Numérico");
+  // O trecho do campo em foco fica destacado na linha selecionada do quadro principal.
+  const mark = row(page, 8).locator(".field-focus");
+  await expect(mark).toHaveCount(1);
+  expect((await mark.textContent())!.length).toBe(44);
 });
 
 test("US2-2: Tipo de Registro = 3 destaca '3 – Detalhe'", async ({ page }) => {
