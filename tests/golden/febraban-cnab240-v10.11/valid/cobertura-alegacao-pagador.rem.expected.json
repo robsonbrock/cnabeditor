@@ -1,0 +1,18 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "Y",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote-alegacao-pagador",
+    "segmento-y-02-alegacao-pagador",
+    "trailer-lote-alegacao-pagador",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}

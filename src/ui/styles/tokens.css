@@ -1,0 +1,59 @@
+/* Temas (FR-031). Dark é o padrão; [data-theme] fica em <html>. */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1e1f22;
+  --surface: #26282c;
+  --surface-2: #2d3035;
+  --border: #3a3d42;
+  --text: #e6e6e6;
+  --text-muted: #8b8f96;
+  --text-code: #c9ccd2;
+  --accent: #7aa2f7;
+  --accent-contrast: #10141c;
+  --label: #7aa2f7;
+  --selection-bg: #2b3a55;
+  --selection-border: #7aa2f7;
+  --changed: #e0af68;
+  --error: #e5534b;
+  --error-bg: rgba(229, 83, 75, 0.12);
+  --success: #3fa66b;
+  --toast-success-bg: #1f3a2a;
+  --toast-success-border: #3fa66b;
+  --toast-error-bg: #43201f;
+  --toast-error-border: #e5534b;
+  --input-bg: #1e1f22;
+  --input-border: #4a4d52;
+  --focus-ring: #7aa2f7;
+  --domain-current-bg: #2f4a3a;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #eef0f3;
+  --border: #d4d7dd;
+  --text: #1f2328;
+  --text-muted: #5f6670;
+  --text-code: #24292f;
+  --accent: #2f5fd0;
+  --accent-contrast: #ffffff;
+  --label: #2f5fd0;
+  --selection-bg: #dbe6fb;
+  --selection-border: #2f5fd0;
+  --changed: #a86b00;
+  --error: #c62828;
+  --error-bg: rgba(198, 40, 40, 0.08);
+  --success: #1f7a45;
+  --toast-success-bg: #e3f4ea;
+  --toast-success-border: #1f7a45;
+  --toast-error-bg: #fbe5e5;
+  --toast-error-border: #c62828;
+  --input-bg: #ffffff;
+  --input-border: #b8bdc6;
+  --focus-ring: #2f5fd0;
+  --domain-current-bg: #dff0e5;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}

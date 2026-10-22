@@ -1,0 +1,27 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "B",
+    "A",
+    "TL",
+    "HL",
+    "J",
+    "J",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 5,
+      "start": 9,
+      "end": 13,
+      "fieldId": "numeroRegistro",
+      "rule": "recordSequence",
+      "found": "00007",
+      "expected": "00003"
+    }
+  ]
+}

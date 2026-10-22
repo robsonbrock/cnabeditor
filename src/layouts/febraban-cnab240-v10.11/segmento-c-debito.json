@@ -1,0 +1,27 @@
+{
+  "id": "segmento-c-debito",
+  "kind": "detail",
+  "label": "C",
+  "title": "Detalhe – Segmento C (Débito em Conta Corrente)",
+  "match": [{ "pos": [8,8], "equals": "3" }, { "pos": [14,14], "equals": "C" }, { "batch": "service", "in": ["05"] }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.", "reference": "G001" },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "description": "Número seqüencial para identificar univocamente um lote de serviço. Criado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo.", "reference": "G002" },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro.", "reference": "G003", "domain": {"ref":"tipoRegistro"} },
+    { "id": "numeroRegistro", "name": "Nº Seqüencial do Registro no Lote", "start": 9, "end": 13, "type": "N", "required": true, "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote.", "reference": "G038" },
+    { "id": "segmento", "name": "Código de Segmento do Registro Detalhe", "start": 14, "end": 14, "type": "A", "required": true, "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'C'.", "reference": "G039" },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 15, "end": 17, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" },
+    { "id": "valorIr", "name": "Valor do IR", "start": 18, "end": 32, "type": "V", "decimals": 2, "required": false, "description": "Valor do Imposto de Renda sobre o valor do documento, expresso em moeda corrente.", "reference": "G050" },
+    { "id": "valorIss", "name": "Valor do ISS", "start": 33, "end": 47, "type": "V", "decimals": 2, "required": false, "description": "Valor do Imposto sobre Serviços sobre o valor do documento, expresso em moeda corrente.", "reference": "G051" },
+    { "id": "valorIof", "name": "Valor do IOF", "start": 48, "end": 62, "type": "V", "decimals": 2, "required": false, "description": "Valor do Imposto sobre Operações Financeiras sobre o valor do documento, expresso em moeda corrente.", "reference": "G052" },
+    { "id": "valorOutrasDeducoes", "name": "Valor Outras Deduções", "start": 63, "end": 77, "type": "V", "decimals": 2, "required": false, "description": "Valor descontado do valor do documento, expresso em moeda corrente.", "reference": "G053" },
+    { "id": "valorOutrosAcrescimos", "name": "Valor Outros Acréscimos", "start": 78, "end": 92, "type": "V", "decimals": 2, "required": false, "description": "Valor somado ao valor do documento, expresso em moeda corrente.", "reference": "G054" },
+    { "id": "agenciaSubstituta", "name": "Agência do Pagador", "start": 93, "end": 97, "type": "N", "required": false, "description": "Código adotado pelo Banco responsável pela conta, para identificar a qual unidade está vinculada a conta corrente.", "reference": "G008", "sensitive": true },
+    { "id": "dvAgenciaSubstituta", "name": "Dígito Verificador da Agência", "start": 98, "end": 98, "type": "A", "required": false, "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do Código da Agência.", "reference": "G009", "sensitive": true },
+    { "id": "contaSubstituta", "name": "Número Conta Corrente", "start": 99, "end": 110, "type": "N", "required": false, "description": "Número adotado pelo Banco, para identificar univocamente a conta corrente utilizada pelo Cliente.", "reference": "G010", "sensitive": true },
+    { "id": "dvContaSubstituta", "name": "Dígito Verificador da Conta", "start": 111, "end": 111, "type": "A", "required": false, "description": "Código adotado pelo responsável pela conta corrente, para verificação da autenticidade do Número da Conta Corrente.", "reference": "G011", "sensitive": true },
+    { "id": "dvAgenciaContaSubstituta", "name": "Dígito Verificador Agência/Conta", "start": 112, "end": 112, "type": "A", "required": false, "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do par Código da Agência / Número da Conta Corrente.", "reference": "G012", "sensitive": true },
+    { "id": "valorInss", "name": "Valor do INSS", "start": 113, "end": 127, "type": "V", "decimals": 2, "required": false, "description": "Valor de contribuição ao INSS sobre o valor do documento, expresso em moeda corrente.", "reference": "G055" },
+    { "id": "cnab2", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 128, "end": 240, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" }
+  ]
+}

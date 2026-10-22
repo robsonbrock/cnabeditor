@@ -1,0 +1,493 @@
+{
+  "id": "segmento-h-boleto-eletronico",
+  "kind": "detail",
+  "label": "H",
+  "title": "Detalhe – Segmento H",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "3"
+    },
+    {
+      "pos": [
+        14,
+        14
+      ],
+      "equals": "H"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "03"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "numeroRegistro",
+      "name": "Nº Sequencial do Registro no Lote",
+      "start": 9,
+      "end": 13,
+      "type": "N",
+      "required": true,
+      "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote.",
+      "reference": "G038"
+    },
+    {
+      "id": "codigoSegmento",
+      "name": "Cód. Segmento do Registro Detalhe",
+      "start": 14,
+      "end": 14,
+      "type": "A",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'H'.",
+      "reference": "G039"
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 15,
+      "end": 15,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "codigoMovimento",
+      "name": "Código de Movimento Remessa",
+      "start": 16,
+      "end": 17,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos registros do arquivo de remessa. Cada Banco definirá os campos a serem alterados para o código de movimento '31'.",
+      "reference": "C004",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "Entrada de Títulos"
+        },
+        {
+          "code": "02",
+          "meaning": "Pedido de Baixa"
+        },
+        {
+          "code": "03",
+          "meaning": "Protesto para Fins Falimentares"
+        },
+        {
+          "code": "04",
+          "meaning": "Concessão de Abatimento"
+        },
+        {
+          "code": "05",
+          "meaning": "Cancelamento de Abatimento"
+        },
+        {
+          "code": "06",
+          "meaning": "Alteração de Vencimento"
+        },
+        {
+          "code": "07",
+          "meaning": "Concessão de Desconto"
+        },
+        {
+          "code": "08",
+          "meaning": "Cancelamento de Desconto"
+        },
+        {
+          "code": "09",
+          "meaning": "Protestar"
+        },
+        {
+          "code": "10",
+          "meaning": "Sustar Protesto e Baixar Título"
+        },
+        {
+          "code": "11",
+          "meaning": "Sustar Protesto e Manter em Carteira"
+        },
+        {
+          "code": "12",
+          "meaning": "Alteração de Juros de Mora"
+        },
+        {
+          "code": "13",
+          "meaning": "Dispensar Cobrança de Juros de Mora"
+        },
+        {
+          "code": "14",
+          "meaning": "Alteração de Valor/Percentual de Multa"
+        },
+        {
+          "code": "15",
+          "meaning": "Dispensar Cobrança de Multa"
+        },
+        {
+          "code": "16",
+          "meaning": "Alteração de Valor/Data de Desconto"
+        },
+        {
+          "code": "17",
+          "meaning": "Não conceder Desconto"
+        },
+        {
+          "code": "18",
+          "meaning": "Alteração do Valor de Abatimento"
+        },
+        {
+          "code": "19",
+          "meaning": "Prazo Limite de Recebimento - Alterar"
+        },
+        {
+          "code": "20",
+          "meaning": "Prazo Limite de Recebimento - Dispensar"
+        },
+        {
+          "code": "21",
+          "meaning": "Alterar número do título dado pelo Beneficiário"
+        },
+        {
+          "code": "22",
+          "meaning": "Alterar número controle do Participante"
+        },
+        {
+          "code": "23",
+          "meaning": "Alterar dados do Pagador"
+        },
+        {
+          "code": "24",
+          "meaning": "Alterar dados do Sacador/Avalista"
+        },
+        {
+          "code": "30",
+          "meaning": "Recusa da Alegação do Pagador"
+        },
+        {
+          "code": "31",
+          "meaning": "Alteração de Outros Dados"
+        },
+        {
+          "code": "33",
+          "meaning": "Alteração dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "34",
+          "meaning": "Pedido de Cancelamento dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "35",
+          "meaning": "Pedido de Desagendamento do Débito Automático"
+        },
+        {
+          "code": "40",
+          "meaning": "Alteração de Carteira"
+        },
+        {
+          "code": "41",
+          "meaning": "Cancelar protesto"
+        },
+        {
+          "code": "42",
+          "meaning": "Alteração de Espécie de Título"
+        },
+        {
+          "code": "43",
+          "meaning": "Transferência de carteira/modalidade de cobrança"
+        },
+        {
+          "code": "44",
+          "meaning": "Alteração de contrato de cobrança"
+        },
+        {
+          "code": "45",
+          "meaning": "Negativação Sem Protesto"
+        },
+        {
+          "code": "46",
+          "meaning": "Solicitação de Baixa de Título Negativado Sem Protesto"
+        },
+        {
+          "code": "47",
+          "meaning": "Alteração do Valor Nominal do Título"
+        },
+        {
+          "code": "48",
+          "meaning": "Alteração do Valor Mínimo/ Percentual"
+        },
+        {
+          "code": "49",
+          "meaning": "Alteração do Valor Máximo/Percentual"
+        },
+        {
+          "code": "61",
+          "meaning": "Alteração para inclusão/manutenção de QR Code Pix"
+        }
+      ]
+    },
+    {
+      "id": "tipoInscricaoSacador",
+      "name": "Tipo de Inscrição",
+      "start": 18,
+      "end": 18,
+      "type": "N",
+      "required": false,
+      "description": "Código que identifica o tipo de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Para o Produto/Serviço Cobrança considerar como obrigatório somente o CPF (código 1) ou o CNPJ (código 2). Sacador/Avalista.",
+      "reference": "G005",
+      "domain": {
+        "ref": "tipoInscricao"
+      }
+    },
+    {
+      "id": "numeroInscricaoSacador",
+      "name": "Número de Inscrição",
+      "start": 19,
+      "end": 33,
+      "type": "N",
+      "required": false,
+      "description": "Número de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Quando o Tipo de Inscrição for igual a zero (não informado), preencher com zeros. Sacador/Avalista.",
+      "reference": "G006",
+      "sensitive": true
+    },
+    {
+      "id": "nomeSacador",
+      "name": "Nome do Sacador / Avalista",
+      "start": 34,
+      "end": 73,
+      "type": "A",
+      "required": false,
+      "description": "Nome que identifica a pessoa, física ou jurídica, a qual se quer fazer referência.",
+      "reference": "G013"
+    },
+    {
+      "id": "codigoDesconto2",
+      "name": "Código do Desconto 2",
+      "start": 74,
+      "end": 74,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificação do tipo de desconto que deverá ser concedido. Para os códigos '1' e '2' será obrigatório a informação da Data.",
+      "reference": "C021",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Valor Fixo Até a Data Informada"
+        },
+        {
+          "code": "2",
+          "meaning": "Percentual Até a Data Informada"
+        },
+        {
+          "code": "3",
+          "meaning": "Valor por Antecipação Dia Corrido"
+        },
+        {
+          "code": "4",
+          "meaning": "Valor por Antecipação Dia Útil"
+        },
+        {
+          "code": "5",
+          "meaning": "Percentual Sobre o Valor Nominal Dia Corrido"
+        },
+        {
+          "code": "6",
+          "meaning": "Percentual Sobre o Valor Nominal Dia Útil"
+        },
+        {
+          "code": "7",
+          "meaning": "Cancelamento de Desconto"
+        }
+      ]
+    },
+    {
+      "id": "dataDesconto2",
+      "name": "Data do Desconto 2",
+      "start": 75,
+      "end": 82,
+      "type": "D",
+      "required": false,
+      "description": "Data limite do desconto do título de cobrança.",
+      "reference": "C022"
+    },
+    {
+      "id": "valorDesconto2",
+      "name": "Valor/Percentual a ser Concedido",
+      "start": 83,
+      "end": 97,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor ou percentual de desconto a ser concedido sobre o título de cobrança.",
+      "reference": "C023"
+    },
+    {
+      "id": "codigoDesconto3",
+      "name": "Código do Desconto 3",
+      "start": 98,
+      "end": 98,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificação do tipo de desconto que deverá ser concedido. Para os códigos '1' e '2' será obrigatório a informação da Data.",
+      "reference": "C021",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Valor Fixo Até a Data Informada"
+        },
+        {
+          "code": "2",
+          "meaning": "Percentual Até a Data Informada"
+        },
+        {
+          "code": "3",
+          "meaning": "Valor por Antecipação Dia Corrido"
+        },
+        {
+          "code": "4",
+          "meaning": "Valor por Antecipação Dia Útil"
+        },
+        {
+          "code": "5",
+          "meaning": "Percentual Sobre o Valor Nominal Dia Corrido"
+        },
+        {
+          "code": "6",
+          "meaning": "Percentual Sobre o Valor Nominal Dia Útil"
+        },
+        {
+          "code": "7",
+          "meaning": "Cancelamento de Desconto"
+        }
+      ]
+    },
+    {
+      "id": "dataDesconto3",
+      "name": "Data do Desconto 3",
+      "start": 99,
+      "end": 106,
+      "type": "D",
+      "required": false,
+      "description": "Data limite do desconto do título de cobrança.",
+      "reference": "C022"
+    },
+    {
+      "id": "valorDesconto3",
+      "name": "Valor/Percentual a ser Aplicado",
+      "start": 107,
+      "end": 121,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor ou percentual de desconto a ser concedido sobre o título de cobrança.",
+      "reference": "C023"
+    },
+    {
+      "id": "codigoMulta",
+      "name": "Código da Multa",
+      "start": 122,
+      "end": 122,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificação do critério de pagamento de pena pecuniária, a ser aplicada pelo atraso do pagamento do Título.",
+      "reference": "G073",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Valor Fixo"
+        },
+        {
+          "code": "2",
+          "meaning": "Percentual"
+        }
+      ]
+    },
+    {
+      "id": "dataMulta",
+      "name": "Data da Multa",
+      "start": 123,
+      "end": 130,
+      "type": "D",
+      "required": false,
+      "description": "Data a partir da qual a multa deverá ser cobrada. Na ausência, será considerada a data de vencimento.",
+      "reference": "G074"
+    },
+    {
+      "id": "valorMulta",
+      "name": "Valor/Percentual a Ser Concedido",
+      "start": 131,
+      "end": 145,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor ou percentual de multa a ser aplicado sobre o valor do Título, por atraso no pagamento.",
+      "reference": "G075"
+    },
+    {
+      "id": "valorAbatimento",
+      "name": "Valor do Abatimento",
+      "start": 146,
+      "end": 160,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor do abatimento (redução do valor do documento, devido a algum problema), expresso em moeda corrente.",
+      "reference": "G045"
+    },
+    {
+      "id": "mensagem1",
+      "name": "Mensagem 1",
+      "start": 161,
+      "end": 200,
+      "type": "A",
+      "required": false,
+      "description": "Texto referente a mensagens que serão impressas em todos os Boleto de Pagamentos referentes ao mesmo lote. Estes campos não serão utilizados no arquivo retorno.",
+      "reference": "C073"
+    },
+    {
+      "id": "mensagem2",
+      "name": "Mensagem 2",
+      "start": 201,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto referente a mensagens que serão impressas em todos os Boleto de Pagamentos referentes ao mesmo lote. Estes campos não serão utilizados no arquivo retorno.",
+      "reference": "C073"
+    }
+  ]
+}

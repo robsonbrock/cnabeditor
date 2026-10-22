@@ -1,0 +1,33 @@
+{
+  "id": "segmento-b-debito",
+  "kind": "detail",
+  "label": "B",
+  "title": "Detalhe – Segmento B (Débito em Conta Corrente)",
+  "match": [{ "pos": [8,8], "equals": "3" }, { "pos": [14,14], "equals": "B" }, { "batch": "service", "in": ["05"] }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.", "reference": "G001" },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "description": "Número seqüencial para identificar univocamente um lote de serviço. Criado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo.", "reference": "G002" },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro.", "reference": "G003", "domain": {"ref":"tipoRegistro"} },
+    { "id": "numeroRegistro", "name": "Nº Seqüencial do Registro no Lote", "start": 9, "end": 13, "type": "N", "required": true, "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote.", "reference": "G038" },
+    { "id": "segmento", "name": "Código de Segmento do Registro Detalhe", "start": 14, "end": 14, "type": "A", "required": true, "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'B'.", "reference": "G039" },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 15, "end": 17, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" },
+    { "id": "tipoInscricao", "name": "Tipo de Inscrição do Pagador", "start": 18, "end": 18, "type": "N", "required": false, "description": "Código que identifica o tipo de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental.", "reference": "G005", "domain": {"ref":"tipoInscricao"} },
+    { "id": "numeroInscricao", "name": "Nº de Inscrição do Pagador", "start": 19, "end": 32, "type": "N", "required": false, "description": "Número de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Quando o Tipo de Inscrição for igual a zero (não informado), preencher com zeros.", "reference": "G006", "sensitive": true },
+    { "id": "logradouro", "name": "Nome da Rua, Av, Pça, Etc", "start": 33, "end": 62, "type": "A", "required": false, "description": "Texto referente a localização da rua / avenida, número, complemento e bairro utilizado para entrega de correspondência.", "reference": "G032" },
+    { "id": "numeroLocal", "name": "Nº do Local", "start": 63, "end": 67, "type": "N", "required": false, "description": "Texto referente a localização da rua / avenida, número, complemento e bairro utilizado para entrega de correspondência.", "reference": "G032" },
+    { "id": "complemento", "name": "Casa, Apto, Etc", "start": 68, "end": 82, "type": "A", "required": false, "description": "Texto referente a localização da rua / avenida, número, complemento e bairro utilizado para entrega de correspondência.", "reference": "G032" },
+    { "id": "bairro", "name": "Bairro", "start": 83, "end": 97, "type": "A", "required": false, "description": "Texto referente a localização da rua / avenida, número, complemento e bairro utilizado para entrega de correspondência.", "reference": "G032" },
+    { "id": "cidade", "name": "Nome da Cidade", "start": 98, "end": 117, "type": "A", "required": false, "description": "Texto referente ao nome do município componente do endereço utilizado para entrega de correspondência.", "reference": "G033" },
+    { "id": "cep", "name": "CEP", "start": 118, "end": 122, "type": "N", "required": false, "description": "Código adotado pela EBCT (Empresa Brasileira de Correios e Telégrafos), para identificação de logradouros.", "reference": "G034" },
+    { "id": "complementoCep", "name": "Complemento do CEP", "start": 123, "end": 125, "type": "A", "required": false, "description": "Código adotado pela EBCT (Empresa Brasileira de Correios e Telégrafos), para complementação do código de CEP.", "reference": "G035" },
+    { "id": "estado", "name": "Sigla do Estado", "start": 126, "end": 127, "type": "A", "required": false, "description": "Código do estado, unidade da federação componente do endereço utilizado para entrega de correspondência.", "reference": "G036" },
+    { "id": "dataVencimento", "name": "Data do Vencimento (Nominal)", "start": 128, "end": 135, "type": "D", "required": false, "description": "Data de vencimento nominal.", "reference": "G044" },
+    { "id": "valorDocumento", "name": "Valor do Documento (Nominal)", "start": 136, "end": 150, "type": "V", "decimals": 2, "required": false, "description": "Valor Nominal do documento, expresso em moeda corrente.", "reference": "G042" },
+    { "id": "valorAbatimento", "name": "Valor do Abatimento", "start": 151, "end": 165, "type": "V", "decimals": 2, "required": false, "description": "Valor do abatimento (redução do valor do documento, devido a algum problema), expresso em moeda corrente.", "reference": "G045" },
+    { "id": "valorDesconto", "name": "Valor do Desconto", "start": 166, "end": 180, "type": "V", "decimals": 2, "required": false, "description": "Valor de desconto (bonificação) sobre valor nominal do documento, expresso em moeda corrente.", "reference": "G046" },
+    { "id": "valorMora", "name": "Valor da Mora", "start": 181, "end": 195, "type": "V", "decimals": 2, "required": false, "description": "Valor do juros de mora expresso em moeda corrente.", "reference": "G047" },
+    { "id": "valorMulta", "name": "Valor da Multa", "start": 196, "end": 210, "type": "V", "decimals": 2, "required": false, "description": "Valor da multa expresso em moeda corrente.", "reference": "G048" },
+    { "id": "codigoDocumentoPagador", "name": "Código/Documento do Pagador", "start": 211, "end": 225, "type": "A", "required": false, "description": "Número ou Código de documento para identificar o Pagador. O conteúdo deste campo não sofrerá nenhum tratamento por parte do Banco.", "reference": "D009" },
+    { "id": "cnab2", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 226, "end": 240, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" }
+  ]
+}

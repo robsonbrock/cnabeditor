@@ -1,0 +1,24 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "?",
+    "F",
+    "I",
+    "?",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote-gestao-caixa",
+    "saldo-inicial-gestao-caixa",
+    "segmento-f-gestao-caixa",
+    "segmento-i-gestao-caixa",
+    "saldo-final-gestao-caixa",
+    "trailer-lote-gestao-caixa",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}

@@ -1,0 +1,22 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "B",
+    "C",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote-debito",
+    "segmento-a-debito",
+    "segmento-b-debito",
+    "segmento-c-debito",
+    "trailer-lote-debito",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}

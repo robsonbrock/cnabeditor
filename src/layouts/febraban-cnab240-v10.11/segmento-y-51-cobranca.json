@@ -1,0 +1,485 @@
+{
+  "id": "segmento-y-51-cobranca",
+  "kind": "detail",
+  "label": "Y",
+  "title": "Detalhe – Segmento Y-51",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "3"
+    },
+    {
+      "pos": [
+        14,
+        14
+      ],
+      "equals": "Y"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "01"
+      ]
+    },
+    {
+      "pos": [
+        18,
+        19
+      ],
+      "equals": "51"
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "numeroRegistro",
+      "name": "Nº Sequencial do Registro no Lote",
+      "start": 9,
+      "end": 13,
+      "type": "N",
+      "required": true,
+      "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote.",
+      "reference": "G038"
+    },
+    {
+      "id": "codigoSegmento",
+      "name": "Cód. Segmento do Registro Detalhe",
+      "start": 14,
+      "end": 14,
+      "type": "A",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'Y'.",
+      "reference": "G039"
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 15,
+      "end": 15,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "codigoMovimento",
+      "name": "Código de Movimento Remessa",
+      "start": 16,
+      "end": 17,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos registros do arquivo de remessa. Cada Banco definirá os campos a serem alterados para o código de movimento '31'.",
+      "reference": "C004",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "Entrada de Títulos"
+        },
+        {
+          "code": "02",
+          "meaning": "Pedido de Baixa"
+        },
+        {
+          "code": "03",
+          "meaning": "Protesto para Fins Falimentares"
+        },
+        {
+          "code": "04",
+          "meaning": "Concessão de Abatimento"
+        },
+        {
+          "code": "05",
+          "meaning": "Cancelamento de Abatimento"
+        },
+        {
+          "code": "06",
+          "meaning": "Alteração de Vencimento"
+        },
+        {
+          "code": "07",
+          "meaning": "Concessão de Desconto"
+        },
+        {
+          "code": "08",
+          "meaning": "Cancelamento de Desconto"
+        },
+        {
+          "code": "09",
+          "meaning": "Protestar"
+        },
+        {
+          "code": "10",
+          "meaning": "Sustar Protesto e Baixar Título"
+        },
+        {
+          "code": "11",
+          "meaning": "Sustar Protesto e Manter em Carteira"
+        },
+        {
+          "code": "12",
+          "meaning": "Alteração de Juros de Mora"
+        },
+        {
+          "code": "13",
+          "meaning": "Dispensar Cobrança de Juros de Mora"
+        },
+        {
+          "code": "14",
+          "meaning": "Alteração de Valor/Percentual de Multa"
+        },
+        {
+          "code": "15",
+          "meaning": "Dispensar Cobrança de Multa"
+        },
+        {
+          "code": "16",
+          "meaning": "Alteração de Valor/Data de Desconto"
+        },
+        {
+          "code": "17",
+          "meaning": "Não conceder Desconto"
+        },
+        {
+          "code": "18",
+          "meaning": "Alteração do Valor de Abatimento"
+        },
+        {
+          "code": "19",
+          "meaning": "Prazo Limite de Recebimento - Alterar"
+        },
+        {
+          "code": "20",
+          "meaning": "Prazo Limite de Recebimento - Dispensar"
+        },
+        {
+          "code": "21",
+          "meaning": "Alterar número do título dado pelo Beneficiário"
+        },
+        {
+          "code": "22",
+          "meaning": "Alterar número controle do Participante"
+        },
+        {
+          "code": "23",
+          "meaning": "Alterar dados do Pagador"
+        },
+        {
+          "code": "24",
+          "meaning": "Alterar dados do Sacador/Avalista"
+        },
+        {
+          "code": "30",
+          "meaning": "Recusa da Alegação do Pagador"
+        },
+        {
+          "code": "31",
+          "meaning": "Alteração de Outros Dados"
+        },
+        {
+          "code": "33",
+          "meaning": "Alteração dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "34",
+          "meaning": "Pedido de Cancelamento dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "35",
+          "meaning": "Pedido de Desagendamento do Débito Automático"
+        },
+        {
+          "code": "40",
+          "meaning": "Alteração de Carteira"
+        },
+        {
+          "code": "41",
+          "meaning": "Cancelar protesto"
+        },
+        {
+          "code": "42",
+          "meaning": "Alteração de Espécie de Título"
+        },
+        {
+          "code": "43",
+          "meaning": "Transferência de carteira/modalidade de cobrança"
+        },
+        {
+          "code": "44",
+          "meaning": "Alteração de contrato de cobrança"
+        },
+        {
+          "code": "45",
+          "meaning": "Negativação Sem Protesto"
+        },
+        {
+          "code": "46",
+          "meaning": "Solicitação de Baixa de Título Negativado Sem Protesto"
+        },
+        {
+          "code": "47",
+          "meaning": "Alteração do Valor Nominal do Título"
+        },
+        {
+          "code": "48",
+          "meaning": "Alteração do Valor Mínimo/ Percentual"
+        },
+        {
+          "code": "49",
+          "meaning": "Alteração do Valor Máximo/Percentual"
+        },
+        {
+          "code": "61",
+          "meaning": "Alteração para inclusão/manutenção de QR Code Pix"
+        }
+      ]
+    },
+    {
+      "id": "identificacaoRegistroOpcional",
+      "name": "Identificação Registro Opcional",
+      "start": 18,
+      "end": 19,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificação de registros opcionais. Registro opcional '51'.",
+      "reference": "G067",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "Informação de Dados do Sacador Avalista"
+        },
+        {
+          "code": "02",
+          "meaning": "Alegação do Pagador"
+        },
+        {
+          "code": "03",
+          "meaning": "Informação de Dados do Pagador"
+        },
+        {
+          "code": "04",
+          "meaning": "Informação de Dados de Cheques Utilizados"
+        },
+        {
+          "code": "11",
+          "meaning": "Informações sobre dados de parcelas de compror"
+        },
+        {
+          "code": "50",
+          "meaning": "Informação de Dados para Rateio de Crédito"
+        },
+        {
+          "code": "51",
+          "meaning": "Informações de Notas Fiscais"
+        },
+        {
+          "code": "52",
+          "meaning": "Identificação dos entes envolvidos no processo de pagamento"
+        },
+        {
+          "code": "53",
+          "meaning": "Identificação do Pagador Final e Agregador de Pagamento"
+        }
+      ]
+    },
+    {
+      "id": "numeroNotaFiscal1",
+      "name": "Número da Nota Fiscal",
+      "start": 20,
+      "end": 34,
+      "type": "A",
+      "required": false,
+      "description": "Número da nota fiscal referente a um título de cobrança, informado pelo Beneficiário. Este número é subordinado a uma série e local. Nota Fiscal 1.",
+      "reference": "C067"
+    },
+    {
+      "id": "valorNotaFiscal1",
+      "name": "Valor da Nota Fiscal",
+      "start": 35,
+      "end": 49,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 1.",
+      "reference": "C068"
+    },
+    {
+      "id": "dataEmissaoNotaFiscal1",
+      "name": "Data Emissão Nota Fiscal",
+      "start": 50,
+      "end": 57,
+      "type": "D",
+      "required": false,
+      "description": "Data de emissão constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 1.",
+      "reference": "C069"
+    },
+    {
+      "id": "numeroNotaFiscal2",
+      "name": "Número da Nota Fiscal",
+      "start": 58,
+      "end": 72,
+      "type": "A",
+      "required": false,
+      "description": "Número da nota fiscal referente a um título de cobrança, informado pelo Beneficiário. Este número é subordinado a uma série e local. Nota Fiscal 2.",
+      "reference": "C067"
+    },
+    {
+      "id": "valorNotaFiscal2",
+      "name": "Valor da Nota Fiscal",
+      "start": 73,
+      "end": 87,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 2.",
+      "reference": "C068"
+    },
+    {
+      "id": "dataEmissaoNotaFiscal2",
+      "name": "Data Emissão Nota Fiscal",
+      "start": 88,
+      "end": 95,
+      "type": "D",
+      "required": false,
+      "description": "Data de emissão constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 2.",
+      "reference": "C069"
+    },
+    {
+      "id": "numeroNotaFiscal3",
+      "name": "Número da Nota Fiscal",
+      "start": 96,
+      "end": 110,
+      "type": "A",
+      "required": false,
+      "description": "Número da nota fiscal referente a um título de cobrança, informado pelo Beneficiário. Este número é subordinado a uma série e local. Nota Fiscal 3.",
+      "reference": "C067"
+    },
+    {
+      "id": "valorNotaFiscal3",
+      "name": "Valor da Nota Fiscal",
+      "start": 111,
+      "end": 125,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 3.",
+      "reference": "C068"
+    },
+    {
+      "id": "dataEmissaoNotaFiscal3",
+      "name": "Data Emissão Nota Fiscal",
+      "start": 126,
+      "end": 133,
+      "type": "D",
+      "required": false,
+      "description": "Data de emissão constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 3.",
+      "reference": "C069"
+    },
+    {
+      "id": "numeroNotaFiscal4",
+      "name": "Número da Nota Fiscal",
+      "start": 134,
+      "end": 148,
+      "type": "A",
+      "required": false,
+      "description": "Número da nota fiscal referente a um título de cobrança, informado pelo Beneficiário. Este número é subordinado a uma série e local. Nota Fiscal 4.",
+      "reference": "C067"
+    },
+    {
+      "id": "valorNotaFiscal4",
+      "name": "Valor da Nota Fiscal",
+      "start": 149,
+      "end": 163,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 4.",
+      "reference": "C068"
+    },
+    {
+      "id": "dataEmissaoNotaFiscal4",
+      "name": "Data Emissão Nota Fiscal",
+      "start": 164,
+      "end": 171,
+      "type": "D",
+      "required": false,
+      "description": "Data de emissão constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 4.",
+      "reference": "C069"
+    },
+    {
+      "id": "numeroNotaFiscal5",
+      "name": "Número da Nota Fiscal",
+      "start": 172,
+      "end": 186,
+      "type": "A",
+      "required": false,
+      "description": "Número da nota fiscal referente a um título de cobrança, informado pelo Beneficiário. Este número é subordinado a uma série e local. Nota Fiscal 5.",
+      "reference": "C067"
+    },
+    {
+      "id": "valorNotaFiscal5",
+      "name": "Valor da Nota Fiscal",
+      "start": 187,
+      "end": 201,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 5.",
+      "reference": "C068"
+    },
+    {
+      "id": "dataEmissaoNotaFiscal5",
+      "name": "Data Emissão Nota Fiscal",
+      "start": 202,
+      "end": 209,
+      "type": "D",
+      "required": false,
+      "description": "Data de emissão constante da nota fiscal do Beneficiário referente ao título de cobrança. Nota Fiscal 5.",
+      "reference": "C069"
+    },
+    {
+      "id": "cnab2",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 210,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    }
+  ]
+}

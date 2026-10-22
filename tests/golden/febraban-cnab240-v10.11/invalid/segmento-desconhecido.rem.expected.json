@@ -1,0 +1,19 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "X",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 4,
+      "start": 1,
+      "end": 240,
+      "rule": "unknownRecord"
+    }
+  ]
+}

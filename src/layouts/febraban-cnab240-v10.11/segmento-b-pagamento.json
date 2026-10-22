@@ -1,0 +1,22 @@
+{
+  "id": "segmento-b-pagamento",
+  "kind": "detail",
+  "label": "B",
+  "title": "Detalhe – Segmento B",
+  "match": [{"pos":[8,8],"equals":"3"},{"pos":[14,14],"equals":"B"},{"batch":"service","in":["10","20","22","23","30","32","33","34","50","60","70","75","77","80","90","98"]}],
+  "fields": [
+    {"id":"codigoBanco","name":"Código do Banco na Compensação","start":1,"end":3,"type":"N","required":true,"reference":"G001","description":"Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços."},
+    {"id":"loteServico","name":"Lote de Serviço","start":4,"end":7,"type":"N","required":true,"reference":"G002","description":"Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo; para os demais, número do lote anterior acrescido de 1."},
+    {"id":"tipoRegistro","name":"Tipo de Registro","start":8,"end":8,"type":"N","required":true,"reference":"G003","domain":{"ref":"tipoRegistro"},"description":"Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'."},
+    {"id":"numeroRegistro","name":"Nº Seqüencial do Registro no Lote","start":9,"end":13,"type":"N","required":true,"reference":"G038","description":"Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote."},
+    {"id":"segmento","name":"Código de Segmento do Reg. Detalhe","start":14,"end":14,"type":"A","required":true,"reference":"G039","description":"Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento = 'B'."},
+    {"id":"formaIniciacao","name":"Identificação do favorecido – Forma de Iniciação","start":15,"end":17,"type":"A","required":false,"reference":"G100","description":"Para o tipo \"forma de lançamento\" igual ao PIX: '01' = Chave Pix – tipo Telefone; '02' = Chave Pix – tipo Email; '03' = Chave Pix – tipo CPF/CNPJ; '04' = Chave Aleatória; '05' = Dados bancários."},
+    {"id":"tipoInscricaoFavorecido","name":"Tipo de Inscrição do Favorecido","start":18,"end":18,"type":"N","required":false,"reference":"G005","domain":{"ref":"tipoInscricao"},"description":"Código que identifica o tipo de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental."},
+    {"id":"numeroInscricaoFavorecido","name":"Nº de Inscrição do Favorecido","start":19,"end":32,"type":"N","required":false,"reference":"G006","sensitive":true,"description":"Número de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Quando o Tipo de Inscrição for igual a zero (não informado), preencher com zeros."},
+    {"id":"informacao10","name":"Informação 10","start":33,"end":67,"type":"A","required":false,"reference":"G101","description":"Para o tipo \"forma de lançamento\" igual ao PIX: TX ID (opcional). Para os demais: Logradouro do Favorecido (Nome da Rua, Av, Pça, Etc)."},
+    {"id":"informacao11","name":"Informação 11","start":68,"end":127,"type":"A","required":false,"reference":"G101","description":"Para PIX: chave Pix (Email, Telefone ou Chave Aleatória) ou Tipo de Conta do recebedor, conforme a Forma de Iniciação (06.3B). Para os demais: Número (68-72), Complemento (73-87), Bairro (88-102), Cidade (103-117), CEP (118-122), Complemento CEP (123-125) e Estado (126-127) do Favorecido."},
+    {"id":"informacao12","name":"Informação 12","start":128,"end":226,"type":"A","required":false,"reference":"G101","description":"Para PIX: identificação do favorecido – chave de endereçamento Pix (Email, Telefone ou Chave Aleatória). Para os demais: Vencimento (128-135), Valor do Documento (136-150), Abatimento (151-165), Desconto (166-180), Mora (181-195), Multa (196-210), Código/Documento do Favorecido (211-225) e Aviso (226)."},
+    {"id":"codigoUgCentralizadora","name":"Uso Exclusivo para o SIAPE","start":227,"end":232,"type":"N","required":false,"reference":"P012","description":"Uso exclusivo para Pagamentos de Salários dos servidores, pelo SIAPE."},
+    {"id":"codigoIspb","name":"Código ISPB","start":233,"end":240,"type":"N","required":false,"reference":"P015","description":"Código adotado pelo Banco Central para identificação das instituições financeiras no Sistema de Pagamentos Brasileiro. Obrigatório quando for necessário o envio de TED para instituição financeira que não possui código COMPE."}
+  ]
+}

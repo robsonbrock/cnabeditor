@@ -1,0 +1,18 @@
+{
+  "id": "header-lote",
+  "kind": "batchHeader",
+  "label": "HL",
+  "title": "Header de Lote",
+  "match": [{ "pos": [8, 8], "equals": "1" }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "reference": "G001", "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços." },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "reference": "G002", "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1." },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "reference": "G003", "domain": { "ref": "tipoRegistro" }, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Header de Lote = '1'." },
+    { "id": "tipoOperacao", "name": "Tipo da Operação", "start": 9, "end": 9, "type": "A", "required": true, "reference": "G028", "batchContext": "operation", "domain": { "ref": "tipoOperacao" }, "description": "Código adotado pela FEBRABAN para identificar a transação que será realizada com os registros detalhe do lote." },
+    { "id": "tipoServico", "name": "Tipo do Serviço", "start": 10, "end": 11, "type": "N", "required": true, "reference": "G025", "batchContext": "service", "domain": { "ref": "tipoServico" }, "description": "Código adotado pela FEBRABAN para indicar o tipo de serviço / produto (processo) contido no arquivo / lote." },
+    { "id": "usoServico", "name": "Forma de Lançamento / Uso do Serviço", "start": 12, "end": 13, "type": "A", "required": false, "reference": "G029", "description": "Conforme o serviço do lote: Forma de Lançamento (G029) ou Uso Exclusivo FEBRABAN/CNAB (G004). Header de Lote genérico, usado quando o serviço do lote não tem definição específica." },
+    { "id": "versaoLayoutLote", "name": "Nº da Versão do Layout do Lote", "start": 14, "end": 16, "type": "N", "required": true, "reference": "G030", "batchContext": "layoutVersion", "description": "Código adotado pela FEBRABAN para identificar qual a versão de layout do lote de arquivo encaminhado (versão = 2 dígitos, release = 1 dígito)." },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 17, "end": 17, "type": "A", "required": false, "reference": "G004", "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos." },
+    { "id": "dadosServico", "name": "Dados específicos do serviço", "start": 18, "end": 240, "type": "A", "required": false, "description": "Campos específicos do Serviço / Produto do lote (manual, item 2.1: os registros header de lote têm campos fixos comuns a todos os serviços e campos específicos de cada serviço). Exibido como um único campo porque o serviço deste lote não tem definição específica." }
+  ]
+}

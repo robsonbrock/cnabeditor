@@ -1,0 +1,42 @@
+{
+  "name": "cnabeditor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Editor CNAB 240 de página única, processado inteiramente no navegador",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "test": "vitest run",
+    "test:golden": "vitest run tests/golden",
+    "test:e2e": "playwright test --grep-invert @perf",
+    "test:perf": "playwright test --grep @perf --project=chromium",
+    "lint": "eslint .",
+    "validate:layout": "tsx scripts/validate-layout.ts",
+    "generate:perf": "tsx scripts/generate-perf-files.ts"
+  },
+  "dependencies": {
+    "@preact/signals": "^2.11.3",
+    "preact": "^10.29.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@preact/preset-vite": "^2.10.6",
+    "@testing-library/preact": "^3.2.6",
+    "@types/node": "^22.20.5",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "eslint": "^9.39.5",
+    "globals": "^17.13.0",
+    "happy-dom": "^21.0.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.0",
+    "vite": "^6.4.5",
+    "vitest": "^3.2.7"
+  }
+}

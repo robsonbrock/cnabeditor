@@ -1,0 +1,25 @@
+{
+  "id": "segmento-o-pagamento",
+  "kind": "detail",
+  "label": "O",
+  "title": "Detalhe – Segmento O",
+  "match": [{"pos":[8,8],"equals":"3"},{"pos":[14,14],"equals":"O"},{"batch":"service","in":["10","20","22","23","30","32","33","34","50","60","70","75","77","80","90","98"]}],
+  "fields": [
+    {"id":"codigoBanco","name":"Código do Banco na Compensação","start":1,"end":3,"type":"N","required":true,"reference":"G001","description":"Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços."},
+    {"id":"loteServico","name":"Lote de Serviço","start":4,"end":7,"type":"N","required":true,"reference":"G002","description":"Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo; para os demais, número do lote anterior acrescido de 1."},
+    {"id":"tipoRegistro","name":"Tipo de Registro","start":8,"end":8,"type":"N","required":true,"reference":"G003","domain":{"ref":"tipoRegistro"},"description":"Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'."},
+    {"id":"numeroRegistro","name":"Nº Seqüencial do Registro no Lote","start":9,"end":13,"type":"N","required":true,"reference":"G038","description":"Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote."},
+    {"id":"segmento","name":"Código de Segmento do Reg. Detalhe","start":14,"end":14,"type":"A","required":true,"reference":"G039","description":"Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento = 'O'."},
+    {"id":"tipoMovimento","name":"Tipo de Movimento","start":15,"end":15,"type":"N","required":true,"reference":"G060","domain":{"ref":"tipoMovimento"},"description":"Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviada no arquivo."},
+    {"id":"codigoInstrucaoMovimento","name":"Código da Instrução de Movimento","start":16,"end":17,"type":"N","required":false,"reference":"G061","domain":{"ref":"codigoInstrucaoMovimento"},"description":"Código adotado pela FEBRABAN, para identificar a ação a ser realizada com o lançamento enviado no arquivo."},
+    {"id":"codigoBarras","name":"Código de Barras","start":18,"end":61,"type":"A","required":false,"reference":"N001","description":"Refere-se ao código de barras capturado por leitora ótica. Se capturado por digitação da representação numérica, atentar para a checagem do dígito verificador dos campos, e converter para código de barras."},
+    {"id":"nomeConcessionaria","name":"Nome da Concessionária / Órgão Público","start":62,"end":91,"type":"A","required":false,"reference":"G013","description":"Nome que identifica a pessoa, física ou jurídica, a qual se quer fazer referência."},
+    {"id":"dataVencimento","name":"Data do Vencimento (Nominal)","start":92,"end":99,"type":"D","required":false,"reference":"G044","description":"Data de vencimento nominal. Utilizar o formato DDMMAAAA."},
+    {"id":"dataPagamento","name":"Data do Pagamento","start":100,"end":107,"type":"D","required":false,"reference":"P009","description":"Data do pagamento do compromisso. Obrigatório para o Pix. Utilizar o formato DDMMAAAA."},
+    {"id":"valorPagamento","name":"Valor do Pagamento","start":108,"end":122,"type":"V","decimals":2,"required":false,"reference":"P004","description":"Valor do Pagamento, expresso em moeda corrente. (O manual remete à nota P004 – Valor Real da Efetivação do Pagamento.)"},
+    {"id":"seuNumero","name":"Nº do Docto Atribuído pela Empresa","start":123,"end":142,"type":"A","required":false,"reference":"G064","description":"Número atribuído pela Empresa (Pagador) para identificar o documento de Pagamento (Nota Fiscal, Nota Promissória, etc.)."},
+    {"id":"nossoNumero","name":"Nº do Docto Atribuído pelo Banco","start":143,"end":162,"type":"A","required":false,"reference":"G043","description":"Número atribuído pelo Banco para identificar o lançamento, que será utilizado nas manutenções do mesmo."},
+    {"id":"cnab1","name":"Uso Exclusivo FEBRABAN/CNAB","start":163,"end":230,"type":"A","required":false,"reference":"G004","description":"Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos."},
+    {"id":"ocorrencias","name":"Códigos das Ocorrências p/ Retorno","start":231,"end":240,"type":"A","required":false,"reference":"G059","description":"Código adotado pela FEBRABAN para identificar as ocorrências detectadas no processamento. Pode-se informar até 5 ocorrências simultaneamente, cada uma delas codificada com dois dígitos."}
+  ]
+}

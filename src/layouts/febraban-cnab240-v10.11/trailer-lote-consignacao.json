@@ -1,0 +1,28 @@
+{
+  "id": "trailer-lote-consignacao",
+  "kind": "batchTrailer",
+  "label": "TL",
+  "title": "Trailer de Lote – Empréstimo por Consignação/Retenção",
+  "match": [{ "pos": [8,8], "equals": "5" }, { "batch": "service", "in": ["08", "09", "11", "12", "13"] }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.", "reference": "G001" },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "description": "Número seqüencial para identificar univocamente um lote de serviço. Criado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo.", "reference": "G002" },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro.", "reference": "G003", "domain": {"ref":"tipoRegistro"} },
+    { "id": "numeroSequencialLote", "name": "Numero seqüencial do Lote", "start": 9, "end": 15, "type": "N", "required": false, "description": "Número seqüencial adotado e controlado pelo responsável pela geração do Lote para ordenar a disposição dos Lotes encaminhados por tipo de serviço.", "reference": "H041" },
+    { "id": "quantidadeRegistros", "name": "Quantidade de Registros do Lote", "start": 16, "end": 21, "type": "N", "required": true, "description": "Número obtido pela contagem dos registros enviados no lote do arquivo. Somatória dos registros de tipo 1, 2, 3, 4 e 5.", "reference": "G057" },
+    { "id": "totalParcelas", "name": "Total de Parcelas Enviadas", "start": 22, "end": 26, "type": "N", "required": false, "description": "Total de Parcelas enviadas no Lote, que deverão ser consignadas em folha pela empresa/órgão público.", "reference": "H032" },
+    { "id": "totalValoresParcelas", "name": "Total dos Valores das Parcelas", "start": 27, "end": 41, "type": "V", "decimals": 2, "required": false, "description": "Valor total das parcelas enviadas no Lote, que deverão ser consignadas em folha pela empresa/órgão público.", "reference": "H033" },
+    { "id": "totalConsignadas", "name": "Total de Parcelas Consignadas", "start": 42, "end": 46, "type": "N", "required": false, "description": "Total de Parcelas que foram consignadas pela empresa/órgão público", "reference": "H034" },
+    { "id": "totalValoresConsignadas", "name": "Total dos Valores das Parcelas Consignadas", "start": 47, "end": 61, "type": "V", "decimals": 2, "required": false, "description": "Valor Total das Parcelas que foram consignadas pela empresa/órgão público", "reference": "H035" },
+    { "id": "totalNaoConsignadas", "name": "Total de Parcelas não Consignadas", "start": 62, "end": 66, "type": "N", "required": false, "description": "Total de Parcelas que não foram consignadas pela empresa/órgão público", "reference": "H036" },
+    { "id": "totalValoresNaoConsignadas", "name": "Total dos Valores das Parcelas Não Consignadas", "start": 67, "end": 81, "type": "V", "decimals": 2, "required": false, "description": "Valor Total das Parcelas que não foram consignadas pela empresa/órgão público", "reference": "H037" },
+    { "id": "quantidadeMargens", "name": "Qtde de Margens consultadas/averbadas", "start": 82, "end": 86, "type": "N", "required": false, "description": "Total de Margens Informadas no Lote pela empresa/órgão público", "reference": "H038" },
+    { "id": "somatorioMargens", "name": "Somatório dos Valores de Margens consultadas/averbadas", "start": 87, "end": 101, "type": "V", "decimals": 2, "required": false, "description": "Valor das Margens informadas no Lote pela Empresa/Órgão Público", "reference": "H039" },
+    { "id": "totalCpmf", "name": "Previsão Total de CPMF", "start": 102, "end": 110, "type": "V", "decimals": 2, "required": false, "description": "Valor Total Previsto para provisionamento das parcelas a serem consignadas", "reference": "H040" },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 111, "end": 230, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" },
+    { "id": "ocorrencias", "name": "Códigos das Ocorrências para Retorno", "start": 231, "end": 240, "type": "A", "required": false, "description": "Código adotado pela FEBRABAN para identificar as ocorrências detectadas no processamento. Pode-se informar até 5 ocorrências simultaneamente, cada uma delas codificada com dois dígitos.", "reference": "G059" }
+  ],
+  "totals": [
+    {"field":"quantidadeRegistros","kind":"countRecords"}
+  ]
+}

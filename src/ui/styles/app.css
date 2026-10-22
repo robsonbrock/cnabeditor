@@ -1,0 +1,555 @@
+/* Fontes do sistema: nenhuma fonte externa é carregada (Princípio V). */
+:root {
+  --font-ui: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  --font-mono: Consolas, "Cascadia Mono", "SF Mono", Menlo, "DejaVu Sans Mono", monospace;
+  --line-height: 20px;
+  --split-main: 55%;
+  --split-right: 55%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.4 var(--font-ui);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 5px 12px;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Estrutura da página (FR-003) ---------- */
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.brand p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.direction {
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.direction[data-direction="remessa"],
+.direction[data-direction="retorno"] {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.error-count[data-count]:not([data-count="0"]) {
+  color: var(--error);
+  border-color: var(--error);
+}
+
+.workspace {
+  display: grid;
+  /* Mínimos em px prevalecem sobre a porcentagem salva (contracts/preferences.md). */
+  grid-template-columns: minmax(320px, calc(var(--split-main) - 3px)) 6px minmax(360px, 1fr);
+  min-height: 0;
+  padding: 8px;
+  gap: 0;
+}
+
+.right-column {
+  display: grid;
+  grid-template-rows: minmax(160px, calc(var(--split-right) - 3px)) 6px minmax(120px, 1fr);
+  min-height: 0;
+  min-width: 0;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.pane-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.pane-header .muted {
+  font-weight: 400;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.empty {
+  padding: 24px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ---------- Divisórias (FR-029) ---------- */
+
+.splitter {
+  background: transparent;
+  touch-action: none;
+}
+
+.splitter:hover,
+.splitter:focus-visible,
+.splitter.dragging {
+  background: var(--accent);
+}
+
+.splitter[aria-orientation="vertical"] {
+  cursor: col-resize;
+}
+
+.splitter[aria-orientation="horizontal"] {
+  cursor: row-resize;
+}
+
+/* ---------- Quadro principal (FR-009*) ---------- */
+
+.lines {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: var(--line-height);
+  outline: none;
+}
+
+.lines-inner {
+  position: relative;
+}
+
+.line-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 3ch 1fr 14px;
+  gap: 8px;
+  padding: 0 8px;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lines.nowrap .line-row {
+  right: auto;
+  min-width: 100%;
+}
+
+.line-label {
+  color: var(--label);
+  font-weight: 700;
+  text-align: right;
+}
+
+.line-text {
+  color: var(--text-code);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.lines.nowrap .line-text {
+  white-space: pre;
+  word-break: normal;
+}
+
+.line-row[aria-selected="true"] {
+  background: var(--selection-bg);
+  outline: 1px solid var(--selection-border);
+  outline-offset: -1px;
+}
+
+.line-row[data-changed="true"] {
+  border-left-color: var(--changed);
+}
+
+.line-marker {
+  align-self: start;
+  display: flex;
+  gap: 2px;
+  padding-top: 5px;
+}
+
+.marker-error {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--error);
+}
+
+.legend {
+  display: flex;
+  gap: 12px;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.legend .changed::before,
+.legend .error::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  vertical-align: -1px;
+}
+
+.legend .changed::before {
+  background: var(--changed);
+}
+
+.legend .error::before {
+  border-radius: 50%;
+  background: var(--error);
+}
+
+/* ---------- Quadro de edição (FR-010, FR-011, FR-018a) ---------- */
+
+.fields {
+  flex: 1;
+  overflow: auto;
+  padding: 4px 0;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) minmax(120px, 46%) 52px;
+  grid-template-areas: "pos name input counter" ". . error .";
+  align-items: center;
+  column-gap: 8px;
+  padding: 4px 12px;
+}
+
+.field.focused {
+  background: var(--surface-2);
+}
+
+.field-pos {
+  grid-area: pos;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.field-name {
+  grid-area: name;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field input {
+  grid-area: input;
+  width: 100%;
+  font-family: var(--font-mono);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  white-space: pre;
+}
+
+.field.invalid input {
+  border: 2px solid var(--error);
+  background: var(--error-bg);
+}
+
+.field-counter {
+  grid-area: counter;
+  text-align: right;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.field-error {
+  grid-area: error;
+  color: var(--error);
+  font-size: 12px;
+}
+
+.edit-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- Painel de detalhes (FR-013, FR-014) ---------- */
+
+.detail {
+  flex: 1;
+  overflow: auto;
+  padding: 8px 12px;
+}
+
+.detail dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px 12px;
+  margin: 0 0 8px;
+}
+
+.detail dt {
+  color: var(--text-muted);
+}
+
+.detail dd {
+  margin: 0;
+}
+
+.detail .description {
+  white-space: pre-wrap;
+}
+
+.domain-options {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 13px;
+}
+
+.domain-options li {
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.domain-options li[aria-current="true"] {
+  background: var(--domain-current-bg);
+  font-weight: 600;
+}
+
+.domain-options code {
+  font-family: var(--font-mono);
+}
+
+.domain-no-match {
+  color: var(--error);
+}
+
+/* ---------- Rodapé (FR-004, FR-028) ---------- */
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.app-footer .manual {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.app-footer a {
+  color: var(--accent);
+}
+
+/* ---------- Diálogos ---------- */
+
+.dialog {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+  width: min(520px, 92vw);
+}
+
+.dialog-wide {
+  width: min(900px, 94vw);
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.dialog-body {
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.paste-textarea {
+  width: 100%;
+  min-height: 50vh;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  padding: 8px;
+  white-space: pre;
+  resize: vertical;
+}
+
+.recalc-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.recalc-list code {
+  font-family: var(--font-mono);
+}
+
+/* ---------- Toasts (FR-035, FR-036) ---------- */
+
+.toast-region {
+  position: fixed;
+  right: 16px;
+  bottom: 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  max-width: min(420px, 90vw);
+}
+
+.toast {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 4px solid;
+  box-shadow: var(--shadow);
+}
+
+.toast-success {
+  background: var(--toast-success-bg);
+  border-color: var(--toast-success-border);
+}
+
+.toast-error {
+  background: var(--toast-error-bg);
+  border-color: var(--toast-error-border);
+}
+
+.toast-icon {
+  font-weight: 700;
+}
+
+.toast-success .toast-icon {
+  color: var(--success);
+}
+
+.toast-error .toast-icon {
+  color: var(--error);
+}

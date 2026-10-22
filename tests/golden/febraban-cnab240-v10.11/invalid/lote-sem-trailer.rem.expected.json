@@ -1,0 +1,18 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "B",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 5,
+      "start": 1,
+      "end": 240,
+      "rule": "sequence"
+    }
+  ]
+}

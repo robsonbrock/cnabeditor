@@ -1,0 +1,275 @@
+{
+  "id": "header-lote-cobranca",
+  "kind": "batchHeader",
+  "label": "HL",
+  "title": "Header de Lote – Cobrança",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "1"
+    },
+    {
+      "pos": [
+        10,
+        11
+      ],
+      "equals": "01"
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Header de Lote = '1'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "tipoOperacao",
+      "name": "Tipo de Operação",
+      "start": 9,
+      "end": 9,
+      "type": "A",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar a transação que será realizada com os registros detalhe do lote. Cobrança: 'R' = Arquivo Remessa, 'T' = Arquivo Retorno.",
+      "reference": "G028",
+      "domain": {
+        "ref": "tipoOperacao"
+      },
+      "batchContext": "operation"
+    },
+    {
+      "id": "tipoServico",
+      "name": "Tipo de Serviço",
+      "start": 10,
+      "end": 11,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para indicar o tipo de serviço / produto (processo) contido no arquivo / lote. Para este serviço: '01'.",
+      "reference": "G025",
+      "domain": {
+        "ref": "tipoServico"
+      },
+      "batchContext": "service"
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 12,
+      "end": 13,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "versaoLayoutLote",
+      "name": "Nº da Versão do Layout do Lote",
+      "start": 14,
+      "end": 16,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar qual a versão de layout do lote de arquivo encaminhado (versão = 2 dígitos, release = 1 dígito). Versão padrão neste manual: '060'.",
+      "reference": "G030",
+      "batchContext": "layoutVersion"
+    },
+    {
+      "id": "cnab2",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 17,
+      "end": 17,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "tipoInscricaoEmpresa",
+      "name": "Tipo de Inscrição da Empresa",
+      "start": 18,
+      "end": 18,
+      "type": "N",
+      "required": false,
+      "description": "Código que identifica o tipo de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Para o Produto/Serviço Cobrança considerar como obrigatório somente o CPF (código 1) ou o CNPJ (código 2).",
+      "reference": "G005",
+      "domain": {
+        "ref": "tipoInscricao"
+      }
+    },
+    {
+      "id": "numeroInscricaoEmpresa",
+      "name": "Nº de Inscrição da Empresa",
+      "start": 19,
+      "end": 33,
+      "type": "N",
+      "required": false,
+      "description": "Número de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Quando o Tipo de Inscrição for igual a zero (não informado), preencher com zeros.",
+      "reference": "G006",
+      "sensitive": true
+    },
+    {
+      "id": "convenio",
+      "name": "Código do Convênio no Banco",
+      "start": 34,
+      "end": 53,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo Banco para identificar o Contrato entre este e a Empresa Cliente.",
+      "reference": "G007"
+    },
+    {
+      "id": "agencia",
+      "name": "Agência Mantenedora da Conta",
+      "start": 54,
+      "end": 58,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta, para identificar a qual unidade está vinculada a conta corrente.",
+      "reference": "G008",
+      "sensitive": true
+    },
+    {
+      "id": "dvAgencia",
+      "name": "Dígito Verificador da Agência",
+      "start": 59,
+      "end": 59,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do Código da Agência.",
+      "reference": "G009",
+      "sensitive": true
+    },
+    {
+      "id": "conta",
+      "name": "Número da Conta Corrente",
+      "start": 60,
+      "end": 71,
+      "type": "N",
+      "required": false,
+      "description": "Número adotado pelo Banco, para identificar univocamente a conta corrente utilizada pelo Cliente.",
+      "reference": "G010",
+      "sensitive": true
+    },
+    {
+      "id": "dvConta",
+      "name": "Dígito Verificador da Conta",
+      "start": 72,
+      "end": 72,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo responsável pela conta corrente, para verificação da autenticidade do Número da Conta Corrente. Para os Bancos que se utilizam de duas posições para o Dígito Verificador, preencher este campo com a 1ª posição deste dígito.",
+      "reference": "G011",
+      "sensitive": true
+    },
+    {
+      "id": "dvAgenciaConta",
+      "name": "Dígito Verificador da Ag/Conta",
+      "start": 73,
+      "end": 73,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do par Código da Agência / Número da Conta Corrente. Para os Bancos que se utilizam de duas posições para o Dígito Verificador da Conta, preencher este campo com a 2ª posição deste dígito.",
+      "reference": "G012",
+      "sensitive": true
+    },
+    {
+      "id": "nomeEmpresa",
+      "name": "Nome da Empresa",
+      "start": 74,
+      "end": 103,
+      "type": "A",
+      "required": false,
+      "description": "Nome que identifica a pessoa, física ou jurídica, a qual se quer fazer referência.",
+      "reference": "G013"
+    },
+    {
+      "id": "mensagem1",
+      "name": "Mensagem 1",
+      "start": 104,
+      "end": 143,
+      "type": "A",
+      "required": false,
+      "description": "Texto referente a mensagens que serão impressas em todos os Boleto de Pagamentos referentes ao mesmo lote. Estes campos não serão utilizados no arquivo retorno.",
+      "reference": "C073"
+    },
+    {
+      "id": "mensagem2",
+      "name": "Mensagem 2",
+      "start": 144,
+      "end": 183,
+      "type": "A",
+      "required": false,
+      "description": "Texto referente a mensagens que serão impressas em todos os Boleto de Pagamentos referentes ao mesmo lote. Estes campos não serão utilizados no arquivo retorno.",
+      "reference": "C073"
+    },
+    {
+      "id": "numeroRemessaRetorno",
+      "name": "Número Remessa/Retorno",
+      "start": 184,
+      "end": 191,
+      "type": "N",
+      "required": false,
+      "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo para identificar a seqüência de envio ou devolução do arquivo entre o Beneficiário e o Banco Beneficiário.",
+      "reference": "G079"
+    },
+    {
+      "id": "dataGravacao",
+      "name": "Data de Gravação Remessa/Retorno",
+      "start": 192,
+      "end": 199,
+      "type": "D",
+      "required": false,
+      "description": "Data da gravação do arquivo de remessa ou retorno. Utilizar o formato DDMMAAAA.",
+      "reference": "G068"
+    },
+    {
+      "id": "dataCredito",
+      "name": "Data do Crédito",
+      "start": 200,
+      "end": 207,
+      "type": "D",
+      "required": false,
+      "description": "Data de efetivação do crédito referente ao pagamento do título de cobrança. Informação enviada somente no arquivo de retorno.",
+      "reference": "C003"
+    },
+    {
+      "id": "cnab3",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 208,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    }
+  ]
+}
