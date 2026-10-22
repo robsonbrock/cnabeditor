@@ -1,6 +1,10 @@
 import { definitionOf } from "../resolve";
 import type { GenerationDirection, LayoutDefinition, VariantMeta } from "../types";
 
+/** Principal de que a variação depende na direção dada. */
+export const requiresFor = (v: VariantMeta, direction: GenerationDirection): string | undefined =>
+  v.requires === undefined ? undefined : typeof v.requires === "string" ? v.requires : v.requires[direction];
+
 export interface CatalogVariant {
   id: string;
   label: string;
@@ -33,12 +37,15 @@ export function buildCatalog(layout: LayoutDefinition, direction: GenerationDire
       return {
         header: g.header,
         label: displayName(layout, g.header),
-        variants: available.map((v) => ({
-          id: v.id,
-          label: displayName(layout, v.id),
-          ...(v.requires ? { requires: v.requires } : {}),
-          dependents: available.filter((d) => d.requires === v.id && ids.has(d.id)).map((d) => d.id),
-        })),
+        variants: available.map((v) => {
+          const requires = requiresFor(v, direction);
+          return {
+            id: v.id,
+            label: displayName(layout, v.id),
+            ...(requires ? { requires } : {}),
+            dependents: available.filter((d) => requiresFor(d, direction) === v.id && ids.has(d.id)).map((d) => d.id),
+          };
+        }),
       };
     })
     .filter((g) => g.variants.length > 0);

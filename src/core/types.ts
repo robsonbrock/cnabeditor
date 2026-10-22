@@ -109,8 +109,8 @@ export interface VariantMeta {
   /** Id de uma RecordDefinition de detalhe; o nome exibido é o title dela sem "Detalhe – ". */
   id: string;
   directions: GenerationDirection[];
-  /** Id da variação principal do mesmo grupo. */
-  requires?: string;
+  /** Id da variação principal do mesmo grupo; pode variar com a direção (ex.: Y-01 depende de P na remessa e de T no retorno). */
+  requires?: ValueRef;
   batch: {
     /** Valor por id de campo do Header de Lote do grupo. */
     values: Record<string, ValueRef>;

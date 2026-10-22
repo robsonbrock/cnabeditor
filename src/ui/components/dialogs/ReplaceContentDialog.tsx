@@ -1,7 +1,7 @@
 import { cancelReplace, confirmReplace, pendingReplace } from "../../state/document";
 import { Dialog } from "./Dialog";
 
-/** FR-008: substituir conteúdo com alterações não exportadas ou edições pendentes. */
+/** FR-008/FR-029: substituir conteúdo com alterações não exportadas, edições pendentes ou por uma massa gerada. */
 export function ReplaceContentDialog() {
   return (
     <Dialog
@@ -20,7 +20,7 @@ export function ReplaceContentDialog() {
         </>
       }
     >
-      <p>Há alterações que ainda não foram exportadas. Substituir o conteúdo atual descarta essas alterações.</p>
+      <p>{pendingReplace.value?.message ?? "Há alterações que ainda não foram exportadas. Substituir o conteúdo atual descarta essas alterações."}</p>
     </Dialog>
   );
 }

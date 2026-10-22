@@ -1,12 +1,12 @@
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { buildCatalog } from "../../../src/core/generate/catalog";
-import { canGenerate, validateConfig } from "../../../src/core/generate/selection";
+import { canGenerate, changeDirection, setQuantity, toggleVariant, validateConfig } from "../../../src/core/generate/selection";
 import type { GenerationConfig, LayoutDefinition, Selection } from "../../../src/core/types";
 import { loadLayoutFromDir } from "../../../src/layouts/node-loader";
 
 const layout = loadLayoutFromDir(join(import.meta.dirname, "../../../src/layouts/febraban-cnab240-v10.11"));
-export const remessa = buildCatalog(layout, "remessa");
+const remessa = buildCatalog(layout, "remessa");
 
 const sel = (variantId: string, quantity = 10, input?: string): Selection => ({ variantId, quantity, auto: false, ...(input !== undefined ? { input } : {}) });
 const config = (selections: Selection[], extra: Partial<GenerationConfig> = {}): GenerationConfig => ({ direction: "remessa", selections, companyAccount: {}, ...extra });
@@ -50,5 +50,78 @@ describe("validateConfig (FR-005–FR-010)", () => {
     expect(issues.form).toBe("Total de 1.000 linhas excede o limite de 999");
     expect(canGenerate(issues)).toBe(false);
     expect(validateConfig(config([sel("segmento-a-pagamento", 995)]), small).form).toBeUndefined();
+  });
+});
+
+describe("dependências na seleção (FR-011–FR-013, US3)", () => {
+  const ids = (s: Selection[]) => s.map((x) => `${x.variantId}:${x.quantity}${x.auto ? ":auto" : ""}`);
+
+  it("marcar uma variação cria a seleção com quantidade 10", () => {
+    expect(toggleVariant([], "segmento-a-pagamento", true, remessa).selections).toEqual([{ variantId: "segmento-a-pagamento", quantity: 10, input: "10", auto: false }]);
+  });
+
+  it("marcar Q inclui P automaticamente, com aviso (US3-1)", () => {
+    const change = toggleVariant([], "segmento-q-cobranca", true, remessa);
+    expect(ids(change.selections)).toEqual(["segmento-p-cobranca:10:auto", "segmento-q-cobranca:10"]);
+    expect(change.notices).toEqual(["Segmento P foi incluído porque Segmento Q depende dele"]);
+  });
+
+  it("desmarcar P com Q marcado é recusado, com o motivo (US3-2)", () => {
+    const { selections } = toggleVariant([], "segmento-q-cobranca", true, remessa);
+    const change = toggleVariant(selections, "segmento-p-cobranca", false, remessa);
+    expect(change.refused).toBe("Segmento P é necessário enquanto Segmento Q estiver marcado");
+    expect(change.selections).toBe(selections);
+  });
+
+  it("desmarcar Q remove P automático, mas mantém P marcado pelo usuário (US3-3)", () => {
+    const auto = toggleVariant([], "segmento-q-cobranca", true, remessa).selections;
+    expect(ids(toggleVariant(auto, "segmento-q-cobranca", false, remessa).selections)).toEqual([]);
+    const own = toggleVariant(toggleVariant([], "segmento-p-cobranca", true, remessa).selections, "segmento-q-cobranca", true, remessa).selections;
+    expect(ids(toggleVariant(own, "segmento-q-cobranca", false, remessa).selections)).toEqual(["segmento-p-cobranca:10"]);
+  });
+
+  it("marcar o principal que estava automático torna-o do usuário", () => {
+    const auto = toggleVariant([], "segmento-q-cobranca", true, remessa).selections;
+    const own = toggleVariant(auto, "segmento-p-cobranca", true, remessa).selections;
+    expect(ids(toggleVariant(own, "segmento-q-cobranca", false, remessa).selections)).toEqual(["segmento-p-cobranca:10"]);
+  });
+
+  it("Q = 8 com P = 5 leva P a 8, com aviso (US3-5)", () => {
+    let s = toggleVariant([], "segmento-q-cobranca", true, remessa).selections;
+    s = setQuantity(s, "segmento-q-cobranca", "3", remessa).selections;
+    s = setQuantity(s, "segmento-p-cobranca", "5", remessa).selections;
+    const change = setQuantity(s, "segmento-q-cobranca", "8", remessa);
+    expect(ids(change.selections)).toEqual(["segmento-p-cobranca:8:auto", "segmento-q-cobranca:8"]);
+    expect(change.notices).toEqual(["Quantidade de Segmento P ajustada para 8 para acompanhar Segmento Q"]);
+  });
+
+  it("P = 3 com Q = 8 mantém P em 8, com aviso (US3-5a)", () => {
+    let s = toggleVariant([], "segmento-q-cobranca", true, remessa).selections;
+    s = setQuantity(s, "segmento-q-cobranca", "8", remessa).selections;
+    const change = setQuantity(s, "segmento-p-cobranca", "3", remessa);
+    expect(change.selections.find((x) => x.variantId === "segmento-p-cobranca")).toMatchObject({ quantity: 8, input: "8" });
+    expect(change.notices).toEqual(["Segmento P não pode ter menos registros que Segmento Q: mantido em 8"]);
+  });
+
+  it("marcar A, B e C não duplica A", () => {
+    let s = toggleVariant([], "segmento-b-pagamento", true, remessa).selections;
+    s = toggleVariant(s, "segmento-c-pagamento", true, remessa).selections;
+    s = toggleVariant(s, "segmento-a-pagamento", true, remessa).selections;
+    expect(ids(s)).toEqual(["segmento-a-pagamento:10", "segmento-b-pagamento:10", "segmento-c-pagamento:10"]);
+  });
+});
+
+describe("troca de direção (US4-1)", () => {
+  it("remove o que não existe em Retorno, com aviso por serviço", () => {
+    let s = toggleVariant([], "segmento-q-cobranca", true, remessa).selections;
+    s = toggleVariant(s, "segmento-a-pagamento", true, remessa).selections;
+    const change = changeDirection(s, "retorno", layout);
+    expect(change.selections.map((x) => x.variantId)).toEqual(["segmento-a-pagamento"]);
+    expect(change.notices).toEqual(["Removidos por não existirem em Retorno: Cobrança: Segmento P, Segmento Q"]);
+  });
+
+  it("sem remoções, sem aviso", () => {
+    const s = toggleVariant([], "segmento-a-pagamento", true, remessa).selections;
+    expect(changeDirection(s, "retorno", layout)).toEqual({ selections: s, notices: [] });
   });
 });

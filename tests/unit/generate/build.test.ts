@@ -83,4 +83,30 @@ describe("generateMassa (FR-015–FR-022)", () => {
     const key = (r: CnabRecord) => [field(r, "nomeFavorecido"), field(r, "seuNumero"), field(r, "valorPagamento")].join("|");
     for (let i = 1; i < details.length; i++) expect(key(details[i]), `detalhe ${i}`).not.toBe(key(details[i - 1]));
   });
+
+  it("P = 10 e Q = 5: 10 conjuntos, só os 5 primeiros com Q (US3-4)", () => {
+    const doc = fromPastedText(generateMassa(config([sel("segmento-p-cobranca", 10), sel("segmento-q-cobranca", 5)]), layout, OPTS).text, layout);
+    const labels = doc.records.slice(2, -2).map((r) => r.label).join("");
+    expect(labels).toBe("PQPQPQPQPQPPPPP");
+  });
+
+  it("A, B e C com 10 cada: conjuntos na ordem A, B, C (US3-6)", () => {
+    const doc = fromPastedText(generateMassa(config([sel("segmento-c-pagamento"), sel("segmento-b-pagamento"), sel("segmento-a-pagamento")]), layout, OPTS).text, layout);
+    expect(doc.records.slice(2, -2).map((r) => r.label).join("")).toBe("ABC".repeat(10));
+  });
+
+  it("retorno: Código Remessa/Retorno = 2, operação T na cobrança e ocorrências \"00\" (FR-023, US4-2)", () => {
+    const doc = fromPastedText(generateMassa(config([sel("segmento-t-cobranca", 3), sel("segmento-a-pagamento", 3)], { direction: "retorno" }), layout, OPTS).text, layout);
+    expect(doc.direction).toBe("retorno");
+    expect(field(doc.records[0], "codigoRemessaRetorno")).toBe("2");
+    const cobHeader = doc.records.find((r) => r.definitionId === "header-lote-cobranca")!;
+    expect(field(cobHeader, "tipoOperacao")).toBe("T");
+    const a = doc.records.find((r) => r.definitionId === "segmento-a-pagamento")!;
+    expect(field(a, "ocorrencias")).toBe("00        ");
+  });
+
+  it("remessa: ocorrências em branco", () => {
+    const doc = fromPastedText(generateMassa(config([sel("segmento-a-pagamento", 2)]), layout, OPTS).text, layout);
+    expect(field(doc.records[2], "ocorrencias")).toBe("          ");
+  });
 });

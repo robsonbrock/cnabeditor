@@ -1,4 +1,5 @@
 import type { GenerationConfig, GenerationDirection, GenerationPlan, LayoutDefinition, PlannedBatch, ValueRef } from "../types";
+import { requiresFor } from "./catalog";
 
 export const resolveValue = (v: ValueRef, direction: GenerationDirection) => (typeof v === "string" ? v : v[direction]);
 
@@ -36,9 +37,9 @@ export function planGeneration(config: GenerationConfig, layout: LayoutDefinitio
   };
 
   for (const group of layout.generation?.groups ?? []) {
-    const principals = group.variants.filter((v) => !v.requires);
+    const principals = group.variants.filter((v) => !requiresFor(v, direction));
     for (const principal of principals) {
-      const dependents = group.variants.filter((v) => v.requires === principal.id && quantity.has(v.id));
+      const dependents = group.variants.filter((v) => requiresFor(v, direction) === principal.id && quantity.has(v.id));
       const own = quantity.get(principal.id) ?? 0;
       if (own === 0 && dependents.length === 0) continue;
       const values = resolveValues(principal.batch.values, direction);

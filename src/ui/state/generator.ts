@@ -98,8 +98,8 @@ function onResult(msg: GenOut): void {
     showToast("error", `Massa de testes não gerada: ${msg.message}`);
     return;
   }
-  generatorOpen.value = false;
-  loadGenerated(msg.text, `Massa de testes gerada: ${lines(msg.lines)}`);
+  // A modal só fecha quando a massa entra no quadro; cancelar a substituição volta para ela (FR-029).
+  loadGenerated(msg.text, `Massa de testes gerada: ${lines(msg.lines)}`, () => (generatorOpen.value = false));
 }
 
 /** Gera no Worker quando disponível; senão de forma síncrona (research G7). */

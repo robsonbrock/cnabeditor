@@ -95,3 +95,111 @@ describe("GeneratorDialog (US1)", () => {
     expect(doc.value).toBeNull();
   });
 });
+
+describe("GeneratorDialog (US2): banco e conta da empresa", () => {
+  beforeEach(() => {
+    resetDocumentState();
+    clearToasts();
+    layout.value = febrabanCnab240;
+  });
+
+  it.each(["33", "AB1", "0331"])("banco %s: \"Informe exatamente 3 dígitos\" e Gerar desabilitado (US2-5)", (value) => {
+    open();
+    check("segmento-a-pagamento");
+    type("generator-bank", value);
+    expect(screen.getByTestId("generator-bank-error").textContent).toBe("Informe exatamente 3 dígitos");
+    expect(screen.getByTestId("generator-bank").getAttribute("aria-invalid")).toBe("true");
+    expect(confirm().disabled).toBe(true);
+    type("generator-bank", "");
+    expect(screen.queryByTestId("generator-bank-error")).toBeNull();
+    expect(confirm().disabled).toBe(false);
+  });
+
+  it("agência e conta: só dígitos, até o tamanho do Header de Arquivo (US2-6)", () => {
+    open();
+    check("segmento-a-pagamento");
+    type("generator-agencia", "123456");
+    expect(screen.getByTestId("generator-agencia-error").textContent).toBe("Use apenas dígitos, até 5");
+    type("generator-agencia", "12A");
+    expect(screen.getByTestId("generator-agencia-error").textContent).toBe("Use apenas dígitos, até 5");
+    type("generator-conta", "1234567890123");
+    expect(screen.getByTestId("generator-conta-error").textContent).toBe("Use apenas dígitos, até 12");
+    expect(confirm().disabled).toBe(true);
+    type("generator-agencia", "1234");
+    type("generator-conta", "56789");
+    expect(confirm().disabled).toBe(false);
+  });
+
+  it("gerar aplica banco e conta informados", () => {
+    open();
+    check("segmento-p-cobranca");
+    type("generator-bank", "033");
+    type("generator-agencia", "1234");
+    type("generator-conta", "56789");
+    fireEvent.click(confirm());
+    const records = doc.value!.records;
+    expect(records.every((r) => r.current.startsWith("033"))).toBe(true);
+    expect(records[0].current.slice(52, 57)).toBe("01234");
+  });
+});
+
+describe("GeneratorDialog (US3): dependentes", () => {
+  beforeEach(() => {
+    resetDocumentState();
+    clearToasts();
+    layout.value = febrabanCnab240;
+  });
+
+  it("marcar Q marca P com selo e aviso; desmarcar P é recusado com o motivo (US3-1/2)", () => {
+    open();
+    check("segmento-q-cobranca");
+    expect((screen.getByTestId("generator-variant-segmento-p-cobranca") as HTMLInputElement).checked).toBe(true);
+    expect(screen.getByTestId("generator-auto-segmento-p-cobranca").textContent).toBe("incluído automaticamente");
+    const notices = screen.getByTestId("generator-notices");
+    expect(notices.getAttribute("role")).toBe("status");
+    expect(notices.getAttribute("aria-live")).toBe("polite");
+    expect(notices.textContent).toBe("Segmento P foi incluído porque Segmento Q depende dele");
+    check("segmento-p-cobranca");
+    expect((screen.getByTestId("generator-variant-segmento-p-cobranca") as HTMLInputElement).checked).toBe(true);
+    expect(notices.textContent).toBe("Segmento P é necessário enquanto Segmento Q estiver marcado");
+  });
+
+  it("Q = 8 leva P a 8 e o campo de P mostra 8 (US3-5)", () => {
+    open();
+    check("segmento-q-cobranca");
+    type("generator-qty-segmento-q-cobranca", "3");
+    type("generator-qty-segmento-p-cobranca", "5");
+    type("generator-qty-segmento-q-cobranca", "8");
+    expect(qty("segmento-p-cobranca").value).toBe("8");
+    expect(screen.getByTestId("generator-notices").textContent).toBe("Quantidade de Segmento P ajustada para 8 para acompanhar Segmento Q");
+  });
+});
+
+describe("GeneratorDialog (US4): direção", () => {
+  beforeEach(() => {
+    resetDocumentState();
+    clearToasts();
+    layout.value = febrabanCnab240;
+  });
+
+  it("trocar para Retorno filtra a lista e avisa o que foi removido (US4-1)", () => {
+    open();
+    check("segmento-q-cobranca");
+    check("segmento-a-pagamento");
+    fireEvent.click(screen.getByTestId("generator-direction-retorno"));
+    expect((screen.getByTestId("generator-direction-retorno") as HTMLInputElement).checked).toBe(true);
+    expect(screen.queryByTestId("generator-variant-segmento-p-cobranca")).toBeNull();
+    expect(screen.getByTestId("generator-variant-segmento-t-cobranca")).toBeTruthy();
+    expect(screen.getByTestId("generator-group-header-lote-conciliacao")).toBeTruthy();
+    expect((screen.getByTestId("generator-variant-segmento-a-pagamento") as HTMLInputElement).checked).toBe(true);
+    expect(screen.getByTestId("generator-notices").textContent).toBe("Removidos por não existirem em Retorno: Cobrança: Segmento P, Segmento Q");
+  });
+
+  it("gerar em Retorno carrega um arquivo de retorno (US4-2)", () => {
+    open();
+    fireEvent.click(screen.getByTestId("generator-direction-retorno"));
+    check("segmento-t-cobranca");
+    fireEvent.click(confirm());
+    expect(doc.value!.direction).toBe("retorno");
+  });
+});

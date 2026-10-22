@@ -1,5 +1,6 @@
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { requiresFor } from "../../../src/core/generate/catalog";
 import { STRATEGIES } from "../../../src/core/generate/strategies";
 import type { StrategyRef } from "../../../src/core/types";
 import { loadLayoutFromDir } from "../../../src/layouts/node-loader";
@@ -40,12 +41,16 @@ describe("generation.json × layout (Princípio I)", () => {
     }
   });
 
-  it("requires aponta para variação do mesmo grupo, que não depende de outra", () => {
+  it("requires aponta, em cada direção, para variação do mesmo grupo que existe nessa direção e não depende de outra", () => {
     for (const { group, variant } of variants) {
-      if (!variant.requires) continue;
-      const principal = group.variants.find((v) => v.id === variant.requires);
-      expect(principal, `${variant.id} → ${variant.requires}`).toBeDefined();
-      expect(principal!.requires, variant.requires).toBeUndefined();
+      for (const direction of variant.directions) {
+        const id = requiresFor(variant, direction);
+        if (!id) continue;
+        const principal = group.variants.find((v) => v.id === id);
+        expect(principal, `${variant.id} → ${id} (${direction})`).toBeDefined();
+        expect(principal!.directions, `${id} em ${direction}`).toContain(direction);
+        expect(requiresFor(principal!, direction), id).toBeUndefined();
+      }
     }
   });
 

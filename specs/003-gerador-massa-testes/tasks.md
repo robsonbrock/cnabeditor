@@ -217,24 +217,24 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Testes (escrever primeiro, devem falhar)
 
-- [ ] T030 [P] [US2] Escrever tests/unit/generate/company.test.ts (FR-024–FR-027, data-model §5 invariantes 3–5):
+- [X] T030 [P] [US2] Escrever tests/unit/generate/company.test.ts (FR-024–FR-027, data-model §5 invariantes 3–5):
   - com `bankCode: "033"`, o campo `codigoBanco` = "033" em todas as linhas, e os campos de banco de terceiros (`segmento-k-vendor.bancoDebito`, `segmento-r-cobranca.bancoDebito`, `segmento-y-50-cobranca.bancoBeneficiario`, banco do favorecido em A) ≠ forçados;
   - com `companyAccount` completo, os valores aparecem com `padValue` em todo campo de `company.kinds`/`company.records` (HA, HL, P, E, T, Y-50, trailers de conciliação e gestão de caixa);
   - agência/conta do favorecido (A), pagador (A–débito) e beneficiário variam entre detalhes;
   - preenchimento parcial (só agência) aplica a agência e gera o resto do perfil.
-- [ ] T031 [P] [US2] Estender tests/component/GeneratorDialog.test.tsx (US2-5, US2-6):
+- [X] T031 [P] [US2] Estender tests/component/GeneratorDialog.test.tsx (US2-5, US2-6):
   - `generator-bank` com `33` ou `AB1`: "Informe exatamente 3 dígitos", `aria-invalid` e Gerar desabilitado;
   - esvaziar o campo remove o erro;
   - `generator-agencia` com 6 dígitos ou letra: "Use apenas dígitos, até 5";
   - `generator-conta` com 13 dígitos: "Use apenas dígitos, até 12";
   - os limites são lidos do Header de Arquivo.
-- [ ] T032 [P] [US2] Adicionar cenário em tests/e2e/generator.spec.ts (US2-1, US2-2a, US2-3): gerar com banco `033`, agência e conta; selecionar linhas HA, HL, P e A e conferir os campos no quadro de edição
+- [X] T032 [P] [US2] Adicionar cenário em tests/e2e/generator.spec.ts (US2-1, US2-2a, US2-3): gerar com banco `033`, agência e conta; selecionar linhas HA, HL, P e A e conferir os campos no quadro de edição
 
 ### Implementação
 
-- [ ] T033 [US2] Estender `generateMassa` em src/core/generate/build.ts: `config.bankCode` e `config.companyAccount` sobrescrevem as partes correspondentes do perfil da empresa antes de aplicá-lo, usando `padValue` com o `FieldDefinition` de destino (faz T030 passar)
-- [ ] T034 [US2] Estender `validateConfig` em src/core/generate/selection.ts com as regras de `bankCode`, `agencia`, `conta` e DVs. Os limites vêm de `fields` do `fileHeader` (ids pela nota G008/G010), não de constantes.
-- [ ] T035 [US2] Adicionar o fieldset "Banco e conta da empresa" em src/ui/components/dialogs/GeneratorDialog.tsx, item 4 do ui-contract, com os signals `bankCode`/`companyAccount` em src/ui/state/generator.ts (faz T031 e T032 passarem)
+- [X] T033 [US2] Estender `generateMassa` em src/core/generate/build.ts: `config.bankCode` e `config.companyAccount` sobrescrevem as partes correspondentes do perfil da empresa antes de aplicá-lo, usando `padValue` com o `FieldDefinition` de destino (faz T030 passar)
+- [X] T034 [US2] Estender `validateConfig` em src/core/generate/selection.ts com as regras de `bankCode`, `agencia`, `conta` e DVs. Os limites vêm de `fields` do `fileHeader` (ids pela nota G008/G010), não de constantes.
+- [X] T035 [US2] Adicionar o fieldset "Banco e conta da empresa" em src/ui/components/dialogs/GeneratorDialog.tsx, item 4 do ui-contract, com os signals `bankCode`/`companyAccount` em src/ui/state/generator.ts (faz T031 e T032 passarem)
 
 **Checkpoint**: US1 + US2 entregam o MVP de produto (massa válida para o banco e a conta da homologação).
 
@@ -252,7 +252,7 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Testes (escrever primeiro, devem falhar)
 
-- [ ] T036 [P] [US3] Escrever tests/unit/generate/selection.test.ts (FR-011–FR-013, US3-1 a US3-5):
+- [X] T036 [P] [US3] Escrever tests/unit/generate/selection.test.ts (FR-011–FR-013, US3-1 a US3-5):
   - `toggleVariant(Q, on)` inclui P com `auto: true` e o aviso exato "Segmento P foi incluído porque Segmento Q depende dele" (nomes vindos dos títulos das definições de layout);
   - `toggleVariant(P, off)` com Q marcado devolve `refused` e mantém P;
   - desmarcar Q remove P com `auto: true`, mas mantém P marcado pelo usuário antes;
@@ -260,14 +260,14 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
   - `setQuantity(P, "3")` com Q = 8 mantém P em 8 com o aviso "Segmento P não pode ter menos registros que Segmento Q: mantido em 8" (FR-013, US3-5a);
   - marcar uma variação cria a seleção com `quantity = 10`;
   - marcar A, B e C não duplica A.
-- [ ] T037 [P] [US3] Estender tests/unit/generate/build.test.ts (US3-4, US3-6): P = 10, Q = 5 gera 10 conjuntos e só os 5 primeiros com Q; A, B, C = 10 geram conjuntos na ordem A, B, C
-- [ ] T038 [P] [US3] Estender tests/component/GeneratorDialog.test.tsx: selo `generator-auto-<id>` visível; `generator-notices` com o aviso; clicar no checkbox do principal travado mostra o motivo em `generator-notices`
+- [X] T037 [P] [US3] Estender tests/unit/generate/build.test.ts (US3-4, US3-6): P = 10, Q = 5 gera 10 conjuntos e só os 5 primeiros com Q; A, B, C = 10 geram conjuntos na ordem A, B, C
+- [X] T038 [P] [US3] Estender tests/component/GeneratorDialog.test.tsx: selo `generator-auto-<id>` visível; `generator-notices` com o aviso; clicar no checkbox do principal travado mostra o motivo em `generator-notices`
 
 ### Implementação
 
-- [ ] T039 [US3] Completar `toggleVariant` e `setQuantity` em src/core/generate/selection.ts com as regras de dependência de [contracts/core-api.md › Seleção](contracts/core-api.md#seleção-regras-da-modal-puras-e-testáveis-sem-ui) (faz T036 passar)
-- [ ] T040 [US3] Garantir em src/core/generate/plan.ts e src/core/generate/build.ts a ordem principal → dependentes, na ordem das variações do grupo, por conjunto (faz T037 passar)
-- [ ] T041 [US3] Ligar avisos, recusas e selo "incluído automaticamente" em src/ui/state/generator.ts e src/ui/components/dialogs/GeneratorDialog.tsx; `generator-notices` com `role="status"` e `aria-live="polite"` (faz T038 passar). Adicionar cenário US3 em tests/e2e/generator.spec.ts.
+- [X] T039 [US3] Completar `toggleVariant` e `setQuantity` em src/core/generate/selection.ts com as regras de dependência de [contracts/core-api.md › Seleção](contracts/core-api.md#seleção-regras-da-modal-puras-e-testáveis-sem-ui) (faz T036 passar)
+- [X] T040 [US3] Garantir em src/core/generate/plan.ts e src/core/generate/build.ts a ordem principal → dependentes, na ordem das variações do grupo, por conjunto (faz T037 passar)
+- [X] T041 [US3] Ligar avisos, recusas e selo "incluído automaticamente" em src/ui/state/generator.ts e src/ui/components/dialogs/GeneratorDialog.tsx; `generator-notices` com `role="status"` e `aria-live="polite"` (faz T038 passar). Adicionar cenário US3 em tests/e2e/generator.spec.ts.
 
 **Checkpoint**: dependências seguras na modal e no arquivo.
 
@@ -284,16 +284,16 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Testes (escrever primeiro, devem falhar)
 
-- [ ] T042 [P] [US4] Estender tests/unit/generate/generate-all-variants.test.ts para a direção `retorno`: toda variação com `retorno` em `directions`, 3 sementes, 0 erros; Código Remessa/Retorno = "2"; campos `ocorrenciaRetorno` = "00" + brancos
-- [ ] T043 [P] [US4] Estender tests/unit/generate/selection.test.ts: `changeDirection` remove as seleções sem a nova direção, com o aviso listando os rótulos removidos (US4-1)
-- [ ] T044 [P] [US4] Estender tests/component/GeneratorDialog.test.tsx: rádio `generator-direction-remessa` marcado por padrão; trocar para `generator-direction-retorno` filtra os grupos e variações e mostra o aviso
-- [ ] T045 [P] [US4] Adicionar cenário US4-2 em tests/e2e/generator.spec.ts: Retorno + T + U, indicador "Retorno", 0 erros
+- [X] T042 [P] [US4] Estender tests/unit/generate/generate-all-variants.test.ts para a direção `retorno`: toda variação com `retorno` em `directions`, 3 sementes, 0 erros; Código Remessa/Retorno = "2"; campos `ocorrenciaRetorno` = "00" + brancos
+- [X] T043 [P] [US4] Estender tests/unit/generate/selection.test.ts: `changeDirection` remove as seleções sem a nova direção, com o aviso listando os rótulos removidos (US4-1)
+- [X] T044 [P] [US4] Estender tests/component/GeneratorDialog.test.tsx: rádio `generator-direction-remessa` marcado por padrão; trocar para `generator-direction-retorno` filtra os grupos e variações e mostra o aviso
+- [X] T045 [P] [US4] Adicionar cenário US4-2 em tests/e2e/generator.spec.ts: Retorno + T + U, indicador "Retorno", 0 erros
 
 ### Implementação
 
-- [ ] T046 [US4] Conferir contra o manual v10.11 e corrigir em src/layouts/febraban-cnab240-v10.11/generation.json as `directions` e `strategies` por direção (ex.: G059 `{ "remessa": "blank", "retorno": "ocorrenciaRetorno" }`, códigos de movimento de retorno), até T042 passar. Registrar no COVERAGE.md as decisões que divergirem da tabela de data-model §3.
-- [ ] T047 [US4] Implementar `changeDirection` em src/core/generate/selection.ts (faz T043 passar)
-- [ ] T048 [US4] Habilitar a opção Retorno do grupo de rádio de direção (criado na T027) em src/ui/components/dialogs/GeneratorDialog.tsx e tornar `direction` editável em src/ui/state/generator.ts, recalculando o catálogo com `buildCatalog` (faz T044 e T045 passarem)
+- [X] T046 [US4] Conferir contra o manual v10.11 e corrigir em src/layouts/febraban-cnab240-v10.11/generation.json as `directions` e `strategies` por direção (ex.: G059 `{ "remessa": "blank", "retorno": "ocorrenciaRetorno" }`, códigos de movimento de retorno), até T042 passar. Registrar no COVERAGE.md as decisões que divergirem da tabela de data-model §3.
+- [X] T047 [US4] Implementar `changeDirection` em src/core/generate/selection.ts (faz T043 passar)
+- [X] T048 [US4] Habilitar a opção Retorno do grupo de rádio de direção (criado na T027) em src/ui/components/dialogs/GeneratorDialog.tsx e tornar `direction` editável em src/ui/state/generator.ts, recalculando o catálogo com `buildCatalog` (faz T044 e T045 passarem)
 
 **Checkpoint**: remessa e retorno cobertos pelo teste de propriedade.
 
@@ -310,24 +310,24 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Testes (escrever primeiro, devem falhar)
 
-- [ ] T049 [P] [US5] Escrever tests/component/GeneratorReplace.test.tsx (US5-1 a US5-4, FR-029):
+- [X] T049 [P] [US5] Escrever tests/component/GeneratorReplace.test.tsx (US5-1 a US5-4, FR-029):
   - com conteúdo sem alterações, Gerar abre `replace-content-dialog` com o texto "O conteúdo atual do quadro principal será substituído pela massa gerada.";
   - `replace-cancel` mantém `generator-dialog` aberto com as seleções e o quadro intacto;
   - `replace-confirm` carrega a massa;
   - com o quadro vazio, carrega sem perguntar;
   - fechar a modal não muda o quadro.
-- [ ] T050 [P] [US5] Adicionar cenário US5 em tests/e2e/generator.spec.ts: importar um golden file, gerar, cancelar a substituição, gerar de novo e confirmar
+- [X] T050 [P] [US5] Adicionar cenário US5 em tests/e2e/generator.spec.ts: importar um golden file, gerar, cancelar a substituição, gerar de novo e confirmar
 
 ### Implementação
 
-- [ ] T051 [US5] Generalizar `replaceOrConfirm` em src/ui/state/document.ts:
+- [X] T051 [US5] Generalizar `replaceOrConfirm` em src/ui/state/document.ts:
   - aceitar `{ always?: boolean; message?: string; onCancel?: () => void }`;
   - guardar `message` e `onCancel` em `pendingReplace`;
   - em src/ui/components/dialogs/ReplaceContentDialog.tsx, exibir `pendingReplace.value.message`, com o texto atual como padrão;
   - `cancelReplace` chama `onCancel`.
 
   Importação e colagem mantêm o comportamento atual: regressão coberta pelos testes existentes de tests/component e tests/e2e/us1-load.spec.ts.
-- [ ] T052 [US5] Em src/ui/state/generator.ts, gerar primeiro e chamar `replaceOrConfirm(next, { always: true, message, onCancel })`. Só fechar a modal após a substituição efetiva. Ao cancelar, a modal permanece com as escolhas (faz T049 e T050 passarem).
+- [X] T052 [US5] Em src/ui/state/generator.ts, gerar primeiro e chamar `replaceOrConfirm(next, { always: true, message, onCancel })`. Só fechar a modal após a substituição efetiva. Ao cancelar, a modal permanece com as escolhas (faz T049 e T050 passarem).
 
 **Checkpoint**: todas as histórias funcionando de forma independente.
 

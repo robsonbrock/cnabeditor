@@ -218,9 +218,31 @@
           }
         },
         "requires": {
-          "type": "string",
-          "pattern": "^[a-z0-9-]+$",
-          "description": "Id da variação principal (mesmo grupo)."
+          "description": "Id da variação principal (mesmo grupo); string ou um id por direção.",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "remessa",
+                "retorno"
+              ],
+              "properties": {
+                "remessa": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                },
+                "retorno": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                }
+              }
+            }
+          ]
         },
         "batch": {
           "type": "object",
