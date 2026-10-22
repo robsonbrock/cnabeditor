@@ -8,6 +8,9 @@ As pastas `.specify/` e `.claude/` não são versionadas (estão no `.gitignore`
 # Instala o uv (gerenciador de pacotes e ambientes Python da Astral) via winget
 winget install --id=astral-sh.uv -e
 
+# Cria o ambiente virtual Python do projeto na pasta venv (só é preciso na primeira vez)
+uv venv venv
+
 # Ativa o ambiente virtual Python do projeto (venv)
 .\venv\Scripts\activate
 
