@@ -1,0 +1,21 @@
+{
+  "id": "trailer-lote-pagamento-tributos",
+  "kind": "batchTrailer",
+  "label": "TL",
+  "title": "Trailer de Lote – Pagamentos (Tributos e Contas)",
+  "match": [{"pos":[8,8],"equals":"5"},{"batch":"service","in":["10","20","22","23","30","32","33","34","50","60","70","75","77","80","90","98"]},{"batch":"layoutVersion","in":["010","011","012"]}],
+  "fields": [
+    {"id":"codigoBanco","name":"Código do Banco na Compensação","start":1,"end":3,"type":"N","required":true,"reference":"G001","description":"Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços."},
+    {"id":"loteServico","name":"Lote de Serviço","start":4,"end":7,"type":"N","required":true,"reference":"G002","description":"Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo; para os demais, número do lote anterior acrescido de 1."},
+    {"id":"tipoRegistro","name":"Tipo de Registro","start":8,"end":8,"type":"N","required":true,"reference":"G003","domain":{"ref":"tipoRegistro"},"description":"Código adotado pela FEBRABAN para identificar o tipo de registro. Trailer de Lote = '5'."},
+    {"id":"cnab1","name":"Uso Exclusivo FEBRABAN/CNAB","start":9,"end":17,"type":"A","required":false,"reference":"G004","description":"Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos."},
+    {"id":"quantidadeRegistros","name":"Quantidade de Registros do Lote","start":18,"end":23,"type":"N","required":true,"reference":"G057","description":"Número obtido pela contagem dos registros enviados no lote do arquivo. Somatória dos registros de tipo 1, 2, 3, 4 e 5."},
+    {"id":"somatoriaValores","name":"Somatória dos Valores do Pgtos","start":24,"end":41,"type":"V","decimals":2,"required":false,"reference":"B002","description":"Somatória dos valores dos pagamentos do lote. Obs.: a nota B002 do manual refere-se aos registros de detalhe com Código de Segmento = 'G' (Cobrança); para tributos corresponde aos valores de pagamento dos segmentos 'O' e 'N'."},
+    {"id":"complementoRegistro","name":"Complemento de registro","start":42,"end":230,"type":"A","required":false,"reference":"B003","description":"Complemento de registro. Preencher com Brancos. (O manual remete à nota B003 – Somatória de Quantidade de Moedas, mas o campo é Alfa com default Brancos.)"},
+    {"id":"ocorrencias","name":"Códigos das Ocorrências p/ Retorno","start":231,"end":240,"type":"A","required":false,"reference":"G059","description":"Código adotado pela FEBRABAN para identificar as ocorrências detectadas no processamento. Pode-se informar até 5 ocorrências simultaneamente, cada uma delas codificada com dois dígitos."}
+  ],
+  "totals": [
+    {"field":"quantidadeRegistros","kind":"countRecords"},
+    {"field":"somatoriaValores","kind":"sum","source":{"records":["segmento-o-pagamento","segmento-n-pagamento","segmento-n-gps-pagamento","segmento-n-darf-pagamento","segmento-n-darf-simples-pagamento","segmento-n-gare-sp-pagamento","segmento-n-ipva-pagamento","segmento-n-dpvat-pagamento","segmento-n-licenciamento-pagamento"],"field":"valorPagamento"}}
+  ]
+}

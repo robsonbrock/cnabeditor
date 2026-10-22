@@ -1,0 +1,16 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote",
+    "trailer-lote",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}

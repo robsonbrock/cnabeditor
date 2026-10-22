@@ -1,0 +1,21 @@
+{
+  "id": "trailer-arquivo",
+  "kind": "fileTrailer",
+  "label": "TA",
+  "title": "Trailer de Arquivo",
+  "match": [{ "pos": [8, 8], "equals": "9" }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "reference": "G001", "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços." },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "reference": "G002", "description": "Número seqüencial para identificar univocamente um lote de serviço. Se registro for Trailer do Arquivo preencher com '9999'." },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "reference": "G003", "domain": { "ref": "tipoRegistro" }, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Trailer de Arquivo = '9'." },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 9, "end": 17, "type": "A", "required": false, "reference": "G004", "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos." },
+    { "id": "quantidadeLotes", "name": "Quantidade de Lotes do Arquivo", "start": 18, "end": 23, "type": "N", "required": true, "reference": "G049", "description": "Número obtido pela contagem dos lotes enviados no arquivo. Somatória dos registros de tipo 1." },
+    { "id": "quantidadeRegistros", "name": "Quantidade de Registros do Arquivo", "start": 24, "end": 29, "type": "N", "required": true, "reference": "G056", "description": "Número obtido pela contagem dos registros enviados no arquivo. Somatória dos registros de tipo 0, 1, 3, 5 e 9." },
+    { "id": "quantidadeContasConciliacao", "name": "Qtde de Contas p/ Conc. (Lotes)", "start": 30, "end": 35, "type": "N", "required": false, "reference": "G037", "description": "Número indicativo de lotes de Conciliação Bancária enviados no arquivo. Somatória dos registros de tipo 1 e Tipo de Operação = 'E'. Campo específico para o serviço de Conciliação Bancária." },
+    { "id": "cnab2", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 36, "end": 240, "type": "A", "required": false, "reference": "G004", "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos." }
+  ],
+  "totals": [
+    { "field": "quantidadeLotes", "kind": "countBatches" },
+    { "field": "quantidadeRegistros", "kind": "countRecords" }
+  ]
+}

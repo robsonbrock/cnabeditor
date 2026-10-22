@@ -1,0 +1,61 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 1,
+      "start": 152,
+      "end": 157,
+      "fieldId": "horaGeracao",
+      "rule": "time"
+    },
+    {
+      "line": 2,
+      "start": 9,
+      "end": 9,
+      "fieldId": "tipoOperacao",
+      "rule": "required"
+    },
+    {
+      "line": 2,
+      "start": 9,
+      "end": 9,
+      "fieldId": "tipoOperacao",
+      "rule": "domain"
+    },
+    {
+      "line": 3,
+      "start": 15,
+      "end": 15,
+      "fieldId": "tipoMovimento",
+      "rule": "domain"
+    },
+    {
+      "line": 3,
+      "start": 24,
+      "end": 28,
+      "fieldId": "agenciaFavorecido",
+      "rule": "type"
+    },
+    {
+      "line": 3,
+      "start": 44,
+      "end": 73,
+      "fieldId": "nomeFavorecido",
+      "rule": "charset"
+    },
+    {
+      "line": 3,
+      "start": 94,
+      "end": 101,
+      "fieldId": "dataPagamento",
+      "rule": "date"
+    }
+  ]
+}

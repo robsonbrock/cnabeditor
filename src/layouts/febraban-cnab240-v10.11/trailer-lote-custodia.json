@@ -1,0 +1,28 @@
+{
+  "id": "trailer-lote-custodia",
+  "kind": "batchTrailer",
+  "label": "TL",
+  "title": "Trailer de Lote – Custódia de Cheques",
+  "match": [{ "pos": [8,8], "equals": "5" }, { "batch": "service", "in": ["06"] }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.", "reference": "G001" },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "description": "Número seqüencial para identificar univocamente um lote de serviço. Criado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo.", "reference": "G002" },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro.", "reference": "G003", "domain": {"ref":"tipoRegistro"} },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 9, "end": 17, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" },
+    { "id": "quantidadeRegistros", "name": "Quantidade de Registros do Lote", "start": 18, "end": 23, "type": "N", "required": true, "description": "Número obtido pela contagem dos registros enviados no lote do arquivo. Somatória dos registros de tipo 1, 2, 3, 4 e 5.", "reference": "G057" },
+    { "id": "valorTotalCheques", "name": "Valor Total dos Cheques do Lote", "start": 24, "end": 41, "type": "V", "decimals": 2, "required": false, "description": "Valor da somatória dos valores dos cheques enviados no lote do arquivo.", "reference": "K021" },
+    { "id": "quantidadeCheques", "name": "Quantidade de Cheques do Lote", "start": 42, "end": 47, "type": "N", "required": false, "description": "Quantidade de registros Detalhe (Tipo de registro = 3) enviados no lote do arquivo.", "reference": "K022" },
+    { "id": "totalJuros", "name": "Valor Total de Juros", "start": 48, "end": 65, "type": "V", "decimals": 2, "required": false, "description": "Valor correspondente à somatória dos Valores de Juros informados nos registros Detalhe contidos no lote.", "reference": "K023" },
+    { "id": "totalIof", "name": "Valor Total de IOF", "start": 66, "end": 80, "type": "V", "decimals": 2, "required": false, "description": "Valor correspondente à somatória dos Valores de IOF informados nos registros Detalhe contidos no lote.", "reference": "K024" },
+    { "id": "totalOutrosEncargos", "name": "Valor Total de Outros Encargos", "start": 81, "end": 95, "type": "V", "decimals": 2, "required": false, "description": "Valor correspondente à somatória dos Valores de Outros Encargos informados nos registros Detalhe contidos no lote.", "reference": "K025" },
+    { "id": "cnab2", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 96, "end": 230, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" },
+    { "id": "ocorrencias", "name": "Códigos das Ocorrências - Lote", "start": 231, "end": 240, "type": "A", "required": false, "description": "Código adotado pela FEBRABAN para identificar as ocorrências relacionadas com o Header e Trailer de Lote.", "reference": "K001" }
+  ],
+  "totals": [
+    {"field":"quantidadeRegistros","kind":"countRecords"},
+    {"field":"valorTotalCheques","kind":"sum","source":{"records":["segmento-d-custodia"],"field":"valorCheque"}},
+    {"field":"totalJuros","kind":"sum","source":{"records":["segmento-d-custodia"],"field":"valorJuros"}},
+    {"field":"totalIof","kind":"sum","source":{"records":["segmento-d-custodia"],"field":"valorIof"}},
+    {"field":"totalOutrosEncargos","kind":"sum","source":{"records":["segmento-d-custodia"],"field":"valorOutrosEncargos"}}
+  ]
+}

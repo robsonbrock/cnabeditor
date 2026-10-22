@@ -1,0 +1,1099 @@
+{
+  "id": "segmento-p-cobranca",
+  "kind": "detail",
+  "label": "P",
+  "title": "Detalhe – Segmento P",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "3"
+    },
+    {
+      "pos": [
+        14,
+        14
+      ],
+      "equals": "P"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "01"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "numeroRegistro",
+      "name": "Nº Sequencial do Registro no Lote",
+      "start": 9,
+      "end": 13,
+      "type": "N",
+      "required": true,
+      "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote.",
+      "reference": "G038"
+    },
+    {
+      "id": "codigoSegmento",
+      "name": "Cód. Segmento do Registro Detalhe",
+      "start": 14,
+      "end": 14,
+      "type": "A",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'P'.",
+      "reference": "G039"
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 15,
+      "end": 15,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "codigoMovimento",
+      "name": "Código de Movimento Remessa",
+      "start": 16,
+      "end": 17,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos registros do arquivo de remessa. Cada Banco definirá os campos a serem alterados para o código de movimento '31'.",
+      "reference": "C004",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "Entrada de Títulos"
+        },
+        {
+          "code": "02",
+          "meaning": "Pedido de Baixa"
+        },
+        {
+          "code": "03",
+          "meaning": "Protesto para Fins Falimentares"
+        },
+        {
+          "code": "04",
+          "meaning": "Concessão de Abatimento"
+        },
+        {
+          "code": "05",
+          "meaning": "Cancelamento de Abatimento"
+        },
+        {
+          "code": "06",
+          "meaning": "Alteração de Vencimento"
+        },
+        {
+          "code": "07",
+          "meaning": "Concessão de Desconto"
+        },
+        {
+          "code": "08",
+          "meaning": "Cancelamento de Desconto"
+        },
+        {
+          "code": "09",
+          "meaning": "Protestar"
+        },
+        {
+          "code": "10",
+          "meaning": "Sustar Protesto e Baixar Título"
+        },
+        {
+          "code": "11",
+          "meaning": "Sustar Protesto e Manter em Carteira"
+        },
+        {
+          "code": "12",
+          "meaning": "Alteração de Juros de Mora"
+        },
+        {
+          "code": "13",
+          "meaning": "Dispensar Cobrança de Juros de Mora"
+        },
+        {
+          "code": "14",
+          "meaning": "Alteração de Valor/Percentual de Multa"
+        },
+        {
+          "code": "15",
+          "meaning": "Dispensar Cobrança de Multa"
+        },
+        {
+          "code": "16",
+          "meaning": "Alteração de Valor/Data de Desconto"
+        },
+        {
+          "code": "17",
+          "meaning": "Não conceder Desconto"
+        },
+        {
+          "code": "18",
+          "meaning": "Alteração do Valor de Abatimento"
+        },
+        {
+          "code": "19",
+          "meaning": "Prazo Limite de Recebimento - Alterar"
+        },
+        {
+          "code": "20",
+          "meaning": "Prazo Limite de Recebimento - Dispensar"
+        },
+        {
+          "code": "21",
+          "meaning": "Alterar número do título dado pelo Beneficiário"
+        },
+        {
+          "code": "22",
+          "meaning": "Alterar número controle do Participante"
+        },
+        {
+          "code": "23",
+          "meaning": "Alterar dados do Pagador"
+        },
+        {
+          "code": "24",
+          "meaning": "Alterar dados do Sacador/Avalista"
+        },
+        {
+          "code": "30",
+          "meaning": "Recusa da Alegação do Pagador"
+        },
+        {
+          "code": "31",
+          "meaning": "Alteração de Outros Dados"
+        },
+        {
+          "code": "33",
+          "meaning": "Alteração dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "34",
+          "meaning": "Pedido de Cancelamento dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "35",
+          "meaning": "Pedido de Desagendamento do Débito Automático"
+        },
+        {
+          "code": "40",
+          "meaning": "Alteração de Carteira"
+        },
+        {
+          "code": "41",
+          "meaning": "Cancelar protesto"
+        },
+        {
+          "code": "42",
+          "meaning": "Alteração de Espécie de Título"
+        },
+        {
+          "code": "43",
+          "meaning": "Transferência de carteira/modalidade de cobrança"
+        },
+        {
+          "code": "44",
+          "meaning": "Alteração de contrato de cobrança"
+        },
+        {
+          "code": "45",
+          "meaning": "Negativação Sem Protesto"
+        },
+        {
+          "code": "46",
+          "meaning": "Solicitação de Baixa de Título Negativado Sem Protesto"
+        },
+        {
+          "code": "47",
+          "meaning": "Alteração do Valor Nominal do Título"
+        },
+        {
+          "code": "48",
+          "meaning": "Alteração do Valor Mínimo/ Percentual"
+        },
+        {
+          "code": "49",
+          "meaning": "Alteração do Valor Máximo/Percentual"
+        },
+        {
+          "code": "61",
+          "meaning": "Alteração para inclusão/manutenção de QR Code Pix"
+        }
+      ]
+    },
+    {
+      "id": "agencia",
+      "name": "Agência Mantenedora da Conta",
+      "start": 18,
+      "end": 22,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta, para identificar a qual unidade está vinculada a conta corrente.",
+      "reference": "G008",
+      "sensitive": true
+    },
+    {
+      "id": "dvAgencia",
+      "name": "Dígito Verificador da Agência",
+      "start": 23,
+      "end": 23,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do Código da Agência.",
+      "reference": "G009",
+      "sensitive": true
+    },
+    {
+      "id": "conta",
+      "name": "Número da Conta Corrente",
+      "start": 24,
+      "end": 35,
+      "type": "N",
+      "required": false,
+      "description": "Número adotado pelo Banco, para identificar univocamente a conta corrente utilizada pelo Cliente.",
+      "reference": "G010",
+      "sensitive": true
+    },
+    {
+      "id": "dvConta",
+      "name": "Dígito Verificador da Conta",
+      "start": 36,
+      "end": 36,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo responsável pela conta corrente, para verificação da autenticidade do Número da Conta Corrente. Para os Bancos que se utilizam de duas posições para o Dígito Verificador, preencher este campo com a 1ª posição deste dígito.",
+      "reference": "G011",
+      "sensitive": true
+    },
+    {
+      "id": "dvAgenciaConta",
+      "name": "Dígito Verificador da Ag/Conta",
+      "start": 37,
+      "end": 37,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do par Código da Agência / Número da Conta Corrente. Para os Bancos que se utilizam de duas posições para o Dígito Verificador da Conta, preencher este campo com a 2ª posição deste dígito.",
+      "reference": "G012",
+      "sensitive": true
+    },
+    {
+      "id": "nossoNumero",
+      "name": "Identificação do Título no Banco",
+      "start": 38,
+      "end": 57,
+      "type": "A",
+      "required": false,
+      "description": "Número adotado pelo Banco Beneficiário para identificar o Título. Para código de movimento igual a '01' (Entrada de Títulos), caso esteja preenchido com zeros, a numeração será feita pelo Banco.",
+      "reference": "G069"
+    },
+    {
+      "id": "carteira",
+      "name": "Código da Carteira",
+      "start": 58,
+      "end": 58,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN, para identificar a característica dos títulos dentro das modalidades de cobrança existentes no banco.",
+      "reference": "C006",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Cobrança Simples"
+        },
+        {
+          "code": "2",
+          "meaning": "Cobrança Vinculada"
+        },
+        {
+          "code": "3",
+          "meaning": "Cobrança Caucionada"
+        },
+        {
+          "code": "4",
+          "meaning": "Cobrança Descontada"
+        },
+        {
+          "code": "5",
+          "meaning": "Cobrança Vendor"
+        },
+        {
+          "code": "6",
+          "meaning": "Cobrança Cessão"
+        }
+      ]
+    },
+    {
+      "id": "formaCadastramento",
+      "name": "Forma de Cadastr. do Título no Banco",
+      "start": 59,
+      "end": 59,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN, para indicar a existência de registro do título no banco.",
+      "reference": "C007",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Com Cadastramento (Cobrança Registrada)"
+        },
+        {
+          "code": "2",
+          "meaning": "Sem Cadastramento (Cobrança sem Registro)"
+        },
+        {
+          "code": "3",
+          "meaning": "Com Cadastramento / Recusa do Débito Automático"
+        }
+      ]
+    },
+    {
+      "id": "tipoDocumento",
+      "name": "Tipo de Documento",
+      "start": 60,
+      "end": 60,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar a existência material do documento no processo.",
+      "reference": "C008",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Tradicional"
+        },
+        {
+          "code": "2",
+          "meaning": "Escritural"
+        }
+      ]
+    },
+    {
+      "id": "emissaoBoleto",
+      "name": "Identificação da Emissão do Boleto de Pagamento",
+      "start": 61,
+      "end": 61,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar o responsável e a forma de emissão do Boleto de Pagamento. Os códigos '4' e '5' só serão aceitos para código de movimento para remessa '31'.",
+      "reference": "C009",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Banco Emite"
+        },
+        {
+          "code": "2",
+          "meaning": "Cliente Emite"
+        },
+        {
+          "code": "3",
+          "meaning": "Banco Pré-emite e Cliente Complementa"
+        },
+        {
+          "code": "4",
+          "meaning": "Banco Reemite"
+        },
+        {
+          "code": "5",
+          "meaning": "Banco Não Reemite"
+        },
+        {
+          "code": "7",
+          "meaning": "Banco Emitente - Aberta"
+        },
+        {
+          "code": "8",
+          "meaning": "Banco Emitente - Auto-envelopável"
+        }
+      ]
+    },
+    {
+      "id": "distribuicaoBoleto",
+      "name": "Identificação da Distribuição",
+      "start": 62,
+      "end": 62,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar o responsável pela distribuição do Boleto de Pagamento.",
+      "reference": "C010",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Banco Distribui"
+        },
+        {
+          "code": "2",
+          "meaning": "Cliente Distribui"
+        },
+        {
+          "code": "3",
+          "meaning": "Banco envia e-mail"
+        },
+        {
+          "code": "4",
+          "meaning": "Banco envia SMS"
+        },
+        {
+          "code": "P",
+          "meaning": "Banco registra e cliente distribui boleto com QR Code Pix"
+        },
+        {
+          "code": "Q",
+          "meaning": "Banco registra e distribui boleto com QR Code PIX"
+        }
+      ]
+    },
+    {
+      "id": "numeroDocumento",
+      "name": "Número do Documento de Cobrança",
+      "start": 63,
+      "end": 77,
+      "type": "A",
+      "required": false,
+      "description": "Número adotado e controlado pelo Cliente, para identificar o título de cobrança. Poderá conter número de duplicata, no caso de cobrança de duplicatas; número da apólice, no caso de cobrança de seguros, etc.",
+      "reference": "C011"
+    },
+    {
+      "id": "dataVencimento",
+      "name": "Data de Vencimento do Título",
+      "start": 78,
+      "end": 85,
+      "type": "D",
+      "required": false,
+      "description": "Data de vencimento do título de cobrança. O preenchimento desse campo é obrigatório.",
+      "reference": "C012"
+    },
+    {
+      "id": "valorTitulo",
+      "name": "Valor Nominal do Título",
+      "start": 86,
+      "end": 100,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor original do Título. Quando o valor for expresso em moeda corrente, utilizar 2 decimais; quando expresso em moeda variável, utilizar 5 decimais.",
+      "reference": "G070"
+    },
+    {
+      "id": "agenciaCobradora",
+      "name": "Agência Encarregada da Cobrança",
+      "start": 101,
+      "end": 105,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela cobrança, para identificar o estabelecimento bancário responsável pela cobrança do título. Informação opcional, na ausência será atribuída pelo CEP.",
+      "reference": "C014"
+    },
+    {
+      "id": "dvAgenciaCobradora",
+      "name": "Dígito Verificador da Agência",
+      "start": 106,
+      "end": 106,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do Código da Agência.",
+      "reference": "G009"
+    },
+    {
+      "id": "especieTitulo",
+      "name": "Espécie do Título",
+      "start": 107,
+      "end": 108,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de título de cobrança.",
+      "reference": "C015",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "CH Cheque"
+        },
+        {
+          "code": "02",
+          "meaning": "DM Duplicata Mercantil"
+        },
+        {
+          "code": "03",
+          "meaning": "DMI Duplicata Mercantil p/ Indicação"
+        },
+        {
+          "code": "04",
+          "meaning": "DS Duplicata de Serviço"
+        },
+        {
+          "code": "05",
+          "meaning": "DSI Duplicata de Serviço p/ Indicação"
+        },
+        {
+          "code": "06",
+          "meaning": "DR Duplicata Rural"
+        },
+        {
+          "code": "07",
+          "meaning": "LC Letra de Câmbio"
+        },
+        {
+          "code": "08",
+          "meaning": "NCC Nota de Crédito Comercial"
+        },
+        {
+          "code": "09",
+          "meaning": "NCE Nota de Crédito a Exportação"
+        },
+        {
+          "code": "10",
+          "meaning": "NCI Nota de Crédito Industrial"
+        },
+        {
+          "code": "11",
+          "meaning": "NCR Nota de Crédito Rural"
+        },
+        {
+          "code": "12",
+          "meaning": "NP Nota Promissória"
+        },
+        {
+          "code": "13",
+          "meaning": "NPR Nota Promissória Rural"
+        },
+        {
+          "code": "14",
+          "meaning": "TM Triplicata Mercantil"
+        },
+        {
+          "code": "15",
+          "meaning": "TS Triplicata de Serviço"
+        },
+        {
+          "code": "16",
+          "meaning": "NS Nota de Seguro"
+        },
+        {
+          "code": "17",
+          "meaning": "RC Recibo"
+        },
+        {
+          "code": "18",
+          "meaning": "FAT Fatura"
+        },
+        {
+          "code": "19",
+          "meaning": "ND Nota de Débito"
+        },
+        {
+          "code": "20",
+          "meaning": "AP Apólice de Seguro"
+        },
+        {
+          "code": "21",
+          "meaning": "ME Mensalidade Escolar"
+        },
+        {
+          "code": "22",
+          "meaning": "PC Parcela de Consórcio"
+        },
+        {
+          "code": "23",
+          "meaning": "NF Nota Fiscal"
+        },
+        {
+          "code": "24",
+          "meaning": "DD Documento de Dívida"
+        },
+        {
+          "code": "25",
+          "meaning": "Cédula de Produto Rural"
+        },
+        {
+          "code": "26",
+          "meaning": "Warrant"
+        },
+        {
+          "code": "27",
+          "meaning": "Dívida Ativa de Estado"
+        },
+        {
+          "code": "28",
+          "meaning": "Dívida Ativa de Município"
+        },
+        {
+          "code": "29",
+          "meaning": "Dívida Ativa da União"
+        },
+        {
+          "code": "30",
+          "meaning": "Encargos condominiais"
+        },
+        {
+          "code": "31",
+          "meaning": "CC Cartão de Crédito"
+        },
+        {
+          "code": "32",
+          "meaning": "BDP – Boleto de Proposta"
+        },
+        {
+          "code": "99",
+          "meaning": "Outros"
+        }
+      ]
+    },
+    {
+      "id": "aceite",
+      "name": "Identific. de Título Aceito/Não Aceito",
+      "start": 109,
+      "end": 109,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar se o título de cobrança foi aceito (reconhecimento da dívida pelo Pagador).",
+      "reference": "C016",
+      "domain": [
+        {
+          "code": "A",
+          "meaning": "Aceite"
+        },
+        {
+          "code": "N",
+          "meaning": "Não Aceite"
+        }
+      ]
+    },
+    {
+      "id": "dataEmissao",
+      "name": "Data da Emissão do Título",
+      "start": 110,
+      "end": 117,
+      "type": "D",
+      "required": false,
+      "description": "Data de emissão do Título. Utilizar o formato DDMMAAAA.",
+      "reference": "G071"
+    },
+    {
+      "id": "codigoJurosMora",
+      "name": "Código do Juros de Mora",
+      "start": 118,
+      "end": 118,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificação do tipo de pagamento de juros de mora.",
+      "reference": "C018",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Valor por Dia"
+        },
+        {
+          "code": "2",
+          "meaning": "Taxa Mensal"
+        },
+        {
+          "code": "3",
+          "meaning": "Isento"
+        }
+      ]
+    },
+    {
+      "id": "dataJurosMora",
+      "name": "Data do Juros de Mora",
+      "start": 119,
+      "end": 126,
+      "type": "D",
+      "required": false,
+      "description": "Data indicativa do início da cobrança do Juros de Mora de um título de cobrança. Caso seja inválida ou não informada será assumida a data do vencimento.",
+      "reference": "C019"
+    },
+    {
+      "id": "jurosMora",
+      "name": "Juros de Mora por Dia/Taxa",
+      "start": 127,
+      "end": 141,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor ou porcentagem sobre o valor do título a ser cobrada de juros de mora.",
+      "reference": "C020"
+    },
+    {
+      "id": "codigoDesconto1",
+      "name": "Código do Desconto 1",
+      "start": 142,
+      "end": 142,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificação do tipo de desconto que deverá ser concedido. Para os códigos '1' e '2' será obrigatório a informação da Data.",
+      "reference": "C021",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Valor Fixo Até a Data Informada"
+        },
+        {
+          "code": "2",
+          "meaning": "Percentual Até a Data Informada"
+        },
+        {
+          "code": "3",
+          "meaning": "Valor por Antecipação Dia Corrido"
+        },
+        {
+          "code": "4",
+          "meaning": "Valor por Antecipação Dia Útil"
+        },
+        {
+          "code": "5",
+          "meaning": "Percentual Sobre o Valor Nominal Dia Corrido"
+        },
+        {
+          "code": "6",
+          "meaning": "Percentual Sobre o Valor Nominal Dia Útil"
+        },
+        {
+          "code": "7",
+          "meaning": "Cancelamento de Desconto"
+        }
+      ]
+    },
+    {
+      "id": "dataDesconto1",
+      "name": "Data do Desconto 1",
+      "start": 143,
+      "end": 150,
+      "type": "D",
+      "required": false,
+      "description": "Data limite do desconto do título de cobrança.",
+      "reference": "C022"
+    },
+    {
+      "id": "valorDesconto1",
+      "name": "Valor/Percentual a ser Concedido",
+      "start": 151,
+      "end": 165,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor ou percentual de desconto a ser concedido sobre o título de cobrança.",
+      "reference": "C023"
+    },
+    {
+      "id": "valorIof",
+      "name": "Valor do IOF a ser Recolhido",
+      "start": 166,
+      "end": 180,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor original do IOF - Imposto sobre Operações Financeiras - de um título prêmio de seguro na sua data de emissão, expresso de acordo com o tipo de moeda.",
+      "reference": "C024"
+    },
+    {
+      "id": "valorAbatimento",
+      "name": "Valor do Abatimento",
+      "start": 181,
+      "end": 195,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor do abatimento (redução do valor do documento, devido a algum problema), expresso em moeda corrente.",
+      "reference": "G045"
+    },
+    {
+      "id": "usoEmpresa",
+      "name": "Identificação do Título na Empresa",
+      "start": 196,
+      "end": 220,
+      "type": "A",
+      "required": false,
+      "description": "Campo destinado para uso da Empresa Beneficiário para identificação do Título.",
+      "reference": "G072"
+    },
+    {
+      "id": "codigoProtesto",
+      "name": "Código para Protesto",
+      "start": 221,
+      "end": 221,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de prazo a ser considerado para o protesto.",
+      "reference": "C026",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Protestar Dias Corridos"
+        },
+        {
+          "code": "2",
+          "meaning": "Protestar Dias Úteis"
+        },
+        {
+          "code": "3",
+          "meaning": "Não Protestar"
+        },
+        {
+          "code": "4",
+          "meaning": "Protestar Fim Falimentar - Dias Úteis"
+        },
+        {
+          "code": "5",
+          "meaning": "Protestar Fim Falimentar - Dias Corridos"
+        },
+        {
+          "code": "7",
+          "meaning": "Não negativar"
+        },
+        {
+          "code": "8",
+          "meaning": "Negativação sem Protesto"
+        },
+        {
+          "code": "9",
+          "meaning": "Cancelamento Protesto Automático (somente válido p/ Código de Movimento Remessa = '31')"
+        }
+      ]
+    },
+    {
+      "id": "prazoProtesto",
+      "name": "Número de Dias para Protesto",
+      "start": 222,
+      "end": 223,
+      "type": "N",
+      "required": false,
+      "description": "Número de dias decorrentes após a data de vencimento para inicialização do processo de cobrança via protesto.",
+      "reference": "C027"
+    },
+    {
+      "id": "codigoBaixa",
+      "name": "Código para Baixa/Devolução",
+      "start": 224,
+      "end": 224,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar qual o procedimento a ser adotado com o Título.",
+      "reference": "C028",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Baixar / Devolver"
+        },
+        {
+          "code": "2",
+          "meaning": "Não Baixar / Não Devolver"
+        },
+        {
+          "code": "3",
+          "meaning": "Cancelar Prazo para Baixa / Devolução (somente válido p/ Código de Movimento Remessa = '31')"
+        }
+      ]
+    },
+    {
+      "id": "prazoBaixa",
+      "name": "Número de Dias para Baixa/Devolução",
+      "start": 225,
+      "end": 227,
+      "type": "A",
+      "required": false,
+      "description": "Número de dias corridos após a data de vencimento de um Título não pago, que deverá ser baixado e devolvido para o Beneficiário.",
+      "reference": "C029"
+    },
+    {
+      "id": "codigoMoeda",
+      "name": "Código da Moeda",
+      "start": 228,
+      "end": 229,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar a moeda referenciada no Título.",
+      "reference": "G065",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "Reservado para Uso Futuro"
+        },
+        {
+          "code": "02",
+          "meaning": "Dólar Americano Comercial (Venda)"
+        },
+        {
+          "code": "03",
+          "meaning": "Dólar Americano Turismo (Venda)"
+        },
+        {
+          "code": "04",
+          "meaning": "ITRD"
+        },
+        {
+          "code": "05",
+          "meaning": "IDTR"
+        },
+        {
+          "code": "06",
+          "meaning": "UFIR Diária"
+        },
+        {
+          "code": "07",
+          "meaning": "UFIR Mensal"
+        },
+        {
+          "code": "08",
+          "meaning": "FAJ-TR"
+        },
+        {
+          "code": "09",
+          "meaning": "Real"
+        },
+        {
+          "code": "10",
+          "meaning": "TR"
+        },
+        {
+          "code": "11",
+          "meaning": "IGPM"
+        },
+        {
+          "code": "12",
+          "meaning": "CDI"
+        },
+        {
+          "code": "13",
+          "meaning": "Percentual do CDI"
+        },
+        {
+          "code": "14",
+          "meaning": "Euro"
+        },
+        {
+          "code": "15",
+          "meaning": "CDI – CETIP"
+        },
+        {
+          "code": "16",
+          "meaning": "CHF"
+        },
+        {
+          "code": "17",
+          "meaning": "CUB/RS (NOVO)"
+        },
+        {
+          "code": "18",
+          "meaning": "CUB/RS (R8-N)"
+        },
+        {
+          "code": "19",
+          "meaning": "CUB/SC (ANTIGO)"
+        },
+        {
+          "code": "20",
+          "meaning": "CUBRS"
+        },
+        {
+          "code": "21",
+          "meaning": "CUB-SC (NOVO)"
+        },
+        {
+          "code": "22",
+          "meaning": "GBP"
+        },
+        {
+          "code": "23",
+          "meaning": "ICC (SALVADOR)"
+        },
+        {
+          "code": "24",
+          "meaning": "IGPM (A)"
+        },
+        {
+          "code": "25",
+          "meaning": "IGPM (N)"
+        },
+        {
+          "code": "26",
+          "meaning": "INCC"
+        },
+        {
+          "code": "27",
+          "meaning": "INCC-M"
+        },
+        {
+          "code": "28",
+          "meaning": "INPC"
+        },
+        {
+          "code": "29",
+          "meaning": "JPY"
+        },
+        {
+          "code": "30",
+          "meaning": "TJLP"
+        }
+      ]
+    },
+    {
+      "id": "numeroContrato",
+      "name": "Nº do Contrato da Operação de Créd.",
+      "start": 230,
+      "end": 239,
+      "type": "N",
+      "required": false,
+      "description": "Número adotado pela Empresa Beneficiário para identificação do número do contrato.",
+      "reference": "C030"
+    },
+    {
+      "id": "usoLivre",
+      "name": "Uso livre banco/empresa ou autorização de pagamento parcial",
+      "start": 240,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Uso livre Banco/Empresa ou Autorização de Pagamento Parcial.",
+      "reference": "C077",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Não autoriza pagamento parcial"
+        },
+        {
+          "code": "2",
+          "meaning": "Autoriza pagamentos parciais"
+        }
+      ]
+    }
+  ]
+}

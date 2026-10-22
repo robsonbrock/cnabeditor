@@ -1,0 +1,134 @@
+{
+  "id": "trailer-lote-boleto-eletronico",
+  "kind": "batchTrailer",
+  "label": "TL",
+  "title": "Trailer de Lote – Boleto de Pagamento Eletrônico",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "5"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "03"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Trailer de Lote = '5'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 9,
+      "end": 17,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "quantidadeRegistros",
+      "name": "Quantidade de Registros do Lote",
+      "start": 18,
+      "end": 23,
+      "type": "N",
+      "required": true,
+      "description": "Número obtido pela contagem dos registros enviados no lote do arquivo. Somatória dos registros de tipo 1, 2, 3, 4 e 5.",
+      "reference": "G057"
+    },
+    {
+      "id": "somatoriaValores",
+      "name": "Somatória dos Valores",
+      "start": 24,
+      "end": 41,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor obtido pela somatória dos valores nominais dos títulos dos registros de detalhe (Código de Segmento = 'G').",
+      "reference": "B002"
+    },
+    {
+      "id": "somatoriaQuantidadeMoeda",
+      "name": "Somatória da Quantidade de Moeda",
+      "start": 42,
+      "end": 59,
+      "type": "V",
+      "decimals": 5,
+      "required": false,
+      "description": "Valor obtido pela somatória das quantidades de moeda dos registros de detalhe (Código de Segmento = 'G').",
+      "reference": "B003"
+    },
+    {
+      "id": "cnab2",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 60,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    }
+  ],
+  "totals": [
+    {
+      "field": "quantidadeRegistros",
+      "kind": "countRecords"
+    },
+    {
+      "field": "somatoriaValores",
+      "kind": "sum",
+      "source": {
+        "records": [
+          "segmento-g-boleto-eletronico"
+        ],
+        "field": "valorTitulo"
+      }
+    },
+    {
+      "field": "somatoriaQuantidadeMoeda",
+      "kind": "sum",
+      "source": {
+        "records": [
+          "segmento-g-boleto-eletronico"
+        ],
+        "field": "quantidadeMoeda"
+      }
+    }
+  ]
+}

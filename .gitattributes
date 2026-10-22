@@ -1,0 +1,4 @@
+# Golden files: bytes exatos (encoding, CRLF/LF, sem quebra final) — nunca normalizar.
+tests/golden/**/*.rem binary
+tests/golden/**/*.ret binary
+tests/golden/**/*.txt binary

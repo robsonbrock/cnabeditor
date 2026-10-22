@@ -1,0 +1,20 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 3,
+      "start": 1,
+      "end": 238,
+      "rule": "lineLength",
+      "found": "238",
+      "expected": "240"
+    }
+  ]
+}

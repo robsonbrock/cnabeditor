@@ -1,0 +1,25 @@
+{
+  "id": "saldo-inicial-gestao-caixa",
+  "kind": "batchInitial",
+  "label": "?",
+  "title": "Saldo Inicial",
+  "match": [{ "pos": [8,8], "equals": "2" }, { "batch": "service", "in": ["07"] }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.", "reference": "G001" },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "description": "Número seqüencial para identificar univocamente um lote de serviço. Criado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo.", "reference": "G002" },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro.", "reference": "G003", "domain": {"ref":"tipoRegistro"} },
+    { "id": "tipoOperacao", "name": "Tipo da Operação", "start": 9, "end": 9, "type": "A", "required": false, "description": "Código adotado pela FEBRABAN para identificar a transação que será realizada com os registros detalhe do lote.", "reference": "G028", "domain": {"ref":"tipoOperacao"} },
+    { "id": "tipoServico", "name": "Tipo de Serviço", "start": 10, "end": 11, "type": "N", "required": false, "description": "Código adotado pela FEBRABAN para indicar o tipo de serviço / produto (processo) contido no arquivo / lote.", "reference": "G025", "domain": {"ref":"tipoServico"} },
+    { "id": "formaLancamento", "name": "Forma de Lançamento", "start": 12, "end": 13, "type": "N", "required": false, "description": "Código adotado pela FEBRABAN para identificar a operação que está contida no lote.", "reference": "G029", "domain": {"ref":"formaLancamento"} },
+    { "id": "versaoLayoutLote", "name": "Nº da Versão do Layout do Lote", "start": 14, "end": 16, "type": "N", "required": false, "description": "Código adotado pela FEBRABAN para identificar qual a versão de layout do lote de arquivo encaminhado.", "reference": "G030" },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 17, "end": 102, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" },
+    { "id": "naturezaSaldo", "name": "Natureza do Saldo em C/C", "start": 103, "end": 105, "type": "A", "required": false, "description": "Código adotado pela FEBRABAN para identificar o tipo de saldo informado.", "reference": "F001", "domain": [{"code":"DPV", "meaning": "Disponível"},{"code":"SCR", "meaning": "Vinculado"},{"code":"SSR", "meaning": "Bloqueado"},{"code":"SDS", "meaning": "Somatório dos Saldos"}] },
+    { "id": "horarioSaldoInicial", "name": "Horário do Saldo Inicial", "start": 106, "end": 111, "type": "H", "required": false, "description": "Hora da geração do saldo inicial.", "reference": "F002" },
+    { "id": "cnab2", "name": "Uso Exclusivo da FEBRABAN/CNAB", "start": 112, "end": 142, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" },
+    { "id": "dataSaldoInicial", "name": "Data do Saldo Inicial", "start": 143, "end": 150, "type": "D", "required": false, "description": "Data considerada para determinar o saldo inicial.", "reference": "G080" },
+    { "id": "valorSaldoInicial", "name": "Valor do Saldo Inicial da Natureza", "start": 151, "end": 168, "type": "V", "decimals": 2, "required": false, "description": "Valor do Saldo correspondente à Natureza indicada no registro, na data e hora inicial.", "reference": "F004" },
+    { "id": "situacaoSaldoInicial", "name": "Situação do Saldo Inicial da Natureza", "start": 169, "end": 169, "type": "A", "required": false, "description": "Código adotado pela FEBRABAN para indicar se o Saldo correspondente à Natureza indicada no registro, na data e hora inicial, é Credor ou Devedor.", "reference": "F005", "domain": [{"code":"D", "meaning": "Devedor"},{"code":"C", "meaning": "Credor"}] },
+    { "id": "usoBanco", "name": "Para Uso Reservado do Banco", "start": 170, "end": 189, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo do Banco.", "reference": "G021" },
+    { "id": "cnab3", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 190, "end": 240, "type": "A", "required": false, "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.", "reference": "G004" }
+  ]
+}

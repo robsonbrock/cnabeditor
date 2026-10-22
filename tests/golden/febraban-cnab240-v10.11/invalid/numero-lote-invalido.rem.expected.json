@@ -1,0 +1,27 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "B",
+    "A",
+    "TL",
+    "HL",
+    "J",
+    "J",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 3,
+      "start": 4,
+      "end": 7,
+      "fieldId": "loteServico",
+      "rule": "batchNumber",
+      "found": "0003",
+      "expected": "0001"
+    }
+  ]
+}

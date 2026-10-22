@@ -1,0 +1,734 @@
+{
+  "id": "segmento-u-cobranca",
+  "kind": "detail",
+  "label": "U",
+  "title": "Detalhe – Segmento U",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "3"
+    },
+    {
+      "pos": [
+        14,
+        14
+      ],
+      "equals": "U"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "01"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "numeroRegistro",
+      "name": "Nº Sequencial do Registro no Lote",
+      "start": 9,
+      "end": 13,
+      "type": "N",
+      "required": true,
+      "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote.",
+      "reference": "G038"
+    },
+    {
+      "id": "codigoSegmento",
+      "name": "Cód. Segmento do Registro Detalhe",
+      "start": 14,
+      "end": 14,
+      "type": "A",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'U'.",
+      "reference": "G039"
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 15,
+      "end": 15,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "codigoMovimento",
+      "name": "Código de Movimento Retorno",
+      "start": 16,
+      "end": 17,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos registros do arquivo de retorno.",
+      "reference": "C044",
+      "domain": [
+        {
+          "code": "02",
+          "meaning": "Entrada Confirmada"
+        },
+        {
+          "code": "03",
+          "meaning": "Entrada Rejeitada"
+        },
+        {
+          "code": "04",
+          "meaning": "Transferência de Carteira/Entrada"
+        },
+        {
+          "code": "05",
+          "meaning": "Transferência de Carteira/Baixa"
+        },
+        {
+          "code": "06",
+          "meaning": "Liquidação"
+        },
+        {
+          "code": "07",
+          "meaning": "Confirmação do Recebimento da Instrução de Desconto"
+        },
+        {
+          "code": "08",
+          "meaning": "Confirmação do Recebimento do Cancelamento do Desconto"
+        },
+        {
+          "code": "09",
+          "meaning": "Baixa"
+        },
+        {
+          "code": "11",
+          "meaning": "Títulos em Carteira (Em Ser)"
+        },
+        {
+          "code": "12",
+          "meaning": "Confirmação Recebimento Instrução de Abatimento"
+        },
+        {
+          "code": "13",
+          "meaning": "Confirmação Recebimento Instrução de Cancelamento Abatimento"
+        },
+        {
+          "code": "14",
+          "meaning": "Confirmação Recebimento Instrução Alteração de Vencimento"
+        },
+        {
+          "code": "15",
+          "meaning": "Franco de Pagamento"
+        },
+        {
+          "code": "17",
+          "meaning": "Liquidação Após Baixa ou Liquidação Título Não Registrado"
+        },
+        {
+          "code": "19",
+          "meaning": "Confirmação Recebimento Instrução de Protesto"
+        },
+        {
+          "code": "20",
+          "meaning": "Confirmação Recebimento Instrução de Sustação/Cancelamento de Protesto"
+        },
+        {
+          "code": "23",
+          "meaning": "Remessa a Cartório (Aponte em Cartório)"
+        },
+        {
+          "code": "24",
+          "meaning": "Retirada de Cartório e Manutenção em Carteira"
+        },
+        {
+          "code": "25",
+          "meaning": "Protestado e Baixado (Baixa por Ter Sido Protestado)"
+        },
+        {
+          "code": "26",
+          "meaning": "Instrução Rejeitada"
+        },
+        {
+          "code": "27",
+          "meaning": "Confirmação do Pedido de Alteração de Outros Dados"
+        },
+        {
+          "code": "28",
+          "meaning": "Débito de Tarifas/Custas"
+        },
+        {
+          "code": "29",
+          "meaning": "Ocorrências do Pagador"
+        },
+        {
+          "code": "30",
+          "meaning": "Alteração de Dados Rejeitada"
+        },
+        {
+          "code": "33",
+          "meaning": "Confirmação da Alteração dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "34",
+          "meaning": "Confirmação do Cancelamento dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "35",
+          "meaning": "Confirmação do Desagendamento do Débito Automático"
+        },
+        {
+          "code": "36",
+          "meaning": "Confirmação de envio de e-mail/SMS"
+        },
+        {
+          "code": "37",
+          "meaning": "Envio de e-mail/SMS rejeitado"
+        },
+        {
+          "code": "38",
+          "meaning": "Confirmação de alteração do Prazo Limite de Recebimento"
+        },
+        {
+          "code": "39",
+          "meaning": "Confirmação de Dispensa de Prazo Limite de Recebimento"
+        },
+        {
+          "code": "40",
+          "meaning": "Confirmação da alteração do número do título dado pelo Beneficiário"
+        },
+        {
+          "code": "41",
+          "meaning": "Confirmação da alteração do número controle do Participante"
+        },
+        {
+          "code": "42",
+          "meaning": "Confirmação da alteração dos dados do Pagador"
+        },
+        {
+          "code": "43",
+          "meaning": "Confirmação da alteração dos dados do Sacador/Avalista"
+        },
+        {
+          "code": "44",
+          "meaning": "Título pago com cheque devolvido"
+        },
+        {
+          "code": "45",
+          "meaning": "Título pago com cheque compensado"
+        },
+        {
+          "code": "46",
+          "meaning": "Instrução para cancelar protesto confirmada"
+        },
+        {
+          "code": "47",
+          "meaning": "Instrução para protesto para fins falimentares confirmada"
+        },
+        {
+          "code": "48",
+          "meaning": "Confirmação de instrução de transferência de carteira/modalidade de cobrança"
+        },
+        {
+          "code": "49",
+          "meaning": "Alteração de contrato de cobrança"
+        },
+        {
+          "code": "50",
+          "meaning": "Título pago com cheque pendente de liquidação"
+        },
+        {
+          "code": "51",
+          "meaning": "Título DDA reconhecido pelo Pagador"
+        },
+        {
+          "code": "52",
+          "meaning": "Título DDA não reconhecido pelo Pagador"
+        },
+        {
+          "code": "53",
+          "meaning": "Título DDA recusado pela CIP"
+        },
+        {
+          "code": "54",
+          "meaning": "Confirmação da Instrução de Baixa de Título Negativado sem Protesto"
+        },
+        {
+          "code": "55",
+          "meaning": "Confirmação de Pedido de Dispensa de Multa"
+        },
+        {
+          "code": "56",
+          "meaning": "Confirmação do Pedido de Cobrança de Multa"
+        },
+        {
+          "code": "57",
+          "meaning": "Confirmação do Pedido de Alteração de Cobrança de Juros"
+        },
+        {
+          "code": "58",
+          "meaning": "Confirmação do Pedido de Alteração do Valor/Data de Desconto"
+        },
+        {
+          "code": "59",
+          "meaning": "Confirmação do Pedido de Alteração do Beneficiário do Título"
+        },
+        {
+          "code": "60",
+          "meaning": "Confirmação do Pedido de Dispensa de Juros de Mora"
+        },
+        {
+          "code": "61",
+          "meaning": "Confirmação de Alteração do Valor Nominal do Título"
+        },
+        {
+          "code": "63",
+          "meaning": "Título Sustado Judicialmente"
+        },
+        {
+          "code": "64",
+          "meaning": "Confirmação de alteração do valor mínimo/percentual"
+        },
+        {
+          "code": "65",
+          "meaning": "Confirmação de alteração do valor máximo/percentual"
+        },
+        {
+          "code": "93",
+          "meaning": "Intenção de pagamento"
+        },
+        {
+          "code": "94",
+          "meaning": "Cancelamento de intenção de pagamento"
+        }
+      ]
+    },
+    {
+      "id": "valorAcrescimos",
+      "name": "Juros / Multa / Encargos",
+      "start": 18,
+      "end": 32,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor dos acréscimos efetuados no título de cobrança, expresso em moeda corrente.",
+      "reference": "C048"
+    },
+    {
+      "id": "valorDesconto",
+      "name": "Valor do Desconto Concedido",
+      "start": 33,
+      "end": 47,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor dos descontos efetuados no título de cobrança, expresso em moeda corrente.",
+      "reference": "C049"
+    },
+    {
+      "id": "valorAbatimento",
+      "name": "Valor do Abat. Concedido/Cancel.",
+      "start": 48,
+      "end": 62,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor dos abatimentos efetuados ou cancelados no título de cobrança, expresso em moeda corrente.",
+      "reference": "C050"
+    },
+    {
+      "id": "valorIof",
+      "name": "Valor do IOF Recolhido",
+      "start": 63,
+      "end": 77,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor do IOF - Imposto sobre Operações Financeiras - recolhido sobre o Título, expresso em moeda corrente.",
+      "reference": "G077"
+    },
+    {
+      "id": "valorPago",
+      "name": "Valor Pago pelo Pagador",
+      "start": 78,
+      "end": 92,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor do pagamento efetuado pelo Pagador referente ao título de cobrança, expresso em moeda corrente.",
+      "reference": "C052"
+    },
+    {
+      "id": "valorLiquido",
+      "name": "Valor Líquido a ser Creditado",
+      "start": 93,
+      "end": 107,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor efetivo a ser creditado referente ao Título, expresso em moeda corrente.",
+      "reference": "G078"
+    },
+    {
+      "id": "valorOutrasDespesas",
+      "name": "Valor de Outras Despesas",
+      "start": 108,
+      "end": 122,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor efetivo de despesas referente ao título de cobrança, expresso em moeda corrente.",
+      "reference": "C054"
+    },
+    {
+      "id": "valorOutrosCreditos",
+      "name": "Valor de Outros Créditos",
+      "start": 123,
+      "end": 137,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor efetivo de créditos referente ao título de cobrança, expresso em moeda corrente.",
+      "reference": "C055"
+    },
+    {
+      "id": "dataOcorrencia",
+      "name": "Data da Ocorrência",
+      "start": 138,
+      "end": 145,
+      "type": "D",
+      "required": false,
+      "description": "Data do evento que afeta o estado do título de cobrança.",
+      "reference": "C056"
+    },
+    {
+      "id": "dataCredito",
+      "name": "Data da Efetivação do Crédito",
+      "start": 146,
+      "end": 153,
+      "type": "D",
+      "required": false,
+      "description": "Data de disponibilização do crédito referente ao título de cobrança.",
+      "reference": "C057"
+    },
+    {
+      "id": "codigoOcorrenciaPagador",
+      "name": "Código da Ocorrência",
+      "start": 154,
+      "end": 157,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de ocorrência do Pagador.",
+      "reference": "A001",
+      "domain": [
+        {
+          "code": "0101",
+          "meaning": "Pagador alega que não recebeu a mercadoria"
+        },
+        {
+          "code": "0102",
+          "meaning": "Pagador alega que a mercadoria chegou atrasada"
+        },
+        {
+          "code": "0103",
+          "meaning": "Pagador alega que a mercadoria chegou avariada"
+        },
+        {
+          "code": "0104",
+          "meaning": "Pagador alega que a mercadoria não confere com o pedido"
+        },
+        {
+          "code": "0105",
+          "meaning": "Pagador alega que a mercadoria chegou incompleta"
+        },
+        {
+          "code": "0106",
+          "meaning": "Pagador alega que a mercadoria está à disposição do Beneficiário"
+        },
+        {
+          "code": "0107",
+          "meaning": "Pagador alega que devolveu a mercadoria"
+        },
+        {
+          "code": "0108",
+          "meaning": "Pagador alega que a mercadoria está em desacordo com a Nota Fiscal"
+        },
+        {
+          "code": "0109",
+          "meaning": "Pagador alega que nada deve ou comprou"
+        },
+        {
+          "code": "0201",
+          "meaning": "Pagador alega que não recebeu a fatura"
+        },
+        {
+          "code": "0202",
+          "meaning": "Pagador alega que o pedido de compra foi cancelado"
+        },
+        {
+          "code": "0203",
+          "meaning": "Pagador alega que a duplicata foi cancelada"
+        },
+        {
+          "code": "0204",
+          "meaning": "Pagador alega não ter recebido a mercadoria, nota fiscal, fatura"
+        },
+        {
+          "code": "0205",
+          "meaning": "Pagador alega que a duplicata/fatura está incorreta"
+        },
+        {
+          "code": "0206",
+          "meaning": "Pagador alega que o valor está incorreto"
+        },
+        {
+          "code": "0207",
+          "meaning": "Pagador alega que o faturamento é indevido"
+        },
+        {
+          "code": "0208",
+          "meaning": "Pagador alega que não localizou o pedido de compra"
+        },
+        {
+          "code": "0301",
+          "meaning": "Pagador alega que o vencimento correto é: (data)"
+        },
+        {
+          "code": "0302",
+          "meaning": "Pagador solicita a prorrogação do vencimento para: (data)"
+        },
+        {
+          "code": "0303",
+          "meaning": "Pagador aceita se o vencimento prorrogado para: (data)"
+        },
+        {
+          "code": "0304",
+          "meaning": "Pagador alega que pagará o título em: (data)"
+        },
+        {
+          "code": "0305",
+          "meaning": "Pagador pagou o título diretamente ao Beneficiário em: (data)"
+        },
+        {
+          "code": "0306",
+          "meaning": "Pagador pagará o título diretamente ao Beneficiário em: (data)"
+        },
+        {
+          "code": "0401",
+          "meaning": "Pagador não foi localizado, confirmar endereço"
+        },
+        {
+          "code": "0402",
+          "meaning": "Pagador mudou-se, transferiu de domicílio"
+        },
+        {
+          "code": "0403",
+          "meaning": "Pagador não recebe no endereço indicado"
+        },
+        {
+          "code": "0404",
+          "meaning": "Pagador desconhecido no local"
+        },
+        {
+          "code": "0405",
+          "meaning": "Pagador reside fora do perímetro"
+        },
+        {
+          "code": "0406",
+          "meaning": "Pagador com endereço incompleto"
+        },
+        {
+          "code": "0407",
+          "meaning": "Não foi localizado o número constante no endereço do título"
+        },
+        {
+          "code": "0408",
+          "meaning": "Endereço não localizado/não consta nos guias da cidade"
+        },
+        {
+          "code": "0409",
+          "meaning": "Endereço do Pagador alterado para: (complemento)"
+        },
+        {
+          "code": "0501",
+          "meaning": "Pagador alega que tem desconto ou abatimento de: (valor)"
+        },
+        {
+          "code": "0502",
+          "meaning": "Pagador solicita desconto ou abatimento de: (valor)"
+        },
+        {
+          "code": "0503",
+          "meaning": "Pagador solicita dispensa dos juros de mora"
+        },
+        {
+          "code": "0504",
+          "meaning": "Pagador se recusa a pagar juros"
+        },
+        {
+          "code": "0505",
+          "meaning": "Pagador se recusa a pagar comissão de permanência"
+        },
+        {
+          "code": "0601",
+          "meaning": "Pagador está em regime de concordata"
+        },
+        {
+          "code": "0602",
+          "meaning": "Pagador está em regime de falência"
+        },
+        {
+          "code": "0603",
+          "meaning": "Pagador alega que mantém entendimentos com Pagador"
+        },
+        {
+          "code": "0604",
+          "meaning": "Pagador está em entendimentos com o Beneficiário"
+        },
+        {
+          "code": "0605",
+          "meaning": "Pagador está viajando"
+        },
+        {
+          "code": "0606",
+          "meaning": "Pagador recusou-se a aceitar o título"
+        },
+        {
+          "code": "0607",
+          "meaning": "Pagador sustou protesto judicialmente"
+        },
+        {
+          "code": "0608",
+          "meaning": "Empregado recusou-se a receber título"
+        },
+        {
+          "code": "0609",
+          "meaning": "Título reapresentado ao Pagador"
+        },
+        {
+          "code": "0610",
+          "meaning": "Estamos nos dirigindo ao nosso correspondente"
+        },
+        {
+          "code": "0611",
+          "meaning": "Correspondente não se interessa pelo protesto"
+        },
+        {
+          "code": "0612",
+          "meaning": "Pagador não atende aos avisos de nossos correspondentes"
+        },
+        {
+          "code": "0613",
+          "meaning": "Título está sendo encaminhado ao correspondente"
+        },
+        {
+          "code": "0614",
+          "meaning": "Entrega franco de pagamento ao Pagador"
+        },
+        {
+          "code": "0615",
+          "meaning": "Entrega franco de pagamento ao representante"
+        },
+        {
+          "code": "0616",
+          "meaning": "A entrega franco de pagamento é difícil"
+        },
+        {
+          "code": "0617",
+          "meaning": "Título recusado pelo cartório"
+        }
+      ]
+    },
+    {
+      "id": "dataOcorrenciaPagador",
+      "name": "Data da Ocorrência",
+      "start": 158,
+      "end": 165,
+      "type": "A",
+      "required": false,
+      "description": "Data do evento, alegado pelo Pagador, que afeta o estado do título de cobrança (formato DDMMAAAA).",
+      "reference": "C058"
+    },
+    {
+      "id": "valorOcorrenciaPagador",
+      "name": "Valor da Ocorrência",
+      "start": 166,
+      "end": 180,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor constante da ocorrência, alegada pelo Pagador, referente ao título de cobrança, expresso em moeda corrente.",
+      "reference": "C059"
+    },
+    {
+      "id": "complementoOcorrenciaPagador",
+      "name": "Complem. da Ocorrência",
+      "start": 181,
+      "end": 210,
+      "type": "A",
+      "required": false,
+      "description": "Texto descritivo para complementar a ocorrência do Pagador. Para código padrão = '01' - Formato Livre; para código padrão = '02' - mesmo formato do campo 'Ocorrência' do segmento U (data 8, valor 13+2, complemento 30).",
+      "reference": "A002"
+    },
+    {
+      "id": "bancoCorrespondente",
+      "name": "Cód. Banco Correspondente Compens.",
+      "start": 211,
+      "end": 213,
+      "type": "N",
+      "required": false,
+      "description": "Código fornecido pelo Banco Central para identificação na Câmara de Compensação, do Banco ao qual será repassada a Cobrança do Título. Somente para troca de arquivos entre Bancos.",
+      "reference": "C031"
+    },
+    {
+      "id": "nossoNumeroBancoCorrespondente",
+      "name": "Nosso Nº Banco Correspondente",
+      "start": 214,
+      "end": 233,
+      "type": "N",
+      "required": false,
+      "description": "Código fornecido pelo Banco Correspondente para identificação do Título de Cobrança. Somente para troca de arquivos entre Bancos.",
+      "reference": "C032"
+    },
+    {
+      "id": "cnab2",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 234,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    }
+  ]
+}

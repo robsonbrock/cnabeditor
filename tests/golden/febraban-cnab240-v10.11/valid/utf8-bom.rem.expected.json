@@ -1,0 +1,28 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 1,
+      "start": 73,
+      "end": 102,
+      "fieldId": "nomeEmpresa",
+      "rule": "charset",
+      "found": "EMPRESA FICTÍCIA AÇÃO LTDA    "
+    },
+    {
+      "line": 3,
+      "start": 44,
+      "end": 73,
+      "fieldId": "nomeFavorecido",
+      "rule": "charset",
+      "found": "JOSÉ DA CONCEIÇÃO             "
+    }
+  ]
+}

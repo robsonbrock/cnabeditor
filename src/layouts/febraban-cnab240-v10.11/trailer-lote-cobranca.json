@@ -1,0 +1,186 @@
+{
+  "id": "trailer-lote-cobranca",
+  "kind": "batchTrailer",
+  "label": "TL",
+  "title": "Trailer de Lote – Cobrança",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "5"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "01"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Trailer de Lote = '5'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 9,
+      "end": 17,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "quantidadeRegistros",
+      "name": "Quantidade de Registros do Lote",
+      "start": 18,
+      "end": 23,
+      "type": "N",
+      "required": true,
+      "description": "Número obtido pela contagem dos registros enviados no lote do arquivo. Somatória dos registros de tipo 1, 2, 3, 4 e 5.",
+      "reference": "G057"
+    },
+    {
+      "id": "quantidadeTitulosSimples",
+      "name": "Quantidade de Títulos em Cobrança",
+      "start": 24,
+      "end": 29,
+      "type": "N",
+      "required": false,
+      "description": "Somatória dos registros enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Simples.",
+      "reference": "C070"
+    },
+    {
+      "id": "valorTotalSimples",
+      "name": "Valor Total dos Títulos em Carteiras",
+      "start": 30,
+      "end": 46,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Somatória dos valores dos títulos de cobrança enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Simples.",
+      "reference": "C071"
+    },
+    {
+      "id": "quantidadeTitulosVinculada",
+      "name": "Quantidade de Títulos em Cobrança",
+      "start": 47,
+      "end": 52,
+      "type": "N",
+      "required": false,
+      "description": "Somatória dos registros enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Vinculada.",
+      "reference": "C070"
+    },
+    {
+      "id": "valorTotalVinculada",
+      "name": "Valor Total dos Títulos em Carteiras",
+      "start": 53,
+      "end": 69,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Somatória dos valores dos títulos de cobrança enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Vinculada.",
+      "reference": "C071"
+    },
+    {
+      "id": "quantidadeTitulosCaucionada",
+      "name": "Quantidade de Títulos em Cobrança",
+      "start": 70,
+      "end": 75,
+      "type": "N",
+      "required": false,
+      "description": "Somatória dos registros enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Caucionada.",
+      "reference": "C070"
+    },
+    {
+      "id": "valorTotalCaucionada",
+      "name": "Valor Total dos Títulos em Carteiras",
+      "start": 76,
+      "end": 92,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Somatória dos valores dos títulos de cobrança enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Caucionada.",
+      "reference": "C071"
+    },
+    {
+      "id": "quantidadeTitulosDescontada",
+      "name": "Quantidade de Títulos em Cobrança",
+      "start": 93,
+      "end": 98,
+      "type": "N",
+      "required": false,
+      "description": "Somatória dos registros enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Descontada.",
+      "reference": "C070"
+    },
+    {
+      "id": "valorTotalDescontada",
+      "name": "Valor Total dos Títulos em Carteiras",
+      "start": 99,
+      "end": 115,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Somatória dos valores dos títulos de cobrança enviados no lote do arquivo de acordo com o Código da Carteira. Só serão utilizados para informação do arquivo retorno. Totalização da Cobrança Descontada.",
+      "reference": "C071"
+    },
+    {
+      "id": "numeroAviso",
+      "name": "Número do Aviso de Lançamento",
+      "start": 116,
+      "end": 123,
+      "type": "A",
+      "required": false,
+      "description": "Número do aviso de lançamento do crédito referente a(os) título(s) de cobrança, que poderá ser utilizado no extrato de conta corrente.",
+      "reference": "C072"
+    },
+    {
+      "id": "cnab2",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 124,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    }
+  ],
+  "totals": [
+    {
+      "field": "quantidadeRegistros",
+      "kind": "countRecords"
+    }
+  ]
+}

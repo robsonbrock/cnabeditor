@@ -8,6 +8,15 @@
 
 **Input**: User description: "Editor de página única, sem login, para importar, visualizar, editar campo a campo, copiar e exportar arquivos CNAB 240 (remessa/retorno) com validação de campos em tempo real, painel de detalhes do campo, divisórias redimensionáveis com medidas salvas no navegador, temas dark/light e referência ao manual FEBRABAN CNAB 240 v10.11."
 
+## Clarifications
+
+### Session 2026-10-22
+
+- Q: Quando o conteúdo vem da janela "Colar conteúdo" (e não de um arquivo importado), que quebra de linha o arquivo exportado deve usar? → A: Exportar sempre com CRLF.
+- Q: Que codificação de caracteres (encoding) o arquivo exportado deve usar quando o conteúdo veio da janela "Colar conteúdo"? → A: ISO-8859-1; caracteres sem representação nessa codificação são substituídos por "?" e o sistema avisa.
+- Q: Enquanto o usuário ainda está digitando num campo, a mensagem de erro já deve aparecer embaixo dele, ou só quando ele sai do campo? → A: Tipo e tamanho a cada tecla; valores permitidos e datas ao sair do campo; a mensagem segue o mesmo momento.
+- Q: O usuário deve poder navegar entre as linhas do quadro principal pelo teclado (setas ↑/↓ para trocar a linha selecionada), além do clique? → A: Sim; setas ↑/↓ no quadro principal, com o mesmo aviso de edições pendentes; Tab percorre os campos do quadro de edição.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Carregar e inspecionar um arquivo CNAB 240 (Priority: P1)
@@ -27,6 +36,7 @@ Um analista recebe um arquivo CNAB 240 (remessa ou retorno) e precisa entender o
 5. **Given** um arquivo carregado, **When** a página exibe o quadro principal, **Then** cada linha começa com um rótulo do tipo de registro (`HA`, `HL`, o Código Segmento do detalhe como `A`, `B`, `J`, `R`, `TL`, `TA`), visualmente separado do conteúdo.
 5a. **Given** um arquivo com 8 linhas carregado, **When** o usuário olha o cabeçalho do quadro principal, **Then** vê "8 linhas"; ao carregar outro conteúdo, o total é atualizado.
 6. **Given** um arquivo carregado, **When** o usuário clica em uma linha, **Then** ela fica destacada visualmente, a linha antes selecionada perde o destaque e os campos da linha são carregados no quadro de edição à direita.
+6a. **Given** a linha 3 selecionada e o foco no quadro principal, **When** o usuário pressiona ↓, **Then** a linha 4 passa a ser a selecionada, com o mesmo efeito do clique; na última linha, ↓ não faz nada.
 7. **Given** um arquivo carregado, **When** o usuário clica em uma linha de detalhe Segmento Q, **Then** o cabeçalho do quadro direito mostra o tipo de registro "Detalhe – Segmento Q" e lista todos os campos do segmento na ordem das posições.
 8. **Given** um campo com 9 caracteres significativos num campo de tamanho 14, **When** a linha é exibida, **Then** o contador do campo mostra `9/14`.
 9. **Given** o usuário copia ou exporta o conteúdo, **When** o resultado é gerado, **Then** os rótulos de tipo de registro não fazem parte dele e todo o conteúdo do quadro principal é reproduzido integralmente: sequências de espaços (inclusive várias seguidas, no início ou no fim das linhas, e linhas só com espaços) são preservadas caractere a caractere, sem remoção, compactação ou substituição.
@@ -53,7 +63,7 @@ Ao posicionar o cursor em um campo da lista à direita, o painel inferior direit
 
 ### User Story 3 - Editar campos e atualizar a linha (Priority: P1)
 
-O usuário altera o valor de um ou mais campos nas caixas de texto do quadro direito. A validação acontece em tempo real (tamanho, tipo, valores permitidos) e novamente a cada saída do campo; um campo com erro fica destacado e a descrição do erro aparece logo abaixo dele. Ao acionar "Atualizar linha" (botão no canto inferior esquerdo do quadro de edição, com uma seta para a esquerda indicando que os valores seguem para o quadro principal), a linha correspondente no quadro principal é reescrita com os novos valores, respeitando posições e tamanhos, sem alterar nenhum outro byte da linha ou do arquivo.
+O usuário altera o valor de um ou mais campos nas caixas de texto do quadro direito. Tipo e tamanho são validados a cada tecla; valores permitidos e datas, a cada saída do campo (quando o valor já está completo); um campo com erro fica destacado e a descrição do erro aparece logo abaixo dele. Ao acionar "Atualizar linha" (botão no canto inferior esquerdo do quadro de edição, com uma seta para a esquerda indicando que os valores seguem para o quadro principal), a linha correspondente no quadro principal é reescrita com os novos valores, respeitando posições e tamanhos, sem alterar nenhum outro byte da linha ou do arquivo.
 
 **Why this priority**: Editar com segurança é a razão de ser do editor; completa o MVP junto com as histórias 1 e 2.
 
@@ -67,7 +77,7 @@ O usuário altera o valor de um ou mais campos nas caixas de texto do quadro dir
 1c. **Given** uma linha selecionada, **When** o usuário olha o quadro de edição, **Then** o botão "Atualizar linha" está no canto inferior esquerdo do quadro, com uma seta apontando para a esquerda, deixando claro que os valores seguem do quadro de edição (direita) para o quadro principal (esquerda). Ver esboço em [attachments/esboco-quadro-edicao.svg](attachments/esboco-quadro-edicao.svg).
 2. **Given** um campo de tamanho 14, **When** o usuário tenta inserir mais de 14 caracteres, **Then** o sistema não aceita além do tamanho e o contador mostra `14/14`.
 3. **Given** campos editados e válidos, **When** o usuário aciona "Atualizar linha", **Then** a linha no quadro principal reflete os novos valores com o preenchimento padrão (numéricos com zeros à esquerda, alfanuméricos com espaços à direita) e todo o restante da linha permanece idêntico.
-4. **Given** campos editados e não confirmados, **When** o usuário seleciona outra linha, **Then** o sistema avisa que há edições pendentes e permite atualizar, descartar ou cancelar a troca.
+4. **Given** campos editados e não confirmados, **When** o usuário seleciona outra linha (por clique ou pelas setas ↑/↓), **Then** o sistema avisa que há edições pendentes e permite atualizar, descartar ou cancelar a troca.
 5. **Given** uma linha com campo inválido, **When** o usuário aciona "Atualizar linha", **Then** a linha é atualizada mesmo assim (validação informa, não bloqueia), o campo continua sinalizado como inválido e a linha no quadro principal passa a exibir um indicador de que possui erro(s), visível mesmo quando ela não está selecionada e distinto do indicador de "alterada"; o indicador some quando a linha deixa de ter erros.
 5a. **Given** o usuário aciona "Atualizar linha", **When** a linha é atualizada, **Then** um aviso temporário (toast) confirma a atualização (ex.: "Linha 3 atualizada") e, se a linha ficou com erros, informa a quantidade de campos com erro.
 6. **Given** o usuário alterou o valor de um detalhe e o Trailer de Lote ficou divergente, **When** consulta a validação, **Then** o trailer do lote e o Trailer de Arquivo afetados são sinalizados com o valor encontrado e o valor esperado.
@@ -131,6 +141,7 @@ O usuário ajusta a interface à sua tela: arrasta as divisórias entre o quadro
 - Armazenamento do navegador indisponível (ex.: navegação privada): a página funciona com os padrões e apenas não restaura preferências.
 - Conteúdo colado com espaços no fim das linhas (comum quando os últimos campos são alfanuméricos vazios) ou com linhas só de espaços: preservado integralmente; uma linha que perdesse esses espaços deixaria de ter 240 caracteres.
 - Várias ações seguidas gerando toasts (ex.: atualizar duas linhas rapidamente): os avisos são exibidos empilhados ou em sequência, cada um com seus 5 segundos, sem que um esconda o outro antes do tempo.
+- Conteúdo colado com caracteres fora de ISO-8859-1 (ex.: emoji, aspas tipográficas de outros alfabetos): a exportação avisa e pede confirmação; confirmada, cada caractere vira "?" no arquivo, mantendo 1 byte por posição.
 - Duas exportações no mesmo minuto: recebem nomes diferentes, pois o nome inclui o segundo. Apenas exportações repetidas dentro do mesmo segundo podem gerar o mesmo nome; nesse caso, o comportamento segue o do navegador do usuário.
 
 ## Requirements *(mandatory)*
@@ -156,6 +167,7 @@ O usuário ajusta a interface à sua tela: arrasta as divisórias entre o quadro
 **Visualização e seleção**
 
 - **FR-009**: Usuários MUST poder selecionar qualquer linha do quadro principal com um clique; a linha selecionada MUST ficar destacada visualmente (apenas uma por vez) e seus campos MUST ser carregados no quadro de edição à direita.
+- **FR-009f**: Com o foco no quadro principal, as setas ↑/↓ MUST selecionar a linha anterior/seguinte, com o mesmo efeito do clique (destaque, carga dos campos e o aviso de edições pendentes de FR-022); a linha selecionada MUST ficar visível, rolando o quadro quando necessário. No quadro de edição, a tecla Tab MUST percorrer os campos na ordem das posições.
 - **FR-009a**: Cada linha do quadro principal MUST começar com um rótulo do tipo de registro:
   - `HA`: Header de Arquivo
   - `HL`: Header de Lote
@@ -178,9 +190,9 @@ O usuário ajusta a interface à sua tela: arrasta as divisórias entre o quadro
 
 **Edição e validação**
 
-- **FR-015**: O sistema MUST validar cada campo em tempo real quanto a tamanho máximo, tipo (numérico, alfanumérico, data, valor) e valores permitidos, sinalizando o campo inválido com a regra violada.
+- **FR-015**: O sistema MUST validar cada campo quanto a tamanho máximo e tipo (numérico, alfanumérico, data, valor) a cada tecla digitada, e quanto a valores permitidos e validade de datas a cada saída do campo, sinalizando o campo inválido com a regra violada. Regras de valores permitidos e de datas MUST NOT sinalizar erro enquanto o usuário ainda está digitando no campo.
 - **FR-015a**: Um campo inválido (incluindo opção fora dos valores permitidos) MUST ficar visualmente destacado como erro e exibir a descrição do erro logo abaixo da caixa de texto, informando o valor encontrado e a regra violada.
-- **FR-015b**: O sistema MUST revalidar o campo a cada saída do campo (perda de foco): se o valor estiver correto, remove o destaque e a mensagem; se continuar inválido, mantém o destaque e atualiza a mensagem para o erro atual.
+- **FR-015b**: O destaque e a mensagem abaixo do campo MUST aparecer e sumir no mesmo momento da regra que os gerou (tipo e tamanho a cada tecla; valores permitidos e datas ao sair do campo). O sistema MUST revalidar todas as regras do campo a cada saída do campo (perda de foco): se o valor estiver correto, remove o destaque e a mensagem; se continuar inválido, mantém o destaque e atualiza a mensagem para o erro atual.
 - **FR-016**: O sistema MUST validar o tamanho das linhas e a sequência de registros (header de arquivo, lotes, detalhes, trailers) e sinalizar no quadro principal as linhas com problemas.
 - **FR-016a**: O sistema MUST exibir um contador com o total de erros de validação do arquivo; ao clicar nele, o sistema seleciona a linha do próximo erro e foca o campo correspondente.
 - **FR-017**: As caixas de texto MUST impedir a entrada de mais caracteres que o tamanho do campo.
@@ -201,6 +213,8 @@ O usuário ajusta a interface à sua tela: arrasta as divisórias entre o quadro
 - **FR-024**: Usuários MUST poder exportar o conteúdo do quadro principal como arquivo para download, com extensão `.rem` para remessa ou `.ret` para retorno; quando o tipo não for identificado, o usuário escolhe a extensão.
 - **FR-024a**: O nome do arquivo exportado MUST seguir o formato `cnabeditor_AAAAMMDDHHMMSS.<extensão>`, onde `AAAA` é o ano, `MM` o mês, `DD` o dia, `HH` a hora (00–23), `MM` o minuto e `SS` o segundo do momento da exportação, todos com zeros à esquerda (ex.: exportado em 22/10/2026 às 11:52:07 → `cnabeditor_20261022115207.rem`). O segundo evita que duas exportações feitas no mesmo minuto gerem arquivos com o mesmo nome.
 - **FR-025**: Exportar um conteúdo sem edições MUST produzir arquivo idêntico byte a byte ao importado, preservando encoding, quebras de linha e presença ou ausência de quebra final.
+- **FR-025a**: Quando o conteúdo do quadro principal veio da janela "Colar conteúdo", a exportação MUST usar CRLF como quebra de linha entre registros, preservando a presença ou ausência de quebra final; todos os demais caracteres são exportados sem alteração. A cópia para a área de transferência não é afetada por esta regra.
+- **FR-025b**: Quando o conteúdo do quadro principal veio da janela "Colar conteúdo", a exportação MUST usar a codificação ISO-8859-1 (1 byte por caractere). Se houver caracteres sem representação em ISO-8859-1 (ex.: emoji), o sistema MUST avisar antes de baixar, informando quantos são e as linhas e posições afetadas, e só baixar após confirmação explícita; na exportação, cada um desses caracteres MUST ser gravado como "?". O conteúdo do quadro principal não é alterado. A cópia para a área de transferência não é afetada por esta regra.
 - **FR-026**: Exportar conteúdo com erros de validação MUST exigir confirmação explícita, informando a quantidade de erros.
 - **FR-027**: Usuários MUST poder copiar todo o conteúdo do quadro principal para a área de transferência, com confirmação visual.
 - **FR-027a**: Copiar e exportar MUST reproduzir integralmente o conteúdo do quadro principal (sem os rótulos de FR-009b), preservando caractere a caractere todos os espaços, inclusive sequências de vários espaços, espaços no início e no fim das linhas e linhas só com espaços; o sistema MUST NOT aplicar "trim", compactação ou substituição de espaços.
@@ -244,10 +258,10 @@ O usuário ajusta a interface à sua tela: arrasta as divisórias entre o quadro
 - **SC-001**: Um usuário identifica o nome, posição e significado de qualquer campo de uma linha em menos de 10 segundos, sem consultar o manual em PDF.
 - **SC-002**: 100% dos arquivos de referência importados e exportados sem edições ficam idênticos byte a byte ao original.
 - **SC-003**: Após editar um campo e atualizar a linha, 100% dos caracteres fora do campo editado permanecem inalterados nos testes com arquivos de referência.
-- **SC-004**: O feedback de validação aparece em até 200 ms após cada tecla digitada num campo, percebido como imediato.
+- **SC-004**: O feedback de validação de tipo e tamanho aparece em até 200 ms após cada tecla digitada, e o de valores permitidos e datas em até 200 ms após o usuário sair do campo, percebidos como imediatos.
 - **SC-005**: Um arquivo de 10.000 linhas é carregado e exibido em até 3 segundos, e arquivos de até 100.000 linhas abrem sem travar a interface.
 - **SC-005a**: Ao clicar numa linha, os campos aparecem no quadro de edição de forma percebida como imediata (até 200 ms), e o usuário identifica todas as linhas alteradas apenas olhando o quadro principal.
-- **SC-005b**: 100% dos conteúdos colados e depois copiados ou exportados nos testes (incluindo linhas com espaços finais e linhas só com espaços) ficam idênticos caractere a caractere ao conteúdo colado.
+- **SC-005b**: 100% dos conteúdos colados e depois copiados ou exportados nos testes (incluindo linhas com espaços finais e linhas só com espaços) ficam idênticos caractere a caractere ao conteúdo colado; na exportação, a única diferença admitida é a quebra de linha, que é sempre CRLF (FR-025a).
 - **SC-005c**: Em testes com usuários, 100% das ações de importar, exportar e atualizar linha geram um aviso de sucesso ou erro, e os usuários identificam o campo com erro e o motivo sem abrir o painel de detalhes.
 - **SC-006**: Após recarregar a página, 100% das preferências (divisórias, quebra de linha, tema) são restauradas.
 - **SC-007**: 90% dos usuários de teste completam o fluxo importar → editar um campo → exportar na primeira tentativa, sem ajuda.

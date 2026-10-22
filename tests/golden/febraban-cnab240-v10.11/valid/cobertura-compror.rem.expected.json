@@ -1,0 +1,28 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "B",
+    "C",
+    "I",
+    "I",
+    "J",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote-compror",
+    "segmento-a-compror",
+    "segmento-b-compror",
+    "segmento-c-compror",
+    "segmento-i-11-compror",
+    "segmento-i-compror",
+    "segmento-j-compror",
+    "trailer-lote-compror",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}

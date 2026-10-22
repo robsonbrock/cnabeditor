@@ -1,0 +1,28 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "G",
+    "H",
+    "Y",
+    "Y",
+    "Y",
+    "Y",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote-boleto-eletronico",
+    "segmento-g-boleto-eletronico",
+    "segmento-h-boleto-eletronico",
+    "segmento-y-03-boleto-eletronico",
+    "segmento-y-51-boleto-eletronico",
+    "segmento-y-52-boleto-eletronico",
+    "segmento-y-53-boleto-eletronico",
+    "trailer-lote-boleto-eletronico",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}

@@ -1,0 +1,462 @@
+{
+  "id": "segmento-y-05-cobranca",
+  "kind": "detail",
+  "label": "Y",
+  "title": "Detalhe – Segmento Y-05",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "3"
+    },
+    {
+      "pos": [
+        14,
+        14
+      ],
+      "equals": "Y"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "01"
+      ]
+    },
+    {
+      "pos": [
+        18,
+        19
+      ],
+      "equals": "04"
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "numeroRegistro",
+      "name": "Nº Sequencial do Registro no Lote",
+      "start": 9,
+      "end": 13,
+      "type": "N",
+      "required": true,
+      "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote.",
+      "reference": "G038"
+    },
+    {
+      "id": "codigoSegmento",
+      "name": "Cód. Segmento do Registro Detalhe",
+      "start": 14,
+      "end": 14,
+      "type": "A",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'Y'.",
+      "reference": "G039"
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 15,
+      "end": 15,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "codigoMovimento",
+      "name": "Código de Movimento",
+      "start": 16,
+      "end": 17,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos registros do arquivo de retorno.",
+      "reference": "C044",
+      "domain": [
+        {
+          "code": "02",
+          "meaning": "Entrada Confirmada"
+        },
+        {
+          "code": "03",
+          "meaning": "Entrada Rejeitada"
+        },
+        {
+          "code": "04",
+          "meaning": "Transferência de Carteira/Entrada"
+        },
+        {
+          "code": "05",
+          "meaning": "Transferência de Carteira/Baixa"
+        },
+        {
+          "code": "06",
+          "meaning": "Liquidação"
+        },
+        {
+          "code": "07",
+          "meaning": "Confirmação do Recebimento da Instrução de Desconto"
+        },
+        {
+          "code": "08",
+          "meaning": "Confirmação do Recebimento do Cancelamento do Desconto"
+        },
+        {
+          "code": "09",
+          "meaning": "Baixa"
+        },
+        {
+          "code": "11",
+          "meaning": "Títulos em Carteira (Em Ser)"
+        },
+        {
+          "code": "12",
+          "meaning": "Confirmação Recebimento Instrução de Abatimento"
+        },
+        {
+          "code": "13",
+          "meaning": "Confirmação Recebimento Instrução de Cancelamento Abatimento"
+        },
+        {
+          "code": "14",
+          "meaning": "Confirmação Recebimento Instrução Alteração de Vencimento"
+        },
+        {
+          "code": "15",
+          "meaning": "Franco de Pagamento"
+        },
+        {
+          "code": "17",
+          "meaning": "Liquidação Após Baixa ou Liquidação Título Não Registrado"
+        },
+        {
+          "code": "19",
+          "meaning": "Confirmação Recebimento Instrução de Protesto"
+        },
+        {
+          "code": "20",
+          "meaning": "Confirmação Recebimento Instrução de Sustação/Cancelamento de Protesto"
+        },
+        {
+          "code": "23",
+          "meaning": "Remessa a Cartório (Aponte em Cartório)"
+        },
+        {
+          "code": "24",
+          "meaning": "Retirada de Cartório e Manutenção em Carteira"
+        },
+        {
+          "code": "25",
+          "meaning": "Protestado e Baixado (Baixa por Ter Sido Protestado)"
+        },
+        {
+          "code": "26",
+          "meaning": "Instrução Rejeitada"
+        },
+        {
+          "code": "27",
+          "meaning": "Confirmação do Pedido de Alteração de Outros Dados"
+        },
+        {
+          "code": "28",
+          "meaning": "Débito de Tarifas/Custas"
+        },
+        {
+          "code": "29",
+          "meaning": "Ocorrências do Pagador"
+        },
+        {
+          "code": "30",
+          "meaning": "Alteração de Dados Rejeitada"
+        },
+        {
+          "code": "33",
+          "meaning": "Confirmação da Alteração dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "34",
+          "meaning": "Confirmação do Cancelamento dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "35",
+          "meaning": "Confirmação do Desagendamento do Débito Automático"
+        },
+        {
+          "code": "36",
+          "meaning": "Confirmação de envio de e-mail/SMS"
+        },
+        {
+          "code": "37",
+          "meaning": "Envio de e-mail/SMS rejeitado"
+        },
+        {
+          "code": "38",
+          "meaning": "Confirmação de alteração do Prazo Limite de Recebimento"
+        },
+        {
+          "code": "39",
+          "meaning": "Confirmação de Dispensa de Prazo Limite de Recebimento"
+        },
+        {
+          "code": "40",
+          "meaning": "Confirmação da alteração do número do título dado pelo Beneficiário"
+        },
+        {
+          "code": "41",
+          "meaning": "Confirmação da alteração do número controle do Participante"
+        },
+        {
+          "code": "42",
+          "meaning": "Confirmação da alteração dos dados do Pagador"
+        },
+        {
+          "code": "43",
+          "meaning": "Confirmação da alteração dos dados do Sacador/Avalista"
+        },
+        {
+          "code": "44",
+          "meaning": "Título pago com cheque devolvido"
+        },
+        {
+          "code": "45",
+          "meaning": "Título pago com cheque compensado"
+        },
+        {
+          "code": "46",
+          "meaning": "Instrução para cancelar protesto confirmada"
+        },
+        {
+          "code": "47",
+          "meaning": "Instrução para protesto para fins falimentares confirmada"
+        },
+        {
+          "code": "48",
+          "meaning": "Confirmação de instrução de transferência de carteira/modalidade de cobrança"
+        },
+        {
+          "code": "49",
+          "meaning": "Alteração de contrato de cobrança"
+        },
+        {
+          "code": "50",
+          "meaning": "Título pago com cheque pendente de liquidação"
+        },
+        {
+          "code": "51",
+          "meaning": "Título DDA reconhecido pelo Pagador"
+        },
+        {
+          "code": "52",
+          "meaning": "Título DDA não reconhecido pelo Pagador"
+        },
+        {
+          "code": "53",
+          "meaning": "Título DDA recusado pela CIP"
+        },
+        {
+          "code": "54",
+          "meaning": "Confirmação da Instrução de Baixa de Título Negativado sem Protesto"
+        },
+        {
+          "code": "55",
+          "meaning": "Confirmação de Pedido de Dispensa de Multa"
+        },
+        {
+          "code": "56",
+          "meaning": "Confirmação do Pedido de Cobrança de Multa"
+        },
+        {
+          "code": "57",
+          "meaning": "Confirmação do Pedido de Alteração de Cobrança de Juros"
+        },
+        {
+          "code": "58",
+          "meaning": "Confirmação do Pedido de Alteração do Valor/Data de Desconto"
+        },
+        {
+          "code": "59",
+          "meaning": "Confirmação do Pedido de Alteração do Beneficiário do Título"
+        },
+        {
+          "code": "60",
+          "meaning": "Confirmação do Pedido de Dispensa de Juros de Mora"
+        },
+        {
+          "code": "61",
+          "meaning": "Confirmação de Alteração do Valor Nominal do Título"
+        },
+        {
+          "code": "63",
+          "meaning": "Título Sustado Judicialmente"
+        },
+        {
+          "code": "64",
+          "meaning": "Confirmação de alteração do valor mínimo/percentual"
+        },
+        {
+          "code": "65",
+          "meaning": "Confirmação de alteração do valor máximo/percentual"
+        },
+        {
+          "code": "93",
+          "meaning": "Intenção de pagamento"
+        },
+        {
+          "code": "94",
+          "meaning": "Cancelamento de intenção de pagamento"
+        }
+      ]
+    },
+    {
+      "id": "identificacaoRegistroOpcional",
+      "name": "Identificação Registro Opcional",
+      "start": 18,
+      "end": 19,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificação de registros opcionais. O manual indica o valor '04' para o segmento Y-05.",
+      "reference": "G067",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "Informação de Dados do Sacador Avalista"
+        },
+        {
+          "code": "02",
+          "meaning": "Alegação do Pagador"
+        },
+        {
+          "code": "03",
+          "meaning": "Informação de Dados do Pagador"
+        },
+        {
+          "code": "04",
+          "meaning": "Informação de Dados de Cheques Utilizados"
+        },
+        {
+          "code": "11",
+          "meaning": "Informações sobre dados de parcelas de compror"
+        },
+        {
+          "code": "50",
+          "meaning": "Informação de Dados para Rateio de Crédito"
+        },
+        {
+          "code": "51",
+          "meaning": "Informações de Notas Fiscais"
+        },
+        {
+          "code": "52",
+          "meaning": "Identificação dos entes envolvidos no processo de pagamento"
+        },
+        {
+          "code": "53",
+          "meaning": "Identificação do Pagador Final e Agregador de Pagamento"
+        }
+      ]
+    },
+    {
+      "id": "cmc7Cheque1",
+      "name": "Identificação do Cheque",
+      "start": 20,
+      "end": 53,
+      "type": "A",
+      "required": false,
+      "description": "Código CMC7 do cheque. CMC7 do cheque 1.",
+      "reference": "C076"
+    },
+    {
+      "id": "cmc7Cheque2",
+      "name": "Identificação do Cheque",
+      "start": 54,
+      "end": 87,
+      "type": "A",
+      "required": false,
+      "description": "Código CMC7 do cheque. CMC7 do cheque 2.",
+      "reference": "C076"
+    },
+    {
+      "id": "cmc7Cheque3",
+      "name": "Identificação do Cheque",
+      "start": 88,
+      "end": 121,
+      "type": "A",
+      "required": false,
+      "description": "Código CMC7 do cheque. CMC7 do cheque 3.",
+      "reference": "C076"
+    },
+    {
+      "id": "cmc7Cheque4",
+      "name": "Identificação do Cheque",
+      "start": 122,
+      "end": 155,
+      "type": "A",
+      "required": false,
+      "description": "Código CMC7 do cheque. CMC7 do cheque 4.",
+      "reference": "C076"
+    },
+    {
+      "id": "cmc7Cheque5",
+      "name": "Identificação do Cheque",
+      "start": 156,
+      "end": 189,
+      "type": "A",
+      "required": false,
+      "description": "Código CMC7 do cheque. CMC7 do cheque 5.",
+      "reference": "C076"
+    },
+    {
+      "id": "cmc7Cheque6",
+      "name": "Identificação do Cheque",
+      "start": 190,
+      "end": 223,
+      "type": "A",
+      "required": false,
+      "description": "Código CMC7 do cheque. CMC7 do cheque 6.",
+      "reference": "C076"
+    },
+    {
+      "id": "cnab2",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 224,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    }
+  ]
+}

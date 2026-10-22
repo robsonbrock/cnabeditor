@@ -1,0 +1,34 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "HL",
+    "A",
+    "TL",
+    "A",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 4,
+      "start": 1,
+      "end": 240,
+      "rule": "sequence"
+    },
+    {
+      "line": 7,
+      "start": 1,
+      "end": 240,
+      "rule": "sequence"
+    },
+    {
+      "line": 7,
+      "start": 14,
+      "end": 14,
+      "fieldId": "segmento",
+      "rule": "batchMismatch"
+    }
+  ]
+}

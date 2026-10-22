@@ -1,0 +1,40 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "A",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 15,
+      "start": 24,
+      "end": 41,
+      "fieldId": "somatoriaValores",
+      "rule": "totalMismatch",
+      "found": "000000000000000000",
+      "expected": "011999999999999988"
+    }
+  ],
+  "recalc": [
+    {
+      "line": 15,
+      "fieldId": "somatoriaValores",
+      "from": "000000000000000000",
+      "to": "011999999999999988"
+    }
+  ]
+}

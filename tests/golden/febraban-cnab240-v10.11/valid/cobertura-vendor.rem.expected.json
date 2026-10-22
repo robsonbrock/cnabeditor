@@ -1,0 +1,24 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "K",
+    "L",
+    "M",
+    "N",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote-vendor",
+    "segmento-k-vendor",
+    "segmento-l-vendor",
+    "segmento-m-vendor",
+    "segmento-n-vendor",
+    "trailer-lote-vendor",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}

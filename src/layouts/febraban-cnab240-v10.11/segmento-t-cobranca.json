@@ -1,0 +1,716 @@
+{
+  "id": "segmento-t-cobranca",
+  "kind": "detail",
+  "label": "T",
+  "title": "Detalhe – Segmento T",
+  "match": [
+    {
+      "pos": [
+        8,
+        8
+      ],
+      "equals": "3"
+    },
+    {
+      "pos": [
+        14,
+        14
+      ],
+      "equals": "T"
+    },
+    {
+      "batch": "service",
+      "in": [
+        "01"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "codigoBanco",
+      "name": "Código do Banco na Compensação",
+      "start": 1,
+      "end": 3,
+      "type": "N",
+      "required": true,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços.",
+      "reference": "G001"
+    },
+    {
+      "id": "loteServico",
+      "name": "Lote de Serviço",
+      "start": 4,
+      "end": 7,
+      "type": "N",
+      "required": true,
+      "description": "Número seqüencial para identificar univocamente um lote de serviço. Preencher com '0001' para o primeiro lote do arquivo. Para os demais: número do lote anterior acrescido de 1.",
+      "reference": "G002"
+    },
+    {
+      "id": "tipoRegistro",
+      "name": "Tipo de Registro",
+      "start": 8,
+      "end": 8,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Detalhe = '3'.",
+      "reference": "G003",
+      "domain": {
+        "ref": "tipoRegistro"
+      }
+    },
+    {
+      "id": "numeroRegistro",
+      "name": "Nº Sequencial do Registro no Lote",
+      "start": 9,
+      "end": 13,
+      "type": "N",
+      "required": true,
+      "description": "Número adotado e controlado pelo responsável pela geração magnética dos dados contidos no arquivo, para identificar a seqüência de registros encaminhados no lote. Deve ser inicializado sempre em '1', em cada novo lote.",
+      "reference": "G038"
+    },
+    {
+      "id": "codigoSegmento",
+      "name": "Cód. Segmento do Registro Detalhe",
+      "start": 14,
+      "end": 14,
+      "type": "A",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN para identificar o segmento do registro. Segmento 'T'.",
+      "reference": "G039"
+    },
+    {
+      "id": "cnab1",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 15,
+      "end": 15,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    },
+    {
+      "id": "codigoMovimento",
+      "name": "Código de Movimento Retorno",
+      "start": 16,
+      "end": 17,
+      "type": "N",
+      "required": true,
+      "description": "Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos registros do arquivo de retorno.",
+      "reference": "C044",
+      "domain": [
+        {
+          "code": "02",
+          "meaning": "Entrada Confirmada"
+        },
+        {
+          "code": "03",
+          "meaning": "Entrada Rejeitada"
+        },
+        {
+          "code": "04",
+          "meaning": "Transferência de Carteira/Entrada"
+        },
+        {
+          "code": "05",
+          "meaning": "Transferência de Carteira/Baixa"
+        },
+        {
+          "code": "06",
+          "meaning": "Liquidação"
+        },
+        {
+          "code": "07",
+          "meaning": "Confirmação do Recebimento da Instrução de Desconto"
+        },
+        {
+          "code": "08",
+          "meaning": "Confirmação do Recebimento do Cancelamento do Desconto"
+        },
+        {
+          "code": "09",
+          "meaning": "Baixa"
+        },
+        {
+          "code": "11",
+          "meaning": "Títulos em Carteira (Em Ser)"
+        },
+        {
+          "code": "12",
+          "meaning": "Confirmação Recebimento Instrução de Abatimento"
+        },
+        {
+          "code": "13",
+          "meaning": "Confirmação Recebimento Instrução de Cancelamento Abatimento"
+        },
+        {
+          "code": "14",
+          "meaning": "Confirmação Recebimento Instrução Alteração de Vencimento"
+        },
+        {
+          "code": "15",
+          "meaning": "Franco de Pagamento"
+        },
+        {
+          "code": "17",
+          "meaning": "Liquidação Após Baixa ou Liquidação Título Não Registrado"
+        },
+        {
+          "code": "19",
+          "meaning": "Confirmação Recebimento Instrução de Protesto"
+        },
+        {
+          "code": "20",
+          "meaning": "Confirmação Recebimento Instrução de Sustação/Cancelamento de Protesto"
+        },
+        {
+          "code": "23",
+          "meaning": "Remessa a Cartório (Aponte em Cartório)"
+        },
+        {
+          "code": "24",
+          "meaning": "Retirada de Cartório e Manutenção em Carteira"
+        },
+        {
+          "code": "25",
+          "meaning": "Protestado e Baixado (Baixa por Ter Sido Protestado)"
+        },
+        {
+          "code": "26",
+          "meaning": "Instrução Rejeitada"
+        },
+        {
+          "code": "27",
+          "meaning": "Confirmação do Pedido de Alteração de Outros Dados"
+        },
+        {
+          "code": "28",
+          "meaning": "Débito de Tarifas/Custas"
+        },
+        {
+          "code": "29",
+          "meaning": "Ocorrências do Pagador"
+        },
+        {
+          "code": "30",
+          "meaning": "Alteração de Dados Rejeitada"
+        },
+        {
+          "code": "33",
+          "meaning": "Confirmação da Alteração dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "34",
+          "meaning": "Confirmação do Cancelamento dos Dados do Rateio de Crédito"
+        },
+        {
+          "code": "35",
+          "meaning": "Confirmação do Desagendamento do Débito Automático"
+        },
+        {
+          "code": "36",
+          "meaning": "Confirmação de envio de e-mail/SMS"
+        },
+        {
+          "code": "37",
+          "meaning": "Envio de e-mail/SMS rejeitado"
+        },
+        {
+          "code": "38",
+          "meaning": "Confirmação de alteração do Prazo Limite de Recebimento"
+        },
+        {
+          "code": "39",
+          "meaning": "Confirmação de Dispensa de Prazo Limite de Recebimento"
+        },
+        {
+          "code": "40",
+          "meaning": "Confirmação da alteração do número do título dado pelo Beneficiário"
+        },
+        {
+          "code": "41",
+          "meaning": "Confirmação da alteração do número controle do Participante"
+        },
+        {
+          "code": "42",
+          "meaning": "Confirmação da alteração dos dados do Pagador"
+        },
+        {
+          "code": "43",
+          "meaning": "Confirmação da alteração dos dados do Sacador/Avalista"
+        },
+        {
+          "code": "44",
+          "meaning": "Título pago com cheque devolvido"
+        },
+        {
+          "code": "45",
+          "meaning": "Título pago com cheque compensado"
+        },
+        {
+          "code": "46",
+          "meaning": "Instrução para cancelar protesto confirmada"
+        },
+        {
+          "code": "47",
+          "meaning": "Instrução para protesto para fins falimentares confirmada"
+        },
+        {
+          "code": "48",
+          "meaning": "Confirmação de instrução de transferência de carteira/modalidade de cobrança"
+        },
+        {
+          "code": "49",
+          "meaning": "Alteração de contrato de cobrança"
+        },
+        {
+          "code": "50",
+          "meaning": "Título pago com cheque pendente de liquidação"
+        },
+        {
+          "code": "51",
+          "meaning": "Título DDA reconhecido pelo Pagador"
+        },
+        {
+          "code": "52",
+          "meaning": "Título DDA não reconhecido pelo Pagador"
+        },
+        {
+          "code": "53",
+          "meaning": "Título DDA recusado pela CIP"
+        },
+        {
+          "code": "54",
+          "meaning": "Confirmação da Instrução de Baixa de Título Negativado sem Protesto"
+        },
+        {
+          "code": "55",
+          "meaning": "Confirmação de Pedido de Dispensa de Multa"
+        },
+        {
+          "code": "56",
+          "meaning": "Confirmação do Pedido de Cobrança de Multa"
+        },
+        {
+          "code": "57",
+          "meaning": "Confirmação do Pedido de Alteração de Cobrança de Juros"
+        },
+        {
+          "code": "58",
+          "meaning": "Confirmação do Pedido de Alteração do Valor/Data de Desconto"
+        },
+        {
+          "code": "59",
+          "meaning": "Confirmação do Pedido de Alteração do Beneficiário do Título"
+        },
+        {
+          "code": "60",
+          "meaning": "Confirmação do Pedido de Dispensa de Juros de Mora"
+        },
+        {
+          "code": "61",
+          "meaning": "Confirmação de Alteração do Valor Nominal do Título"
+        },
+        {
+          "code": "63",
+          "meaning": "Título Sustado Judicialmente"
+        },
+        {
+          "code": "64",
+          "meaning": "Confirmação de alteração do valor mínimo/percentual"
+        },
+        {
+          "code": "65",
+          "meaning": "Confirmação de alteração do valor máximo/percentual"
+        },
+        {
+          "code": "93",
+          "meaning": "Intenção de pagamento"
+        },
+        {
+          "code": "94",
+          "meaning": "Cancelamento de intenção de pagamento"
+        }
+      ]
+    },
+    {
+      "id": "agencia",
+      "name": "Agência Mantenedora da Conta",
+      "start": 18,
+      "end": 22,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta, para identificar a qual unidade está vinculada a conta corrente.",
+      "reference": "G008",
+      "sensitive": true
+    },
+    {
+      "id": "dvAgencia",
+      "name": "Dígito Verificador da Agência",
+      "start": 23,
+      "end": 23,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do Código da Agência.",
+      "reference": "G009",
+      "sensitive": true
+    },
+    {
+      "id": "conta",
+      "name": "Número da Conta Corrente",
+      "start": 24,
+      "end": 35,
+      "type": "N",
+      "required": false,
+      "description": "Número adotado pelo Banco, para identificar univocamente a conta corrente utilizada pelo Cliente.",
+      "reference": "G010",
+      "sensitive": true
+    },
+    {
+      "id": "dvConta",
+      "name": "Dígito Verificador da Conta",
+      "start": 36,
+      "end": 36,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo responsável pela conta corrente, para verificação da autenticidade do Número da Conta Corrente. Para os Bancos que se utilizam de duas posições para o Dígito Verificador, preencher este campo com a 1ª posição deste dígito.",
+      "reference": "G011",
+      "sensitive": true
+    },
+    {
+      "id": "dvAgenciaConta",
+      "name": "Dígito Verificador da Ag/Conta",
+      "start": 37,
+      "end": 37,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do par Código da Agência / Número da Conta Corrente. Para os Bancos que se utilizam de duas posições para o Dígito Verificador da Conta, preencher este campo com a 2ª posição deste dígito.",
+      "reference": "G012",
+      "sensitive": true
+    },
+    {
+      "id": "nossoNumero",
+      "name": "Identificação do Título",
+      "start": 38,
+      "end": 57,
+      "type": "A",
+      "required": false,
+      "description": "Número adotado pelo Banco Beneficiário para identificar o Título. Para código de movimento igual a '01' (Entrada de Títulos), caso esteja preenchido com zeros, a numeração será feita pelo Banco.",
+      "reference": "G069"
+    },
+    {
+      "id": "carteira",
+      "name": "Código da Carteira",
+      "start": 58,
+      "end": 58,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN, para identificar a característica dos títulos dentro das modalidades de cobrança existentes no banco.",
+      "reference": "C006",
+      "domain": [
+        {
+          "code": "1",
+          "meaning": "Cobrança Simples"
+        },
+        {
+          "code": "2",
+          "meaning": "Cobrança Vinculada"
+        },
+        {
+          "code": "3",
+          "meaning": "Cobrança Caucionada"
+        },
+        {
+          "code": "4",
+          "meaning": "Cobrança Descontada"
+        },
+        {
+          "code": "5",
+          "meaning": "Cobrança Vendor"
+        },
+        {
+          "code": "6",
+          "meaning": "Cobrança Cessão"
+        }
+      ]
+    },
+    {
+      "id": "numeroDocumento",
+      "name": "Número do Documento de Cobrança",
+      "start": 59,
+      "end": 73,
+      "type": "A",
+      "required": false,
+      "description": "Número adotado e controlado pelo Cliente, para identificar o título de cobrança. Poderá conter número de duplicata, no caso de cobrança de duplicatas; número da apólice, no caso de cobrança de seguros, etc.",
+      "reference": "C011"
+    },
+    {
+      "id": "dataVencimento",
+      "name": "Data do Vencimento do Título",
+      "start": 74,
+      "end": 81,
+      "type": "D",
+      "required": false,
+      "description": "Data de vencimento do título de cobrança. O preenchimento desse campo é obrigatório.",
+      "reference": "C012"
+    },
+    {
+      "id": "valorTitulo",
+      "name": "Valor Nominal do Título",
+      "start": 82,
+      "end": 96,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor original do Título. Quando o valor for expresso em moeda corrente, utilizar 2 decimais; quando expresso em moeda variável, utilizar 5 decimais.",
+      "reference": "G070"
+    },
+    {
+      "id": "bancoCobrador",
+      "name": "Número do Banco",
+      "start": 97,
+      "end": 99,
+      "type": "N",
+      "required": false,
+      "description": "Código fornecido pelo Banco Central para identificação do Banco responsável pela cobrança ou recebimento. Só será informado nos casos de cobrança / liquidação em outros bancos.",
+      "reference": "C045"
+    },
+    {
+      "id": "agenciaCobradora",
+      "name": "Agência Cobradora/Recebedora",
+      "start": 100,
+      "end": 104,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta, para identificar a qual unidade está vinculada a conta corrente.",
+      "reference": "G008"
+    },
+    {
+      "id": "dvAgenciaCobradora",
+      "name": "Dígito Verificador da Agência",
+      "start": 105,
+      "end": 105,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pelo Banco responsável pela conta corrente, para verificação da autenticidade do Código da Agência.",
+      "reference": "G009"
+    },
+    {
+      "id": "usoEmpresa",
+      "name": "Identificação do Título na Empresa",
+      "start": 106,
+      "end": 130,
+      "type": "A",
+      "required": false,
+      "description": "Campo destinado para uso da Empresa Beneficiário para identificação do Título.",
+      "reference": "G072"
+    },
+    {
+      "id": "codigoMoeda",
+      "name": "Código da Moeda",
+      "start": 131,
+      "end": 132,
+      "type": "N",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar a moeda referenciada no Título.",
+      "reference": "G065",
+      "domain": [
+        {
+          "code": "01",
+          "meaning": "Reservado para Uso Futuro"
+        },
+        {
+          "code": "02",
+          "meaning": "Dólar Americano Comercial (Venda)"
+        },
+        {
+          "code": "03",
+          "meaning": "Dólar Americano Turismo (Venda)"
+        },
+        {
+          "code": "04",
+          "meaning": "ITRD"
+        },
+        {
+          "code": "05",
+          "meaning": "IDTR"
+        },
+        {
+          "code": "06",
+          "meaning": "UFIR Diária"
+        },
+        {
+          "code": "07",
+          "meaning": "UFIR Mensal"
+        },
+        {
+          "code": "08",
+          "meaning": "FAJ-TR"
+        },
+        {
+          "code": "09",
+          "meaning": "Real"
+        },
+        {
+          "code": "10",
+          "meaning": "TR"
+        },
+        {
+          "code": "11",
+          "meaning": "IGPM"
+        },
+        {
+          "code": "12",
+          "meaning": "CDI"
+        },
+        {
+          "code": "13",
+          "meaning": "Percentual do CDI"
+        },
+        {
+          "code": "14",
+          "meaning": "Euro"
+        },
+        {
+          "code": "15",
+          "meaning": "CDI – CETIP"
+        },
+        {
+          "code": "16",
+          "meaning": "CHF"
+        },
+        {
+          "code": "17",
+          "meaning": "CUB/RS (NOVO)"
+        },
+        {
+          "code": "18",
+          "meaning": "CUB/RS (R8-N)"
+        },
+        {
+          "code": "19",
+          "meaning": "CUB/SC (ANTIGO)"
+        },
+        {
+          "code": "20",
+          "meaning": "CUBRS"
+        },
+        {
+          "code": "21",
+          "meaning": "CUB-SC (NOVO)"
+        },
+        {
+          "code": "22",
+          "meaning": "GBP"
+        },
+        {
+          "code": "23",
+          "meaning": "ICC (SALVADOR)"
+        },
+        {
+          "code": "24",
+          "meaning": "IGPM (A)"
+        },
+        {
+          "code": "25",
+          "meaning": "IGPM (N)"
+        },
+        {
+          "code": "26",
+          "meaning": "INCC"
+        },
+        {
+          "code": "27",
+          "meaning": "INCC-M"
+        },
+        {
+          "code": "28",
+          "meaning": "INPC"
+        },
+        {
+          "code": "29",
+          "meaning": "JPY"
+        },
+        {
+          "code": "30",
+          "meaning": "TJLP"
+        }
+      ]
+    },
+    {
+      "id": "tipoInscricaoPagador",
+      "name": "Tipo de Inscrição",
+      "start": 133,
+      "end": 133,
+      "type": "N",
+      "required": false,
+      "description": "Código que identifica o tipo de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Para o Produto/Serviço Cobrança considerar como obrigatório somente o CPF (código 1) ou o CNPJ (código 2). Pagador.",
+      "reference": "G005",
+      "domain": {
+        "ref": "tipoInscricao"
+      }
+    },
+    {
+      "id": "numeroInscricaoPagador",
+      "name": "Número de Inscrição",
+      "start": 134,
+      "end": 148,
+      "type": "N",
+      "required": false,
+      "description": "Número de inscrição da Empresa ou Pessoa Física perante uma Instituição governamental. Quando o Tipo de Inscrição for igual a zero (não informado), preencher com zeros. Pagador.",
+      "reference": "G006",
+      "sensitive": true
+    },
+    {
+      "id": "nomePagador",
+      "name": "Nome",
+      "start": 149,
+      "end": 188,
+      "type": "A",
+      "required": false,
+      "description": "Nome que identifica a pessoa, física ou jurídica, a qual se quer fazer referência.",
+      "reference": "G013"
+    },
+    {
+      "id": "numeroContrato",
+      "name": "Nº do Contr. da Operação de Crédito",
+      "start": 189,
+      "end": 198,
+      "type": "N",
+      "required": false,
+      "description": "Número adotado pela Empresa Beneficiário para identificação do número do contrato.",
+      "reference": "C030"
+    },
+    {
+      "id": "valorTarifa",
+      "name": "Valor da Tarifa / Custas",
+      "start": 199,
+      "end": 213,
+      "type": "V",
+      "decimals": 2,
+      "required": false,
+      "description": "Valor da tarifa cobrada pelo serviço prestado pelo Banco Beneficiário referentes ao Título, expresso em moeda corrente.",
+      "reference": "G076"
+    },
+    {
+      "id": "motivoOcorrencia",
+      "name": "Identificação para Rejeições, Tarifas, Custas, Liquidação e Baixas",
+      "start": 214,
+      "end": 223,
+      "type": "A",
+      "required": false,
+      "description": "Código adotado pela FEBRABAN para identificar as ocorrências (rejeições, tarifas, custas, liquidação e baixas) relacionadas ao Código de Movimento Retorno. Até 5 ocorrências de 2 posições cada.",
+      "reference": "C047"
+    },
+    {
+      "id": "cnab2",
+      "name": "Uso Exclusivo FEBRABAN/CNAB",
+      "start": 224,
+      "end": 240,
+      "type": "A",
+      "required": false,
+      "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos.",
+      "reference": "G004"
+    }
+  ]
+}

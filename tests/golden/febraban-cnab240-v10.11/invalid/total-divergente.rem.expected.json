@@ -1,0 +1,80 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "A",
+    "B",
+    "A",
+    "TL",
+    "HL",
+    "J",
+    "J",
+    "TL",
+    "TA"
+  ],
+  "errors": [
+    {
+      "line": 6,
+      "start": 18,
+      "end": 23,
+      "fieldId": "quantidadeRegistros",
+      "rule": "totalMismatch",
+      "found": "000009",
+      "expected": "000005"
+    },
+    {
+      "line": 6,
+      "start": 24,
+      "end": 41,
+      "fieldId": "somatoriaValores",
+      "rule": "totalMismatch",
+      "found": "000000000000000001",
+      "expected": "000000000000425050"
+    },
+    {
+      "line": 10,
+      "start": 24,
+      "end": 41,
+      "fieldId": "somatoriaValores",
+      "rule": "totalMismatch",
+      "found": "000000000000999999",
+      "expected": "000000000000150000"
+    },
+    {
+      "line": 11,
+      "start": 24,
+      "end": 29,
+      "fieldId": "quantidadeRegistros",
+      "rule": "totalMismatch",
+      "found": "000099",
+      "expected": "000011"
+    }
+  ],
+  "recalc": [
+    {
+      "line": 6,
+      "fieldId": "quantidadeRegistros",
+      "from": "000009",
+      "to": "000005"
+    },
+    {
+      "line": 6,
+      "fieldId": "somatoriaValores",
+      "from": "000000000000000001",
+      "to": "000000000000425050"
+    },
+    {
+      "line": 10,
+      "fieldId": "somatoriaValores",
+      "from": "000000000000999999",
+      "to": "000000000000150000"
+    },
+    {
+      "line": 11,
+      "fieldId": "quantidadeRegistros",
+      "from": "000099",
+      "to": "000011"
+    }
+  ]
+}

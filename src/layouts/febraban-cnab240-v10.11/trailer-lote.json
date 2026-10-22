@@ -1,0 +1,14 @@
+{
+  "id": "trailer-lote",
+  "kind": "batchTrailer",
+  "label": "TL",
+  "title": "Trailer de Lote",
+  "match": [{ "pos": [8, 8], "equals": "5" }],
+  "fields": [
+    { "id": "codigoBanco", "name": "Código do Banco na Compensação", "start": 1, "end": 3, "type": "N", "required": true, "reference": "G001", "description": "Código fornecido pelo Banco Central para identificação do Banco que está recebendo ou enviando o arquivo, com o qual se firmou o contrato de prestação de serviços." },
+    { "id": "loteServico", "name": "Lote de Serviço", "start": 4, "end": 7, "type": "N", "required": true, "reference": "G002", "description": "Número seqüencial para identificar univocamente um lote de serviço." },
+    { "id": "tipoRegistro", "name": "Tipo de Registro", "start": 8, "end": 8, "type": "N", "required": true, "reference": "G003", "domain": { "ref": "tipoRegistro" }, "description": "Código adotado pela FEBRABAN para identificar o tipo de registro. Trailer de Lote = '5'." },
+    { "id": "cnab1", "name": "Uso Exclusivo FEBRABAN/CNAB", "start": 9, "end": 17, "type": "A", "required": false, "reference": "G004", "description": "Texto de observações destinado para uso exclusivo da FEBRABAN. Preencher com Brancos." },
+    { "id": "dadosServico", "name": "Dados específicos do serviço", "start": 18, "end": 240, "type": "A", "required": false, "description": "Totais e campos específicos do Serviço / Produto do lote. Exibido como um único campo porque o serviço deste lote não tem definição específica." }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "direction": "remessa",
+  "labels": [
+    "HA",
+    "HL",
+    "E",
+    "TL",
+    "TA"
+  ],
+  "definitions": [
+    "header-arquivo",
+    "header-lote-conciliacao",
+    "segmento-e-conciliacao",
+    "trailer-lote-conciliacao",
+    "trailer-arquivo"
+  ],
+  "errors": []
+}
