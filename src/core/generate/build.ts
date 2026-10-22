@@ -221,8 +221,8 @@ export function generateMassa(config: GenerationConfig, layout: LayoutDefinition
       }
     }
     for (const id of batch.final) push({ defId: id, lote, seq: ++seq, fixed: {} });
-    const trailer = trailerFor(layout, batch.values, batch.header);
-    push({ defId: trailer, lote, seq: ++seq, fixed: {} });
+    if (!batch.trailer) throw new GenerationError(`Nenhum Trailer de Lote aceita o lote ${batch.header}`);
+    push({ defId: batch.trailer, lote, seq: ++seq, fixed: {} });
   });
   push({ defId: fileTrailer.id, lote: "trailer", seq: 0, fixed: {} });
 
@@ -237,18 +237,4 @@ export function generateMassa(config: GenerationConfig, layout: LayoutDefinition
   });
   const text = doc.records.map((r) => r.current).join("\r\n") + "\r\n";
   return { text, lines: doc.records.length };
-}
-
-/** Trailer de Lote: a definição cujas regras de lote aceitam os valores do header gerado. */
-function trailerFor(layout: LayoutDefinition, values: Record<string, string>, headerId: string): string {
-  const header = definitionOf(layout, headerId)!;
-  const ctx: Record<string, string> = {};
-  for (const f of header.fields) if (f.batchContext && values[f.id] !== undefined) ctx[f.batchContext] = values[f.id];
-  const candidates = layout.records
-    .filter((r) => r.kind === "batchTrailer")
-    .map((r) => ({ r, rules: r.match.filter((m) => "batch" in m) }))
-    .filter(({ rules }) => rules.every((m) => "batch" in m && m.in.includes(ctx[m.batch] ?? "")))
-    .sort((a, b) => b.rules.length - a.rules.length);
-  if (!candidates.length) throw new GenerationError(`Nenhum Trailer de Lote aceita o lote ${headerId}`);
-  return candidates[0].r.id;
 }

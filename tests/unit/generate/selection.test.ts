@@ -39,7 +39,7 @@ describe("validateConfig (FR-005–FR-010)", () => {
 
   it("acima de 100.000 linhas avisa, sem bloquear", () => {
     const issues = validateConfig(config(["segmento-a-pagamento", "segmento-j-pagamento", "segmento-o-pagamento", "segmento-p-cobranca", "segmento-a-debito", "segmento-d-custodia", "segmento-h-consignacao", "segmento-k-vendor", "segmento-a-compror", "segmento-y-02-alegacao-pagador", "segmento-n-darf-pagamento"].map((id) => sel(id, 10_000))), layout);
-    expect(issues.warning).toBe("110.024 linhas: a geração pode demorar");
+    expect(issues.warning).toBe("110.230 linhas: a geração pode demorar");
     expect(canGenerate(issues)).toBe(true);
   });
 

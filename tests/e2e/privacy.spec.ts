@@ -28,6 +28,23 @@ test("SC-008: nenhuma requisição de rede após o carregamento; CSP connect-src
   expect(requests).toEqual([]);
 });
 
+test("FR-032: gerar uma massa de testes não faz requisições de rede", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const requests: string[] = [];
+  page.on("request", (r) => {
+    // O Worker de geração, como o de validação, é um arquivo estático do próprio bundle.
+    if (!/\/assets\/(validation|generation)\.worker-[\w-]+\.js$/.test(new URL(r.url()).pathname)) requests.push(`${r.method()} ${r.url()}`);
+  });
+  await page.getByTestId("generate").click();
+  await page.getByTestId("generator-variant-segmento-a-pagamento").check();
+  await page.getByTestId("generator-bank").fill("033");
+  await page.getByTestId("generator-confirm").click();
+  await expect(page.getByTestId("line-count")).toHaveText("14 linhas");
+  await page.waitForTimeout(500);
+  expect(requests).toEqual([]);
+});
+
 test("conteúdo de arquivo nunca é gravado no navegador (FR-034)", async ({ page }) => {
   await page.goto("/");
   await importFile(page, golden("valid/pagamento-remessa.rem"));

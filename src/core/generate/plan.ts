@@ -1,4 +1,5 @@
-import type { GenerationConfig, GenerationDirection, GenerationPlan, LayoutDefinition, PlannedBatch, ValueRef } from "../types";
+import { definitionOf } from "../resolve";
+import type { GenerationConfig, GenerationDirection, GenerationPlan, LayoutDefinition, PlannedBatch, RecordDefinition, ValueRef } from "../types";
 import { requiresFor } from "./catalog";
 
 export const resolveValue = (v: ValueRef, direction: GenerationDirection) => (typeof v === "string" ? v : v[direction]);
@@ -7,12 +8,56 @@ function resolveValues(values: Record<string, ValueRef>, direction: GenerationDi
   return Object.fromEntries(Object.entries(values).map(([k, v]) => [k, resolveValue(v, direction)]));
 }
 
-/** Limite de registros: 10^tamanho − 1 do campo countRecords do Trailer de Arquivo (research G6). */
-export function maxLinesOf(layout: LayoutDefinition): number {
-  const trailer = layout.records.find((r) => r.kind === "fileTrailer");
+/** 10^tamanho − 1 do campo countRecords de um trailer: quantos registros ele consegue contar (research G6). */
+function countCapacity(trailer: RecordDefinition | undefined): number {
   const rule = trailer?.totals?.find((t) => t.kind === "countRecords");
   const field = rule && trailer!.fields.find((f) => f.id === rule.field);
   return field ? 10 ** field.size - 1 : Number.MAX_SAFE_INTEGER;
+}
+
+/** Limite de registros do arquivo: capacidade do Trailer de Arquivo. */
+export function maxLinesOf(layout: LayoutDefinition): number {
+  return countCapacity(layout.records.find((r) => r.kind === "fileTrailer"));
+}
+
+/** Trailer de Lote: a definição cujas regras de lote aceitam os valores do header gerado (a mais específica). */
+export function trailerFor(layout: LayoutDefinition, headerId: string, values: Record<string, string>): string | null {
+  const header = definitionOf(layout, headerId);
+  if (!header) return null;
+  const ctx: Record<string, string> = {};
+  for (const f of header.fields) if (f.batchContext && values[f.id] !== undefined) ctx[f.batchContext] = values[f.id];
+  const candidates = layout.records
+    .filter((r) => r.kind === "batchTrailer")
+    .map((r) => ({ r, rules: r.match.filter((m) => "batch" in m) }))
+    .filter(({ rules }) => rules.every((m) => "batch" in m && m.in.includes(ctx[m.batch] ?? "")))
+    .sort((a, b) => b.rules.length - a.rules.length);
+  return candidates[0]?.r.id ?? null;
+}
+
+const setLines = (b: PlannedBatch) => b.sets.reduce((m, s) => m + 1 + s.dependents.length, 0);
+
+/**
+ * Divide um lote cujo total de registros (header + iniciais + conjuntos + finais + trailer) passa do que o
+ * campo countRecords do seu trailer comporta (ex.: Vendor, 2 dígitos ⇒ 99). Conjuntos nunca são partidos.
+ */
+function splitByCapacity(batch: PlannedBatch, layout: LayoutDefinition): PlannedBatch[] {
+  const room = countCapacity(definitionOf(layout, batch.trailer) ?? undefined) - 2 - batch.initial.length - batch.final.length;
+  if (setLines(batch) <= room || room <= 0) return [batch];
+  const parts: PlannedBatch[] = [];
+  let current: PlannedBatch = { ...batch, sets: [] };
+  let used = 0;
+  for (const set of batch.sets) {
+    const size = 1 + set.dependents.length;
+    if (used + size > room && current.sets.length) {
+      parts.push(current);
+      current = { ...batch, sets: [] };
+      used = 0;
+    }
+    current.sets.push(set);
+    used += size;
+  }
+  parts.push(current);
+  return parts;
 }
 
 /**
@@ -32,7 +77,7 @@ export function planGeneration(config: GenerationConfig, layout: LayoutDefinitio
   const batchFor = (header: string, values: Record<string, string>, initial: string[] = [], final: string[] = []) => {
     const key = keyOf(header, values);
     let batch = batches.find((b) => b.key === key);
-    if (!batch) batches.push((batch = { key, header, values, initial, final, sets: [] }));
+    if (!batch) batches.push((batch = { key, header, trailer: trailerFor(layout, header, values) ?? "", values, initial, final, sets: [] }));
     return batch;
   };
 
@@ -58,7 +103,7 @@ export function planGeneration(config: GenerationConfig, layout: LayoutDefinitio
     }
   }
 
-  const estimatedLines =
-    2 + batches.reduce((n, b) => n + 2 + b.initial.length + b.final.length + b.sets.reduce((m, s) => m + 1 + s.dependents.length, 0), 0);
-  return { batches, estimatedLines, maxLines: maxLinesOf(layout) };
+  const split = batches.flatMap((b) => splitByCapacity(b, layout));
+  const estimatedLines = 2 + split.reduce((n, b) => n + 2 + b.initial.length + b.final.length + setLines(b), 0);
+  return { batches: split, estimatedLines, maxLines: maxLinesOf(layout) };
 }

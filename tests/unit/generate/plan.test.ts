@@ -75,4 +75,16 @@ describe("planGeneration (FR-014–FR-016, data-model §4)", () => {
   it("maxLines vem do tamanho do campo countRecords do Trailer de Arquivo (999.999)", () => {
     expect(planGeneration(config([sel("segmento-a-pagamento")]), layout).maxLines).toBe(999_999);
   });
+
+  it("divide o lote quando passa da capacidade do Trailer de Lote (Vendor: 2 dígitos ⇒ 99 registros)", () => {
+    const plan = planGeneration(config([sel("segmento-k-vendor", 200)]), layout);
+    expect(plan.batches.map((b) => b.sets.length)).toEqual([97, 97, 6]);
+    expect(plan.batches.every((b) => b.trailer === "trailer-lote-vendor")).toBe(true);
+    expect(plan.estimatedLines).toBe(2 + 3 * 2 + 200);
+  });
+
+  it("cada lote planejado traz o seu Trailer de Lote", () => {
+    const plan = planGeneration(config([sel("segmento-a-pagamento"), sel("segmento-o-pagamento")]), layout);
+    expect(plan.batches.map((b) => b.trailer)).toEqual(["trailer-lote-pagamento", "trailer-lote-pagamento-tributos"]);
+  });
 });

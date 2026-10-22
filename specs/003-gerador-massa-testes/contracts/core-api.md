@@ -26,7 +26,7 @@ interface CatalogVariant { id: string; label: string; requires?: string; depende
 ```ts
 function toggleVariant(sel: Selection[], variantId: string, on: boolean, catalog: CatalogGroup[]): SelectionChange;
 function setQuantity(sel: Selection[], variantId: string, raw: string, catalog: CatalogGroup[]): SelectionChange;
-function changeDirection(sel: Selection[], next: CatalogGroup[]): SelectionChange;
+function changeDirection(sel: Selection[], direction: GenerationDirection, layout: LayoutDefinition): SelectionChange;
 
 interface SelectionChange {
   selections: Selection[];
@@ -105,7 +105,7 @@ Os nomes aceitos em `generation.json` são todos parametrizados pelo `FieldDefin
 | `dataFutura` / `dataPassada` | DDMMAAAA válido em `today` + 1..60 dias / `today` − 1..30 dias. |
 | `hora` | HHMMSS válido. |
 | `codigoBarras44` | 44 dígitos com DV geral módulo 11 na pos. 5 do código (padrão FEBRABAN de boletos), sem vínculo com bancos reais. |
-| `pixKey` | Chave aleatória (EVP, 36 caracteres) iniciada por letra, cortada ou completada no tamanho do campo, com tipo de chave coerente (G103). |
+| `pixKey` | Chave aleatória (EVP, 36 caracteres, maiúsculas) iniciada por letra, cortada ou completada no tamanho do campo. O tipo de chave (G103) recebe um valor do domínio, sem coerência garantida. |
 | `endereco` / `cidade` / `cep` / `uf` | Listas embutidas; CEP com 5 + 3 dígitos; UF válida. |
 | `documento` | Identificador único no arquivo: prefixo + contador + sufixo aleatório. |
 | `ocorrenciaRetorno` | "00" seguido de brancos (retorno). Na remessa, use `{ "remessa": "blank", "retorno": "ocorrenciaRetorno" }`. |

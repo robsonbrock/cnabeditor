@@ -34,8 +34,8 @@ Arquivo `src/layouts/<layout>/generation.json`, validado por [contracts/generati
 |---|---|---|
 | `id` | string | Id da `RecordDefinition` de detalhe (ex.: `segmento-n-darf-pagamento`). Único no arquivo; precisa existir no layout com `kind = "detail"`. |
 | `directions` | `("remessa" \| "retorno")[]` | Não vazio (G10). |
-| `requires` | string? | Id de outra variação do mesmo grupo: o principal (FR-011). Sem ciclos; o principal não tem `requires`. |
-| `batch.values` | `Record<string, string>` | Valor por id de campo do Header de Lote do grupo (ex.: `tipoOperacao: "C"`, `tipoServico: "20"`, `formaLancamento: "01"`, `versaoLayoutLote: "046"`). Precisa satisfazer o `match` do header e as regras `batch` da variação. |
+| `requires` | string ou `{ remessa, retorno }`? | Id de outra variação do mesmo grupo: o principal (FR-011), que pode variar com a direção. Sem ciclos; o principal não tem `requires` e existe na mesma direção. |
+| `batch.values` | `Record<string, string ou { remessa, retorno }>` | Valor por id de campo do Header de Lote do grupo (ex.: `tipoOperacao: "C"`, `tipoServico: "20"`, `formaLancamento: "01"`, `versaoLayoutLote: "046"`). Precisa satisfazer o `match` do header e as regras `batch` da variação. |
 | `batch.initial` / `batch.final` | string[]? | Ids de registros tipo 2/4 incluídos em todo lote com esta chave. |
 | `fixed` | `Record<string, string>`? | Valores fixos por id de campo do detalhe, quando o `match` não basta (ex.: tipo de tributo do N). |
 
@@ -105,7 +105,16 @@ Regras de derivação em `editando`:
   - "<principal> não pode ter menos registros que <dependente>: mantido em N", quando o principal foi reduzido.
 - **Ao trocar a direção**: seleções inválidas para a nova direção são removidas, com um aviso listando as variações removidas por serviço (ex.: "Removidos por não existirem em Retorno: Cobrança: Segmento P, Segmento Q").
 
-## 3. Catálogo inicial de variações (transcrição a confirmar contra o manual v10.11)
+## 3. Catálogo inicial de variações
+
+> Conferido contra o manual v10.11 durante a implementação. Ajustes em relação à tabela abaixo:
+> - J-53 existe só na remessa.
+> - Y-01, Y-04 e Y-50 a Y-53 da Cobrança existem nas duas direções (principal P na remessa, T no retorno).
+> - Y-05 existe só no retorno; Y-02 nas duas.
+> - No Vendor, L é só remessa; M e N são só retorno.
+> - As versões de lote foram corrigidas.
+>
+> A fonte de verdade é `generation.json`, e as decisões estão em COVERAGE.md › Gerador de massa.
 
 A tabela abaixo é o conteúdo previsto de `generation.json`. Durante a implementação, cada linha é conferida com o manual e coberta pelo teste de propriedade (research G11). Os nomes são os títulos oficiais transcritos no layout: o do Header de Lote para o serviço e o da definição de detalhe para o segmento.
 
@@ -159,8 +168,8 @@ Na coluna Direções, R = remessa e Ret = retorno.
 
 | Campo | Tipo |
 |---|---|
-| `batches` | `{ key, header, values, initial[], final[], sets: { principal, dependents[] }[] }[]` |
-| `estimatedLines` | number = 2 + Σ (2 + \|initial\| + \|final\| + Σ conjuntos (1 + \|dependentes\|)) |
+| `batches` | `{ key, header, trailer, values, initial[], final[], sets: { principal, dependents[] }[] }[]`; `trailer` é o Trailer de Lote que aceita os valores do header. Um lote que passa da capacidade do campo `countRecords` do trailer é dividido em vários (research G13). |
+| `estimatedLines` | number = 2 + Σ por lote, já dividido (2 + \|initial\| + \|final\| + Σ conjuntos (1 + \|dependentes\|)) |
 | `maxLines` | number = 10^(tamanho do campo `countRecords` do Trailer de Arquivo) − 1 |
 
 ### GenerationResult

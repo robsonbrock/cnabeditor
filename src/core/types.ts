@@ -180,6 +180,8 @@ export interface PlannedSet {
 export interface PlannedBatch {
   key: string;
   header: string;
+  /** Trailer de Lote que fecha o lote ("" se nenhum aceita os valores: erro de metadados). */
+  trailer: string;
   values: Record<string, string>;
   initial: string[];
   final: string[];

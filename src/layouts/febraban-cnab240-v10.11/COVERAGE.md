@@ -168,3 +168,47 @@ Decisões e pendências:
   - Consignação: H032–H041.
   - Custódia: K022 (contagem só de detalhes).
   - Número Aviso de Débito (G066).
+
+## Gerador de massa de testes (`generation.json`)
+
+Metadados do gerador da feature 003 ([specs/003-gerador-massa-testes](../../../specs/003-gerador-massa-testes/)). O arquivo é validado por `npm run validate:layout` e conferido contra o layout por `tests/unit/generate/generation-integrity.test.ts`. O teste `generate-all-variants` gera cada variação, em cada direção em que existe, e exige 0 erros de validação.
+
+Os nomes exibidos na modal não ficam no arquivo: vêm do `title` do Header de Lote (serviço) e do detalhe (segmento).
+
+### Valores dos Headers de Lote
+
+Conferidos na coluna "Default" de cada Registro Header de Lote do manual v10.11.
+
+| Serviço (header) | Operação | Serviço | Forma | Versão do lote |
+|---|---|---|---|---|
+| Pagamentos – Crédito em Conta… | C | 20 | 01 | 046 |
+| Pagamentos – Títulos de Cobrança e QR Code Pix | C | 20 | 31 (J-52 Pix: 47) | 040 |
+| Pagamentos – Tributos e Contas | C | 22 | 11 (O, W), 16 (N, N2), 17 (N1), 18 (N3), 22 (N4), 25 (N5), 26 (N7), 27 (N6) | 012 |
+| Cobrança | R na remessa / T no retorno | 01 | — | 060 |
+| Boleto de Pagamento Eletrônico | I | 03 | — | 030 |
+| Alegação do Pagador | C | 29 | — | 010 |
+| Extrato para Conciliação | E | 04 | 40 | 033 |
+| Débito em Conta Corrente | D | 05 | 01 | 030 |
+| Extrato para Gestão de Caixa | G | 07 | 70 | 010 |
+| Custódia de Cheques | R / T | 06 | — | 010 |
+| Empréstimo por Consignação | modalidade 1 | 08 | — | 023 |
+| Vendor | R / T | 40 | — | 012 |
+| Compror | C | 25 | 01 | 010 |
+
+O serviço 20 (pagamentos) e as formas sem default no manual (crédito 01, títulos 31, conciliação 40, débito 01, compror 01) são escolhas do gerador dentro do domínio do campo.
+
+### Direções e dependências
+
+Seguem o título de cada Registro Detalhe no manual ("Obrigatório/Opcional – Remessa/Retorno"):
+
+- **Só remessa:** P, Q, R, S, J-53, L (Vendor).
+- **Só retorno:** T, U, Z, E, F, I (Gestão de Caixa), G, H, Y-03, Y-51–Y-53 (Boleto Eletrônico), Y-05 (Cobrança), M e N (Vendor).
+- **Nas duas:** as demais. Y-01, Y-04 e Y-50–Y-53 da Cobrança dependem de P na remessa e de T no retorno (`requires` por direção).
+- **Boleto Eletrônico:** o manual marca Y-52/Y-53 como Remessa/Retorno, mas o principal G só existe no retorno. Na geração, os Y do Boleto Eletrônico ficam só no retorno.
+- **W e W1 (FGTS) dependem de O**, decisão registrada na spec da feature 003.
+
+### Comportamento que depende do layout
+
+- **Capacidade dos trailers:** o Trailer de Lote do Vendor conta registros em 2 posições (10–11, como no manual). O gerador divide em vários lotes qualquer lote que passe da capacidade do campo `countRecords` do seu trailer. Para o Vendor, isso dá até 97 detalhes por lote.
+- **Variações genéricas** (J, W, S, N): se o sorteio produzir o valor que identifica uma variação mais específica (J-52 nas pos. 18–19, W1 nas 177–178, S3 na 18), a linha é sorteada de novo.
+- **Tipo de chave Pix (G103):** recebe um valor do domínio, sem coerência com o formato da chave (EVP), porque o validador não cruza os dois campos.

@@ -47,4 +47,7 @@
   - botão sempre visível;
   - texto da tela vazia especificado (FR-001);
   - dados fictícios e válidos (FR-020).
+- Revisão 5 (implementação), detalhes em research G13 e COVERAGE.md › Gerador de massa:
+  - a spec ganhou dois edge cases: lote dividido pela capacidade do Trailer de Lote, e dependente com outra forma de lançamento;
+  - direções e versões de lote foram conferidas no manual v10.11.
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`

@@ -70,8 +70,8 @@ describe("GeneratorDialog (US1)", () => {
       check(id);
       type(`generator-qty-${id}`, "10000");
     }
-    expect(screen.getByTestId("generator-estimate").textContent).toBe("110.024 linhas serão geradas");
-    expect(screen.getByTestId("generator-warning").textContent).toBe("110.024 linhas: a geração pode demorar");
+    expect(screen.getByTestId("generator-estimate").textContent).toBe("110.230 linhas serão geradas");
+    expect(screen.getByTestId("generator-warning").textContent).toBe("110.230 linhas: a geração pode demorar");
     expect(confirm().disabled).toBe(false);
   });
 

@@ -30,3 +30,15 @@ describe.each<GenerationDirection>(["remessa", "retorno"])("todas as variações
     }
   });
 });
+
+/** Regressão: o Trailer de Lote do Vendor conta só 2 dígitos; acima de 99 registros o lote é dividido. */
+describe("lotes maiores que a capacidade do Trailer de Lote", () => {
+  it("Segmento K (Vendor) com 200 registros gera arquivo sem erros", () => {
+    const { text } = generateMassa(
+      { direction: "remessa", selections: [{ variantId: "segmento-k-vendor", quantity: 200, auto: false }, { variantId: "segmento-l-vendor", quantity: 150, auto: false }], companyAccount: {} },
+      layout,
+      { seed: 9, today: TODAY },
+    );
+    expect(errorsOf(text)).toEqual([]);
+  });
+});

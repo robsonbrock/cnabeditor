@@ -184,3 +184,13 @@ O gerador sorteia um único "perfil da empresa" por arquivo e o aplica a todos e
 - O documento gerado nasce com `hasUnexportedChanges = true`. Assim, importar ou colar algo por cima dele também pede confirmação, porque a massa ainda não foi salva.
 
 **Alternatives considered**: um diálogo de confirmação novo, que duplicaria um componente que já existe.
+
+## G13. Achados da implementação
+
+- **Valores por direção.** A operação do lote muda com a direção (Cobrança, Vendor e Custódia: R na remessa, T no retorno). Por isso `batch.values`, `fixed` e `requires` aceitam um valor por direção. Os Y da Cobrança dependem de P na remessa e de T no retorno.
+- **Dependente com outra chave de lote.** J-52 Pix exige forma 47, e o J sai na 31. O plano coloca os conjuntos J + J-52 Pix num lote de forma 47, separado dos J do usuário.
+- **Capacidade do Trailer de Lote.** O Trailer de Lote do Vendor conta registros em 2 posições (manual, pos. 10–11). O plano divide qualquer lote que passe da capacidade do campo `countRecords` do seu trailer. A estimativa de linhas da modal inclui os headers e trailers extras.
+- **Variação genérica "sombreada".** O sorteio pode produzir o valor que identifica uma variação mais específica (ex.: J com "52" nas pos. 18–19 vira J-52). O gerador detecta isso pelas regras `match` e sorteia a linha de novo. Campos opcionais com domínio também podem sair vazios, o que resolve o W, cujo único valor do domínio identifica o W1.
+- **Limite do arquivo.** Com no máximo 10.000 por variação, o total fica em torno de 470 mil linhas e não alcança o limite de 999.999 do Trailer de Arquivo deste layout. A regra continua valendo e é testada com um layout de trailer menor.
+- **Valores conferidos no manual.** As versões de lote e as direções de cada segmento foram conferidas no PDF do manual v10.11 (tabela em COVERAGE.md › Gerador de massa).
+- **Desempenho.** A geração de ~100 mil linhas leva ~7 s no total. A única tarefa longa na thread principal (~0,5 s) é a carga do texto no quadro, o mesmo caminho da importação, que para 100 mil linhas leva ~1,4 s.

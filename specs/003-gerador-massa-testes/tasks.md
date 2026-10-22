@@ -335,15 +335,15 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-- [ ] T053 [P] Gerar golden files com semente e data fixas (quantidade 2, várias variações) em tests/golden/febraban-cnab240-v10.11/valid/gerador-remessa.rem e gerador-retorno.ret, com os respectivos `.expected.json`, por um script `scripts/generate-golden-gerador.ts`; registrar em tests/golden/README.md
-- [ ] T054 [P] Adicionar casos `@perf` em tests/e2e/perf.spec.ts (SC-003):
+- [X] T053 [P] Gerar golden files com semente e data fixas (quantidade 2, várias variações) em tests/golden/febraban-cnab240-v10.11/valid/gerador-remessa.rem e gerador-retorno.ret, com os respectivos `.expected.json`, por um script `scripts/generate-golden-gerador.ts`; registrar em tests/golden/README.md
+- [X] T054 [P] Adicionar casos `@perf` em tests/e2e/perf.spec.ts (SC-003):
   - gerar ~10.000 linhas e exigir quadro carregado em ≤ 3 s;
   - gerar ~100.000 linhas e exigir ≤ 15 s;
   - nenhuma long task > 200 ms na thread principal (PerformanceObserver, como nos testes existentes).
-- [ ] T055 [P] Adicionar a geração ao tests/e2e/privacy.spec.ts: nenhuma requisição de rede durante a geração (FR-032)
-- [ ] T056 [P] Registrar no src/layouts/febraban-cnab240-v10.11/COVERAGE.md uma seção "Gerador de massa" com a lista de variações, direções, dependências e chaves de lote do generation.json e as fontes no manual
-- [ ] T057 Rodar o roteiro de [quickstart.md](quickstart.md) (seções 1, 2 e 3) e `npm run lint`, `npm run build`, `npm test`, `npm run test:e2e`; corrigir o que falhar
-- [ ] T058 Atualizar o checklist em specs/003-gerador-massa-testes/checklists/requirements.md, se a implementação tiver alterado alguma decisão da spec, e registrar a mudança na seção Clarifications da spec
+- [X] T055 [P] Adicionar a geração ao tests/e2e/privacy.spec.ts: nenhuma requisição de rede durante a geração (FR-032)
+- [X] T056 [P] Registrar no src/layouts/febraban-cnab240-v10.11/COVERAGE.md uma seção "Gerador de massa" com a lista de variações, direções, dependências e chaves de lote do generation.json e as fontes no manual
+- [X] T057 Rodar o roteiro de [quickstart.md](quickstart.md) (seções 1, 2 e 3) e `npm run lint`, `npm run build`, `npm test`, `npm run test:e2e`; corrigir o que falhar
+- [X] T058 Atualizar o checklist em specs/003-gerador-massa-testes/checklists/requirements.md, se a implementação tiver alterado alguma decisão da spec, e registrar a mudança na seção Clarifications da spec
 
 ---
 

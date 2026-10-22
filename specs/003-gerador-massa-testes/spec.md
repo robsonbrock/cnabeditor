@@ -131,6 +131,8 @@ O analista está com um arquivo aberto e edições pendentes e abre o gerador po
 - Agência/conta da empresa parcialmente preenchida (ex.: agência sem conta): cada campo informado é aplicado e os não informados são gerados com dados fictícios.
 - Segmento cujo serviço exige um header de lote diferente de outro segmento marcado: cada um vai para o seu próprio lote.
 - Segmentos que usam o mesmo Header de Lote mas exigem formas de lançamento diferentes (ex.: "Segmento N (DARF)", forma 16, e "Segmento O", forma 11): saem em lotes separados, porque o lote é homogêneo por tipo de operação, serviço e forma de lançamento.
+- Lote com mais registros do que o trailer consegue contar (ex.: o Trailer de Lote do Vendor conta só até 99): o lote é dividido em vários lotes iguais, cada um com o seu header e trailer, e a estimativa de linhas já considera essa divisão.
+- Dependente que exige outra forma de lançamento que o principal (ex.: Segmento J-52 Pix, forma 47, enquanto o Segmento J usa a 31): os conjuntos principal + dependente vão para um lote dessa forma.
 - Falha inesperada durante a geração: nada é carregado no quadro principal, a modal permanece aberta e um toast de erro informa que a massa não foi gerada.
 
 ## Requirements *(mandatory)*
