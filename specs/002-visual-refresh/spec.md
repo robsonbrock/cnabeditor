@@ -22,6 +22,7 @@ O editor da feature 001 funciona, mas tem visual genérico e botões só com tex
 - **VR-009**: Nenhuma fonte, ícone ou estilo externo pode ser carregado (Princípio V). Os ícones são SVG inline.
 - **VR-010**: No quadro principal, a linha sob o cursor do mouse MUST ganhar um realce cinza sutil antes do clique. Uma linha alterada MUST ter fundo âmbar com barra lateral âmbar. A linha selecionada MUST ter fundo azul com barra lateral azul. A precedência é: selecionada > mouse > alterada.
 - **VR-011**: Na linha selecionada, o trecho do campo em foco no quadro de edição MUST ficar destacado (fundo âmbar), acompanhando cada campo focado por clique ou Tab.
+- **VR-012**: O campo Código de Segmento do Registro Detalhe (nota G039) MUST listar no painel de detalhes os segmentos (A a Z) com a finalidade de cada um, destacando o valor atual, como os demais campos codificados.
 
 ## Referências
 

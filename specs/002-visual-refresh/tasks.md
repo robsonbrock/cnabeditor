@@ -16,3 +16,4 @@
 - [X] T012 Linhas com espaços no fim: `white-space: break-spaces` para a quebra visual coincidir com a altura calculada
 - [X] T013 Realce cinza ao passar o mouse; linha alterada com fundo e barra âmbar (VR-010)
 - [X] T014 VirtualLines.tsx: destacar com `<mark class="field-focus">` o trecho do campo em foco na linha selecionada; teste em us2-detail.spec.ts (VR-011)
+- [X] T015 layout.json: domínio `codigoSegmento`; assemble.ts liga os campos G039 a ele (VR-012)
