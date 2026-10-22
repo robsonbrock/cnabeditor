@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cnabeditor.local/schemas/layout-definition.v1.json",
+  "title": "CNAB Layout Definition (v1)",
+  "description": "Definição declarativa de layout CNAB (Constituição, Princípio I). Um layout é composto por layout.json (metadados + domínios) e um arquivo por RecordDefinition; o carregador monta o objeto abaixo.",
+  "type": "object",
+  "required": ["id", "name", "version", "publishedAt", "source", "recordLength", "records"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "publishedAt": { "type": "string", "format": "date" },
+    "source": {
+      "type": "object",
+      "required": ["title", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "recordLength": { "type": "integer", "minimum": 1 },
+    "domains": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/allowedValues" }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/recordDefinition" }
+    }
+  },
+  "$defs": {
+    "allowedValues": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["code", "meaning"],
+        "additionalProperties": false,
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "meaning": { "type": "string" }
+        }
+      }
+    },
+    "position": {
+      "type": "array",
+      "prefixItems": [{ "type": "integer", "minimum": 1 }, { "type": "integer", "minimum": 1 }],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "matchRule": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["pos", "equals"],
+          "additionalProperties": false,
+          "properties": { "pos": { "$ref": "#/$defs/position" }, "equals": { "type": "string" } }
+        },
+        {
+          "type": "object",
+          "required": ["pos", "in"],
+          "additionalProperties": false,
+          "properties": {
+            "pos": { "$ref": "#/$defs/position" },
+            "in": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["batch", "in"],
+          "additionalProperties": false,
+          "properties": {
+            "batch": { "enum": ["operation", "service", "layoutVersion"] },
+            "in": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+          }
+        }
+      ]
+    },
+    "fieldDefinition": {
+      "type": "object",
+      "required": ["id", "name", "start", "end", "type", "required", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9]*$" },
+        "name": { "type": "string" },
+        "start": { "type": "integer", "minimum": 1 },
+        "end": { "type": "integer", "minimum": 1 },
+        "type": { "enum": ["N", "A", "D", "H", "V"] },
+        "decimals": { "type": "integer", "minimum": 0 },
+        "required": { "type": "boolean" },
+        "description": { "type": "string" },
+        "reference": { "type": "string" },
+        "sensitive": { "type": "boolean" },
+        "batchContext": {
+          "description": "Só em Header de Lote: este campo alimenta o discriminador do contexto do lote.",
+          "enum": ["operation", "service", "layoutVersion"]
+        },
+        "domain": {
+          "oneOf": [
+            { "$ref": "#/$defs/allowedValues" },
+            {
+              "type": "object",
+              "required": ["ref"],
+              "additionalProperties": false,
+              "properties": { "ref": { "type": "string" } }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "V" } } },
+          "then": { "required": ["decimals"] }
+        }
+      ]
+    },
+    "totalRule": {
+      "type": "object",
+      "required": ["field", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "field": { "type": "string" },
+        "kind": { "enum": ["countRecords", "countBatches", "sum"] },
+        "source": {
+          "type": "object",
+          "required": ["records", "field"],
+          "additionalProperties": false,
+          "properties": {
+            "records": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+            "field": { "type": "string" }
+          }
+        }
+      },
+      "if": { "properties": { "kind": { "const": "sum" } } },
+      "then": { "required": ["source"] }
+    },
+    "recordDefinition": {
+      "type": "object",
+      "required": ["id", "kind", "label", "title", "match", "fields"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "kind": {
+          "enum": ["fileHeader", "batchHeader", "batchInitial", "detail", "batchFinal", "batchTrailer", "fileTrailer"]
+        },
+        "label": { "type": "string", "minLength": 1, "maxLength": 2 },
+        "title": { "type": "string" },
+        "match": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/matchRule" } },
+        "fields": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fieldDefinition" } },
+        "totals": { "type": "array", "items": { "$ref": "#/$defs/totalRule" } }
+      }
+    }
+  },
+  "x-semantic-rules": [
+    "Para cada campo: end >= start e end <= recordLength; size = end - start + 1.",
+    "Os campos de cada registro, ordenados por start, cobrem 1..recordLength sem buracos nem sobreposições.",
+    "Todo AllowedValue.code tem comprimento igual ao size do campo.",
+    "Todo domain.ref aponta para uma chave existente em domains.",
+    "Todo totals[].field e totals[].source.field referenciam ids de campo existentes; totals[].source.records referenciam ids de RecordDefinition existentes.",
+    "Duas RecordDefinition com o mesmo kind não podem ser satisfeitas pela mesma combinação de linha + contexto de lote com o mesmo número de condições (sem ambiguidade).",
+    "Estas regras são verificadas por testes de integridade de layout (tests/unit/layout-integrity.test.ts)."
+  ]
+}
