@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" font-family="Segoe UI, Arial, sans-serif" font-size="13">
+  <title>Esboço – Quadro de edição com botão "Atualizar linha" no canto inferior esquerdo</title>
+  <rect width="900" height="500" fill="#1e1f22"/>
+
+  <!-- Quadro principal (esquerda) -->
+  <rect x="16" y="16" width="370" height="420" rx="6" fill="#26282c" stroke="#3a3d42"/>
+  <text x="30" y="40" fill="#e6e6e6" font-weight="600">Conteúdo · 8 linhas</text>
+  <g font-family="Consolas, monospace" font-size="12" fill="#b9bcc2">
+    <text x="30" y="72"><tspan fill="#7aa2f7">HA</tspan>  34100000      2...</text>
+    <text x="30" y="96"><tspan fill="#7aa2f7">HL</tspan>  34100011C2001...</text>
+    <rect x="24" y="106" width="356" height="22" rx="3" fill="#2f4a3a" stroke="#3fa66b"/>
+    <text x="30" y="121"><tspan fill="#7aa2f7"> A</tspan>  34100013000001A...</text>
+    <circle cx="368" cy="117" r="7" fill="#e5534b"/>
+    <text x="365" y="121" fill="#fff" font-size="10" font-weight="700">!</text>
+    <text x="30" y="145"><tspan fill="#7aa2f7"> B</tspan>  34100013000002B...</text>
+    <text x="30" y="169"><tspan fill="#7aa2f7">TL</tspan>  34100015      ...</text>
+    <text x="30" y="193"><tspan fill="#7aa2f7">TA</tspan>  34199999      ...</text>
+  </g>
+  <text x="30" y="420" fill="#8b8f96" font-size="11">● vermelho = linha atualizada com erro(s)  (US-3 CA-5)</text>
+
+  <!-- Seta de fluxo direita → esquerda -->
+  <g>
+    <line x1="470" y1="250" x2="400" y2="250" stroke="#3fa66b" stroke-width="3" stroke-dasharray="6 5"/>
+    <polygon points="392,250 404,243 404,257" fill="#3fa66b"/>
+    <text x="398" y="236" fill="#3fa66b" font-size="11">valores vão para</text>
+    <text x="398" y="272" fill="#3fa66b" font-size="11">a linha selecionada</text>
+  </g>
+
+  <!-- Quadro de edição (direita superior) -->
+  <rect x="480" y="16" width="404" height="420" rx="6" fill="#26282c" stroke="#3a3d42"/>
+  <text x="494" y="40" fill="#e6e6e6" font-weight="600">Detalhe – Segmento A</text>
+  <text x="870" y="40" fill="#8b8f96" text-anchor="end">Linha 3 de 8</text>
+  <line x1="480" y1="52" x2="884" y2="52" stroke="#3a3d42"/>
+
+  <g fill="#b9bcc2" font-size="12">
+    <text x="494" y="80" fill="#8b8f96">018–020</text>
+    <text x="556" y="80">Código da Câmara</text>
+    <rect x="700" y="66" width="130" height="22" rx="3" fill="#1e1f22" stroke="#4a4d52"/>
+    <text x="706" y="81" font-family="Consolas, monospace">018</text>
+    <text x="870" y="81" fill="#8b8f96" text-anchor="end">3/3</text>
+
+    <text x="494" y="120" fill="#8b8f96">015–015</text>
+    <text x="556" y="120">Tipo de Movimento</text>
+    <rect x="700" y="106" width="130" height="22" rx="3" fill="#1e1f22" stroke="#e5534b" stroke-width="2"/>
+    <text x="706" y="121" font-family="Consolas, monospace">8</text>
+    <text x="870" y="121" fill="#8b8f96" text-anchor="end">1/1</text>
+    <text x="700" y="143" fill="#e5534b" font-size="11">Opção inválida: "8" não é um valor</text>
+    <text x="700" y="157" fill="#e5534b" font-size="11">permitido para este campo</text>
+
+    <text x="494" y="190" fill="#8b8f96">044–073</text>
+    <text x="556" y="190">Nome do Favorecido</text>
+    <rect x="700" y="176" width="130" height="22" rx="3" fill="#1e1f22" stroke="#4a4d52"/>
+    <text x="706" y="191" font-family="Consolas, monospace">FULANO DE TAL</text>
+    <text x="870" y="191" fill="#8b8f96" text-anchor="end">13/30</text>
+
+    <text x="494" y="226" fill="#8b8f96">183–202</text>
+    <text x="556" y="226">Número do Documento</text>
+    <rect x="700" y="212" width="130" height="22" rx="3" fill="#1e1f22" stroke="#4a4d52"/>
+    <text x="870" y="227" fill="#8b8f96" text-anchor="end">0/20</text>
+  </g>
+
+  <!-- Barra de ações do quadro de edição -->
+  <line x1="480" y1="384" x2="884" y2="384" stroke="#3a3d42"/>
+  <rect x="494" y="394" width="150" height="30" rx="4" fill="#2e7d4f"/>
+  <text x="508" y="414" fill="#ffffff" font-weight="600">⟵  Atualizar linha</text>
+  <rect x="656" y="394" width="92" height="30" rx="4" fill="none" stroke="#4a4d52"/>
+  <text x="702" y="414" fill="#b9bcc2" text-anchor="middle">Descartar</text>
+
+  <!-- Toast -->
+  <rect x="560" y="452" width="324" height="34" rx="5" fill="#2f4a3a" stroke="#3fa66b"/>
+  <text x="574" y="474" fill="#e6e6e6">✓ Linha 3 atualizada · 1 campo com erro</text>
+  <text x="870" y="474" fill="#8b8f96" text-anchor="end" font-size="11">5s</text>
+  <text x="16" y="474" fill="#8b8f96" font-size="11">Toast de feedback: some após 5 segundos (FR-035)</text>
+</svg>

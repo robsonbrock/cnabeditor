@@ -1,4 +1,4 @@
-# cnabeditor
+# CNAB Editor
 
 ## Rodando localmente
 
