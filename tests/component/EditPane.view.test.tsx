@@ -60,3 +60,23 @@ describe("EditPane (visualização)", () => {
     expect(screen.queryAllByTestId("field")).toHaveLength(0);
   });
 });
+
+describe("EditPane: segmento que não corresponde ao lote", () => {
+  beforeEach(() => {
+    resetDocumentState();
+    layout.value = febrabanCnab240;
+    const hl = line({ 1: "341", 4: "0001", 8: "1", 9: "C", 10: "20", 12: "01", 14: "046" });
+    const d = line({ 1: "341", 4: "0001", 8: "3", 9: "00001", 14: "D" });
+    act(() => setDocument(fromPastedText([ha, hl, d].join("\r\n"), febrabanCnab240)));
+    act(() => selectLine(2));
+  });
+
+  it("exibe os campos do segmento, anota a linha e marca o campo segmento com erro", () => {
+    render(<EditPane />);
+    expect(screen.getByTestId("record-title").textContent).toBe("Detalhe – Segmento D (Custódia de Cheques)");
+    expect(screen.getByTestId("batch-mismatch").textContent).toContain("não corresponde ao lote");
+    expect(screen.getAllByTestId("field").length).toBeGreaterThan(1);
+    const seg = screen.getAllByTestId("field").find((f) => f.querySelector("[data-testid=field-pos]")!.textContent === "14–14")!;
+    expect(seg.classList.contains("invalid")).toBe(true);
+  });
+});

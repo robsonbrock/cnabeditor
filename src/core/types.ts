@@ -96,6 +96,8 @@ export interface CnabRecord {
   definitionId: string | null;
   label: string;
   batchContext: BatchContext | null;
+  /** Detalhe resolvido ignorando as regras de lote: o segmento não pertence ao serviço do lote. */
+  batchMismatch?: boolean;
 }
 
 /** Bits de CnabDocument.flags. */
@@ -139,6 +141,7 @@ export type ValidationRule =
   | "batchNumber"
   | "recordSequence"
   | "unknownRecord"
+  | "batchMismatch"
   | "totalMismatch"
   | "totalOverflow";
 

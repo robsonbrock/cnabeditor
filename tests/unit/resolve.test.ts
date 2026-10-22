@@ -23,17 +23,16 @@ describe("resolveRecords", () => {
     const recs = resolve([L.ha(), L.hl("20"), L.a(), L.tl(), L.a(), L.ta()]);
     expect(recs[2].batchContext).toEqual({ batchIndex: 0, headerLine: 2, operation: "C", service: "20", layoutVersion: "046" });
     expect(recs[3].batchContext).toEqual(recs[2].batchContext);
-    // fora de lote: sem contexto ⇒ regra batch não é satisfeita ⇒ não reconhecido, rótulo = pos. 14
+    // fora de lote: sem contexto ⇒ regra batch não é satisfeita ⇒ segmento pelo próprio código, marcado
     expect(recs[4].batchContext).toBeNull();
-    expect(recs[4].definitionId).toBeNull();
-    expect(recs[4].label).toBe("A");
+    expect(recs[4]).toMatchObject({ definitionId: "seg-a", label: "A", batchMismatch: true });
+    expect(recs[2].batchMismatch).toBe(false);
   });
 
-  it("contexto de lote decide o segmento: serviço sem definição ⇒ não reconhecido", () => {
+  it("segmento que não pertence ao serviço do lote ⇒ campos do segmento, marcado batchMismatch", () => {
     const recs = resolve([L.ha(), L.hl("01"), L.a(), L.tl()]);
     expect(recs[1].definitionId).toBe("hl");
-    expect(recs[2].definitionId).toBeNull();
-    expect(recs[2].label).toBe("A");
+    expect(recs[2]).toMatchObject({ definitionId: "seg-a", label: "A", batchMismatch: true });
   });
 
   it("segundo lote recebe batchIndex 1", () => {
@@ -101,8 +100,8 @@ describe("resolveAround", () => {
     const recs = full(lines);
     recs[1].current = L.hl("01");
     resolveAround(recs, testLayout, 1);
-    expect(recs[2].definitionId).toBeNull();
-    expect(recs[5].definitionId).toBe("seg-a");
+    expect(recs[2]).toMatchObject({ definitionId: "seg-a", batchMismatch: true });
+    expect(recs[5]).toMatchObject({ definitionId: "seg-a", batchMismatch: false });
     expect(snapshot(recs)).toEqual(snapshot(full([lines[0], L.hl("01"), ...lines.slice(2)])));
   });
 

@@ -29,6 +29,14 @@ export function EditPane() {
               {` · ${fields.length} ${fields.length === 1 ? "campo" : "campos"}`}
               {dirty && <span class="pending-note"> · edições não atualizadas</span>}
             </div>
+            {rec.batchMismatch && (
+              <div class="mismatch-note" data-testid="batch-mismatch" role="status">
+                <Icon name="alert-triangle" />
+                {rec.batchContext
+                  ? `O segmento ${rec.label} não corresponde ao lote (Header de Lote na linha ${rec.batchContext.headerLine}, serviço ${rec.batchContext.service}). Campos exibidos conforme o segmento ${rec.label}.`
+                  : `O segmento ${rec.label} está fora de lote. Campos exibidos conforme o segmento ${rec.label}.`}
+              </div>
+            )}
           </>
         ) : (
           <h2>Campos da linha</h2>

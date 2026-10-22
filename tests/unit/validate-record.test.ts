@@ -28,6 +28,15 @@ describe("validateRecord", () => {
     expect(errors[0]).toMatchObject({ start: 1, end: 240, message: "Registro não reconhecido pelo layout" });
   });
 
+  it("batchMismatch marca o campo segmento e os campos do segmento continuam validados", () => {
+    const errors = validateRecord(rec([L.ha(), L.hl("01"), L.a("00001", "00000000001000A")], 2), testLayout);
+    expect(errors.map((e) => [e.fieldId, e.rule])).toEqual([
+      ["segmento", "batchMismatch"],
+      ["valor", "type"],
+    ]);
+    expect(errors[0]).toMatchObject({ start: 14, end: 14, message: "Segmento A não corresponde ao lote (Header de Lote na linha 2, serviço 01)" });
+  });
+
   it("valida todos os campos da linha (regras de blur) com trigger file", () => {
     const bad = L.a("0000X", "00000000001000A");
     const errors = validateRecord(rec([L.hl(), bad], 1), testLayout);

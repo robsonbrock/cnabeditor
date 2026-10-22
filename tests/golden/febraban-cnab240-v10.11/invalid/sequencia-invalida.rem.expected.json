@@ -21,7 +21,14 @@
       "line": 7,
       "start": 1,
       "end": 240,
-      "rule": "unknownRecord"
+      "rule": "sequence"
+    },
+    {
+      "line": 7,
+      "start": 14,
+      "end": 14,
+      "fieldId": "segmento",
+      "rule": "batchMismatch"
     }
   ]
 }

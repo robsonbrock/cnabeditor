@@ -47,6 +47,19 @@ function ruleHolds(rule: MatchRule, text: string, ctx: BatchContext | null): boo
 
 /** Vence a definição com mais condições satisfeitas; empate ou nenhuma ⇒ null (R6). */
 export function matchRecord(text: string, ctx: BatchContext | null, layout: LayoutDefinition): RecordDefinition | null {
+  return bestMatch(text, ctx, layout, false);
+}
+
+/**
+ * Detalhe cujo segmento não pertence ao serviço do lote (ou está fora de lote): casa ignorando as regras
+ * de lote para que os campos do segmento continuem editáveis. Empate ⇒ primeira definição do layout.
+ */
+export function matchIgnoringBatch(text: string, layout: LayoutDefinition): RecordDefinition | null {
+  const def = bestMatch(text, null, layout, true);
+  return def?.kind === "detail" ? def : null;
+}
+
+function bestMatch(text: string, ctx: BatchContext | null, layout: LayoutDefinition, ignoreBatch: boolean): RecordDefinition | null {
   const idx = layoutIndex(layout);
   const candidates = [
     ...(idx.keyPos !== null ? (idx.buckets.get(text.charAt(idx.keyPos - 1)) ?? []) : []),
@@ -56,16 +69,18 @@ export function matchRecord(text: string, ctx: BatchContext | null, layout: Layo
   let bestCount = -1;
   let tie = false;
   for (const rec of candidates) {
-    if (!rec.match.every((rule) => ruleHolds(rule, text, ctx))) continue;
-    if (rec.match.length > bestCount) {
+    if (ignoreBatch && !rec.match.some((rule) => "batch" in rule)) continue;
+    const rules = ignoreBatch ? rec.match.filter((rule) => !("batch" in rule)) : rec.match;
+    if (!rules.every((rule) => ruleHolds(rule, text, ctx))) continue;
+    if (rules.length > bestCount) {
       best = rec;
-      bestCount = rec.match.length;
+      bestCount = rules.length;
       tie = false;
-    } else if (rec.match.length === bestCount) {
+    } else if (rules.length === bestCount) {
       tie = true;
     }
   }
-  return tie ? null : best;
+  return tie && !ignoreBatch ? null : best;
 }
 
 function readContext(def: RecordDefinition, text: string, batchIndex: number, headerLine: number): BatchContext {
@@ -87,7 +102,7 @@ function fallbackLabel(text: string, layout: LayoutDefinition): string {
 }
 
 /** Deduz das definições de detalhe onde ficam o Tipo de Registro e o Código Segmento (nada fixo no motor). */
-function detailSegmentPos(layout: LayoutDefinition): { typePos: number; typeValue: string; pos: number } | null {
+export function detailSegmentPos(layout: LayoutDefinition): { typePos: number; typeValue: string; pos: number } | null {
   const detail = layout.records.find((r) => r.kind === "detail");
   if (!detail) return null;
   const single = detail.match.filter(
@@ -120,10 +135,12 @@ export function resolveAround(records: CnabRecord[], layout: LayoutDefinition, i
   // Detalhes (e registros 2/4) não mudam o contexto do lote: basta re-resolver a própria linha.
   const affectsContext = (k: string | undefined) => k === undefined || k === "batchHeader" || k === "batchTrailer" || k === "fileHeader" || k === "fileTrailer";
   if (!affectsContext(oldKind)) {
-    const def = matchRecord(rec.current, rec.batchContext, layout);
+    const exact = matchRecord(rec.current, rec.batchContext, layout);
+    const def = exact ?? matchIgnoringBatch(rec.current, layout);
     if (!affectsContext(def?.kind)) {
       rec.definitionId = def!.id;
       rec.label = def!.label;
+      rec.batchMismatch = exact === null;
       return;
     }
   }
@@ -165,6 +182,9 @@ function resolveRange(
       // Com o contexto do próprio lote, uma definição de HL mais específica pode passar a valer.
       def = matchRecord(rec.current, ctx, layout) ?? def;
     }
+    const fallback = def ? null : matchIgnoringBatch(rec.current, layout);
+    rec.batchMismatch = fallback !== null;
+    def ??= fallback;
     rec.definitionId = def?.id ?? null;
     rec.label = def ? def.label : fallbackLabel(rec.current, layout);
     rec.batchContext = def?.kind === "fileHeader" || def?.kind === "fileTrailer" ? null : ctx;

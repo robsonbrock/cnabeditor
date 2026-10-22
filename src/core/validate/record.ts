@@ -1,5 +1,5 @@
 import { fieldsOf } from "../fields";
-import { definitionOf } from "../resolve";
+import { definitionOf, detailSegmentPos } from "../resolve";
 import type { CnabRecord, LayoutDefinition, ValidationError } from "../types";
 import { validateField } from "./field";
 
@@ -19,9 +19,28 @@ export function validateRecord(record: CnabRecord, layout: LayoutDefinition): Va
       message: `Tamanho de linha inválido: ${len} caracteres, esperado ${layout.recordLength}`,
     });
   }
-  if (!definitionOf(layout, record.definitionId)) {
+  const recordDef = definitionOf(layout, record.definitionId);
+  if (!recordDef) {
     errors.push({ ...whole, found: record.label, rule: "unknownRecord", message: "Registro não reconhecido pelo layout" });
     return errors;
+  }
+  if (record.batchMismatch) {
+    const pos = detailSegmentPos(layout)?.pos;
+    const seg = recordDef.fields.find((f) => f.start === pos);
+    const ctx = record.batchContext;
+    errors.push({
+      line,
+      start: seg?.start ?? 1,
+      end: seg?.end ?? Math.max(len, 1),
+      fieldId: seg?.id,
+      fieldName: seg?.name,
+      found: record.label,
+      trigger: "file",
+      rule: "batchMismatch",
+      message: ctx
+        ? `Segmento ${record.label} não corresponde ao lote (Header de Lote na linha ${ctx.headerLine}, serviço ${ctx.service})`
+        : `Segmento ${record.label} fora de lote`,
+    });
   }
   for (const def of fieldsOf(record, layout)) {
     // Campo cortado por linha curta: o problema já é reportado por lineLength.

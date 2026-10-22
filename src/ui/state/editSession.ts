@@ -33,6 +33,13 @@ function blurErrors(views: FieldView[], line: number): Record<string, Validation
   return out;
 }
 
+/** Segmento que não corresponde ao lote: o erro da linha também marca o campo Código Segmento. */
+function mismatchErrors(index: number): ValidationError[] {
+  const rec = doc.value?.records[index];
+  if (!rec?.batchMismatch) return [];
+  return validateRecord(rec, layout.value).filter((e) => e.rule === "batchMismatch" && e.fieldId);
+}
+
 /** Carrega os campos da linha; baseline = trecho atual da linha no quadro principal. */
 export function openSession(index: number | null, keepFocus: string | null = null): void {
   const d = doc.value;
@@ -43,12 +50,14 @@ export function openSession(index: number | null, keepFocus: string | null = nul
   }
   const views = sliceFields(d.records[index], layout.value);
   const baseline = Object.fromEntries(views.map((v) => [v.def.id, v.value]));
+  const fieldErrors = blurErrors(views, index + 1);
+  for (const e of mismatchErrors(index)) fieldErrors[e.fieldId!] = [e, ...(fieldErrors[e.fieldId!] ?? [])];
   sessionFields.value = views;
   session.value = {
     recordIndex: index,
     values: { ...baseline },
     baseline,
-    fieldErrors: blurErrors(views, index + 1),
+    fieldErrors,
     focusedFieldId: keepFocus && baseline[keepFocus] !== undefined ? keepFocus : null,
   };
 }
@@ -71,6 +80,8 @@ export function blurField(fieldId: string): void {
   const value = s.values[fieldId] ?? "";
   const unchangedShort = value === s.baseline[fieldId] && value.length < view.def.size;
   const errors = unchangedShort ? [] : validateField(view.def, value, "blur", layout.value, s.recordIndex + 1);
+  // O descompasso com o lote só é reavaliado ao atualizar a linha.
+  if (value === s.baseline[fieldId]) errors.unshift(...(s.fieldErrors[fieldId] ?? []).filter((e) => e.rule === "batchMismatch"));
   session.value = { ...s, fieldErrors: { ...s.fieldErrors, [fieldId]: errors } };
 }
 
