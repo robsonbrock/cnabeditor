@@ -13,6 +13,10 @@ const schema = JSON.parse(
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 addFormats.default(ajv);
 const validate = ajv.compile(schema);
+const generationSchema = JSON.parse(
+  readFileSync(join(root, "specs/003-gerador-massa-testes/contracts/generation-metadata.schema.json"), "utf8"),
+);
+const validateGeneration = ajv.compile(generationSchema);
 
 const layoutsDir = join(root, "src/layouts");
 let failed = false;
@@ -22,8 +26,16 @@ for (const name of readdirSync(layoutsDir)) {
   if (!statSync(dir).isDirectory()) continue;
   const layout = loadLayoutFromDir(dir);
   // size é derivado pelo carregador e não faz parte do formato em disco.
+  const { generation, ...withoutGeneration } = layout;
+  if (generation && !validateGeneration(generation)) {
+    failed = true;
+    console.error(`✗ ${name}/generation.json:`);
+    for (const err of validateGeneration.errors ?? []) console.error(`  ${err.instancePath}: ${err.message}`);
+  } else if (generation) {
+    console.log(`✓ ${name}/generation.json válido`);
+  }
   const onDisk = {
-    ...layout,
+    ...withoutGeneration,
     records: layout.records.map((r) => ({ ...r, fields: r.fields.map(({ size: _size, ...f }) => f) })),
   };
   if (validate(onDisk)) {

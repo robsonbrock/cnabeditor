@@ -104,6 +104,16 @@ export function loadFromPaste(text: string): void {
 }
 
 /**
+ * Massa de testes gerada: entra como conteúdo colado (ISO-8859-1, CRLF na exportação, FR-031) e nasce
+ * com alterações não exportadas, para que substituí-la também peça confirmação (research G12).
+ */
+export function loadGenerated(text: string, toast: string): void {
+  const next = fromPastedText(text, layout.value);
+  next.hasUnexportedChanges = true;
+  replaceOrConfirm(next, toast);
+}
+
+/**
  * "Recalcular totais" (FR-023b/c): só campos totalizadores; nada é criado ou removido.
  * Trailers alterados ganham o indicador "alterada" (US3-10).
  */

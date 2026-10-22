@@ -37,14 +37,14 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 **Purpose**: preparar branch, tipos e carregamento dos metadados de geração.
 
-- [ ] T001 Criar a branch `003-gerador-massa-testes` a partir de `002-visual-refresh` e commitar a pasta `specs/003-gerador-massa-testes/` (spec, plan, research, data-model, contracts, quickstart, checklists, tasks)
-- [ ] T002 Adicionar os tipos de [data-model.md](data-model.md) §1 e §2 em src/core/types.ts:
+- [X] T001 Criar a branch `003-gerador-massa-testes` a partir de `002-visual-refresh` e commitar a pasta `specs/003-gerador-massa-testes/` (spec, plan, research, data-model, contracts, quickstart, checklists, tasks)
+- [X] T002 Adicionar os tipos de [data-model.md](data-model.md) §1 e §2 em src/core/types.ts:
   - `GenerationMeta`, `GroupMeta`, `VariantMeta`, `CompanyMeta`, `StrategyName`, `StrategyRef`, `GenerationConfig`, `Selection`, `CompanyAccountInput`, `GenerationPlan`, `GenerationResult`;
   - propriedade opcional `generation?: GenerationMeta` em `LayoutDefinition`;
   - `StrategyName` com exatamente os nomes do enum `strategyName` de [contracts/generation-metadata.schema.json](contracts/generation-metadata.schema.json).
-- [ ] T003 [P] Alterar `recordFiles` em src/layouts/node-loader.ts e o filtro de `fromGlob` em src/layouts/loader.ts para excluir `generation.json` das definições de registro, e passá-lo como 3º argumento opcional de `assembleLayout`
-- [ ] T004 Alterar `assembleLayout(meta, records, generation?)` em src/layouts/assemble.ts para anexar `generation` à `LayoutDefinition` só quando fornecido (depende de T002, T003)
-- [ ] T005 [P] Estender scripts/validate-layout.ts para validar `generation.json`, quando existir na pasta do layout, contra `specs/003-gerador-massa-testes/contracts/generation-metadata.schema.json`, e excluir `generation` do objeto validado pelo schema de layout da 001
+- [X] T003 [P] Alterar `recordFiles` em src/layouts/node-loader.ts e o filtro de `fromGlob` em src/layouts/loader.ts para excluir `generation.json` das definições de registro, e passá-lo como 3º argumento opcional de `assembleLayout`
+- [X] T004 Alterar `assembleLayout(meta, records, generation?)` em src/layouts/assemble.ts para anexar `generation` à `LayoutDefinition` só quando fornecido (depende de T002, T003)
+- [X] T005 [P] Estender scripts/validate-layout.ts para validar `generation.json`, quando existir na pasta do layout, contra `specs/003-gerador-massa-testes/contracts/generation-metadata.schema.json`, e excluir `generation` do objeto validado pelo schema de layout da 001
 
 ---
 
@@ -56,12 +56,12 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Testes (escrever primeiro, devem falhar)
 
-- [ ] T006 [P] Escrever tests/unit/generate/rng.test.ts:
+- [X] T006 [P] Escrever tests/unit/generate/rng.test.ts:
   - mulberry32 com a mesma semente produz a mesma sequência;
   - `int(min, max)` respeita os limites inclusivos;
   - `pick` cobre todos os itens em 1.000 sorteios;
   - `digits(n)` devolve n dígitos.
-- [ ] T007 [P] Escrever tests/unit/generate/strategies.test.ts, cobrindo cada estratégia de [contracts/core-api.md › Estratégias](contracts/core-api.md#estratégias):
+- [X] T007 [P] Escrever tests/unit/generate/strategies.test.ts, cobrindo cada estratégia de [contracts/core-api.md › Estratégias](contracts/core-api.md#estratégias):
   - CPF (11) e CNPJ (14) com DV válido, verificados por função de DV independente escrita no próprio teste;
   - `codigoBarras44` com DV módulo 11 correto na 5ª posição;
   - `pixKey` nunca começa por 0/1/2/3/9;
@@ -73,7 +73,7 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
   - `documento` único em 10.000 chamadas;
   - `blank` (A espaços, numéricos zeros);
   - `ocorrenciaRetorno` = "00" + brancos.
-- [ ] T008 [P] Escrever tests/unit/generate/generation-integrity.test.ts sobre o layout carregado por `loadLayoutFromDir`:
+- [X] T008 [P] Escrever tests/unit/generate/generation-integrity.test.ts sobre o layout carregado por `loadLayoutFromDir`:
   - todo `group.header` (kind = `batchHeader`), `variant.id`, `batch.initial[]`, `batch.final[]`, chave de `company.records` e id de campo citado existe no layout;
   - todo `variant.id` é `kind = "detail"`;
   - `requires` aponta para variação do mesmo grupo, sem `requires` próprio;
@@ -86,13 +86,13 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Implementação
 
-- [ ] T009 [P] Implementar src/core/generate/rng.ts: `createRng(seed: number)` (mulberry32) com `next()`, `int(min, max)`, `pick<T>(items)` e `digits(n)` (faz T006 passar)
-- [ ] T010 [P] Implementar src/core/generate/strategies.ts (faz T007 passar):
+- [X] T009 [P] Implementar src/core/generate/rng.ts: `createRng(seed: number)` (mulberry32) com `next()`, `int(min, max)`, `pick<T>(items)` e `digits(n)` (faz T006 passar)
+- [X] T010 [P] Implementar src/core/generate/strategies.ts (faz T007 passar):
   - um mapa `StrategyName → (ctx) => string`, em que `ctx = { field: FieldDefinition, rng, today: Date, direction, record: Record<string, string> /* valores já gerados no registro, por id */, counter: () => number }`;
   - o resultado é sempre do tamanho exato do campo (usar `padValue` de src/core/validate/field.ts);
   - `inscricao` lê o tipo no campo irmão de nota G005 do mesmo registro: "1" gera CPF, "2" gera CNPJ; se o tipo ainda não foi gerado, sorteia 1/2 e grava;
   - listas de nomes, ruas, cidades e UFs embutidas no próprio arquivo, em maiúsculas e sem acento.
-- [ ] T011 Criar src/layouts/febraban-cnab240-v10.11/generation.json conforme [data-model.md](data-model.md) §1 e §3:
+- [X] T011 Criar src/layouts/febraban-cnab240-v10.11/generation.json conforme [data-model.md](data-model.md) §1 e §3:
   - `bankFieldId: "codigoBanco"`;
   - `company.kinds: ["fileHeader","batchHeader"]`;
   - `company.records` com os campos de agência, DV agência, conta, DV conta e DV ag/conta de `segmento-e-conciliacao`, `segmento-h-consignacao`, `segmento-p-cobranca`, `segmento-t-cobranca`, `segmento-y-50-cobranca`, `trailer-lote-conciliacao` e `trailer-lote-gestao-caixa` (ids conferidos nos JSON);
@@ -118,8 +118,8 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Testes (escrever primeiro, devem falhar)
 
-- [ ] T012 [P] [US1] Escrever tests/unit/generate/catalog.test.ts: `buildCatalog(layout, "remessa")` devolve um grupo por Header de Lote e as variações na ordem do `generation.json`, com `label` = `title` da definição sem "Header de Lote – " (grupo) ou sem "Detalhe – " (variação), ex.: "Pagamentos (Títulos de Cobrança e QR Code Pix)" e "Segmento J-52 Pix"; só com variações cuja `directions` inclui a direção, com `dependents` calculado; layout sem `generation` devolve `[]`
-- [ ] T013 [P] [US1] Escrever tests/unit/generate/plan.test.ts:
+- [X] T012 [P] [US1] Escrever tests/unit/generate/catalog.test.ts: `buildCatalog(layout, "remessa")` devolve um grupo por Header de Lote e as variações na ordem do `generation.json`, com `label` = `title` da definição sem "Header de Lote – " (grupo) ou sem "Detalhe – " (variação), ex.: "Pagamentos (Títulos de Cobrança e QR Code Pix)" e "Segmento J-52 Pix"; só com variações cuja `directions` inclui a direção, com `dependents` calculado; layout sem `generation` devolve `[]`
+- [X] T013 [P] [US1] Escrever tests/unit/generate/plan.test.ts:
   - A + J geram 2 lotes;
   - N–DARF + O geram 2 lotes (formas 16 e 11, FR-016);
   - duas variações com a mesma chave de lote geram 1 lote;
@@ -127,7 +127,7 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
   - `maxLines` = 10^tamanho do campo `countRecords` do Trailer de Arquivo − 1 (= 999.999);
   - dependente com quantidade menor que o principal: só os primeiros conjuntos levam o dependente (FR-014);
   - dependente selecionado sem o principal: o principal entra no plano com a quantidade do dependente.
-- [ ] T014 [P] [US1] Escrever tests/unit/generate/build.test.ts, com `seed = 42` e `today = 2026-10-22`:
+- [X] T014 [P] [US1] Escrever tests/unit/generate/build.test.ts, com `seed = 42` e `today = 2026-10-22`:
   - cada linha tem 240 caracteres;
   - CRLF entre registros e CRLF final;
   - mesma entrada gera saída idêntica;
@@ -136,15 +136,15 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
   - Código Remessa/Retorno = "1";
   - dados da empresa (inscrição, nome, convênio, agência, conta) e `codigoBanco` iguais em todo o arquivo (FR-021, FR-027);
   - nenhum par de detalhes consecutivos com os mesmos nome, documento e valor (SC-006).
-- [ ] T015 [P] [US1] Escrever tests/unit/generate/generate-all-variants.test.ts (SC-001):
+- [X] T015 [P] [US1] Escrever tests/unit/generate/generate-all-variants.test.ts (SC-001):
   - para cada variação com `remessa` em `directions`, 3 sementes, quantidade 3;
   - `validateRecord` em toda linha + `validateStructure` + `validateTotals` ⇒ 0 erros;
   - a mensagem de falha cita a variação, a linha e o erro.
-- [ ] T016 [P] [US1] Escrever tests/unit/generation-runner.test.ts:
+- [X] T016 [P] [US1] Escrever tests/unit/generation-runner.test.ts:
   - "generate" devolve `done` com `text` e `lines`;
   - um job novo descarta o resultado do anterior;
   - `GenerationError` vira `{ type: "error", message }`.
-- [ ] T017 [P] [US1] Escrever tests/component/GeneratorDialog.test.tsx (US1-1, US1-2, FR-002, FR-005, FR-006, FR-010, FR-030):
+- [X] T017 [P] [US1] Escrever tests/component/GeneratorDialog.test.tsx (US1-1, US1-2, FR-002, FR-005, FR-006, FR-010, FR-030):
   - abre com o grupo de rádio de direção, `generator-direction-remessa` marcado (nesta fase `generator-direction-retorno` aparece desabilitado; é habilitado na US4);
   - abre com nada marcado e os campos de banco e conta vazios;
   - `generator-confirm` desabilitado e `generator-form-error` = "Marque ao menos um segmento";
@@ -154,8 +154,8 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
   - acima de 100.000 aparece `generator-warning`;
   - acima de 999.999 aparece `generator-limit` e Gerar fica desabilitado;
   - falha na geração (worker simulado devolvendo `{ type: "error" }`): a modal continua aberta com as escolhas, o documento do quadro principal não muda e aparece o toast `error` "Massa de testes não gerada: <motivo>" (FR-030, edge case "falha inesperada").
-- [ ] T018 [P] [US1] Escrever tests/component/Header.generate.test.tsx: o botão `generate` aparece após `paste` e antes do divisor do tema, com o texto "Gerar massa de testes"; `generate-empty` aparece só com o quadro vazio; ambos abrem `generator-dialog`
-- [ ] T019 [P] [US1] Escrever tests/e2e/generator.spec.ts, cenários US1-3, US1-4, US1-5, US1-7:
+- [X] T018 [P] [US1] Escrever tests/component/Header.generate.test.tsx: o botão `generate` aparece após `paste` e antes do divisor do tema, com o texto "Gerar massa de testes"; `generate-empty` aparece só com o quadro vazio; ambos abrem `generator-dialog`
+- [X] T019 [P] [US1] Escrever tests/e2e/generator.spec.ts, cenários US1-3, US1-4, US1-5, US1-7:
   - gerar A + J;
   - conferir 26 linhas (HA + 2 × (HL + 10 detalhes + TL) + TA), rótulos `HA`, `HL`, `A`…, `TL`, `TA`;
   - contador de erros em 0;
@@ -166,9 +166,9 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
 
 ### Implementação
 
-- [ ] T020 [P] [US1] Implementar `buildCatalog` em src/core/generate/catalog.ts (faz T012 passar)
-- [ ] T021 [US1] Implementar `planGeneration` em src/core/generate/plan.ts, conforme data-model §4 e research G3/G6 (faz T013 passar; depende de T020)
-- [ ] T022 [US1] Implementar `generateMassa` em src/core/generate/build.ts (faz T014 e T015 passarem; depende de T010, T021). Etapas, nesta ordem:
+- [X] T020 [P] [US1] Implementar `buildCatalog` em src/core/generate/catalog.ts (faz T012 passar)
+- [X] T021 [US1] Implementar `planGeneration` em src/core/generate/plan.ts, conforme data-model §4 e research G3/G6 (faz T013 passar; depende de T020)
+- [X] T022 [US1] Implementar `generateMassa` em src/core/generate/build.ts (faz T014 e T015 passarem; depende de T010, T021). Etapas, nesta ordem:
   1. Sortear o perfil da empresa (inscrição com DV, nome, convênio, agência, conta, DVs, código do banco).
   2. Para cada registro: preencher pelas regras `match` (`equals` grava; `in` usa o 1º valor).
   3. Aplicar `batch.values` no header e `fixed` no detalhe.
@@ -180,17 +180,17 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
   9. Montar o texto com CRLF.
   10. Criar o documento via `fromPastedText` e aplicar `recalculateTotals`.
   11. Conferir com `matchRecord` que cada linha resolve para a definição planejada; se não, lançar `GenerationError` citando a variação.
-- [ ] T023 [P] [US1] Implementar src/workers/generation-runner.ts e src/workers/generation.worker.ts, com as mensagens `GenIn`/`GenOut` de [contracts/core-api.md › Worker](contracts/core-api.md#worker), seguindo o padrão de src/workers/validation.worker.ts (faz T016 passar)
-- [ ] T024 [P] [US1] Adicionar o ícone `wand` em src/ui/components/Icon.tsx, no mesmo estilo de traço dos ícones existentes
-- [ ] T025 [US1] Implementar `validateConfig` (só regras de quantidade, seleção mínima, estimativa e limite nesta fase) e um `toggleVariant` simples, sem dependências, em src/core/generate/selection.ts, conforme a tabela de [contracts/core-api.md › Validação](contracts/core-api.md#validação-da-configuração) (depende de T021)
-- [ ] T026 [US1] Implementar src/ui/state/generator.ts (depende de T023, T025):
+- [X] T023 [P] [US1] Implementar src/workers/generation-runner.ts e src/workers/generation.worker.ts, com as mensagens `GenIn`/`GenOut` de [contracts/core-api.md › Worker](contracts/core-api.md#worker), seguindo o padrão de src/workers/validation.worker.ts (faz T016 passar)
+- [X] T024 [P] [US1] Adicionar o ícone `wand` em src/ui/components/Icon.tsx, no mesmo estilo de traço dos ícones existentes
+- [X] T025 [US1] Implementar `validateConfig` (só regras de quantidade, seleção mínima, estimativa e limite nesta fase) e um `toggleVariant` simples, sem dependências, em src/core/generate/selection.ts, conforme a tabela de [contracts/core-api.md › Validação](contracts/core-api.md#validação-da-configuração) (depende de T021)
+- [X] T026 [US1] Implementar src/ui/state/generator.ts (depende de T023, T025):
   - signals `generatorOpen`, `direction` (fixo em "remessa" nesta fase), `selections`, `bankCode`, `companyAccount`, `issues` (via `validateConfig`), `running`;
   - `openGenerator()` com valores padrão;
   - `runGeneration()`:
     - envia ao worker com `seed` de `crypto.getRandomValues` e `today = new Date()`;
     - no `done`: `fromPastedText`, `hasUnexportedChanges = true`, carregar pelo fluxo de `replaceOrConfirm` de src/ui/state/document.ts, fechar a modal e mostrar o toast "Massa de testes gerada: N linhas";
     - no `error`: manter a modal e mostrar o toast "Massa de testes não gerada: <motivo>" (FR-030).
-- [ ] T027 [US1] Implementar src/ui/components/dialogs/GeneratorDialog.tsx conforme [contracts/ui-contract.md](contracts/ui-contract.md) itens 2, 5 e 6 (faz T017 passar; depende de T025, T026):
+- [X] T027 [US1] Implementar src/ui/components/dialogs/GeneratorDialog.tsx conforme [contracts/ui-contract.md](contracts/ui-contract.md) itens 2, 5 e 6 (faz T017 passar; depende de T025, T026):
   - `<Dialog wide testId="generator-dialog" title="Gerar massa de testes">`;
   - grupo de rádio de direção (item 1 do ui-contract) com Remessa marcado e Retorno desabilitado nesta fase;
   - um fieldset por grupo, checkbox e quantidade;
@@ -199,8 +199,8 @@ description: "Lista de tarefas para implementar o Gerador de Massa de Testes CNA
   - Gerar com "Gerando…" e `aria-busy` durante a execução;
   - Enter gera quando habilitado;
   - estilos em src/ui/styles/app.css, usando os tokens existentes de src/ui/styles/tokens.css.
-- [ ] T028 [US1] Adicionar o botão `generate` em src/ui/components/Header.tsx (após "Colar conteúdo", antes do divisor; sempre visível) e `generate-empty` como 3º botão de `.empty-actions` em src/ui/components/MainPane.tsx; texto da tela vazia: "Importe um arquivo CNAB 240 (.rem, .ret ou .txt), cole o conteúdo ou gere uma massa de testes.", conforme [contracts/ui-contract.md](contracts/ui-contract.md) (faz T018 passar). Hoje nenhum teste da 001 confere esse texto (verificado por busca); conferir de novo com `npm test` e `npm run test:e2e` após a mudança.
-- [ ] T029 [US1] Registrar `<GeneratorDialog />` em src/ui/App.tsx e rodar T019 até ficar verde
+- [X] T028 [US1] Adicionar o botão `generate` em src/ui/components/Header.tsx (após "Colar conteúdo", antes do divisor; sempre visível) e `generate-empty` como 3º botão de `.empty-actions` em src/ui/components/MainPane.tsx; texto da tela vazia: "Importe um arquivo CNAB 240 (.rem, .ret ou .txt), cole o conteúdo ou gere uma massa de testes.", conforme [contracts/ui-contract.md](contracts/ui-contract.md) (faz T018 passar). Hoje nenhum teste da 001 confere esse texto (verificado por busca); conferir de novo com `npm test` e `npm run test:e2e` após a mudança.
+- [X] T029 [US1] Registrar `<GeneratorDialog />` em src/ui/App.tsx e rodar T019 até ficar verde
 
 **Checkpoint**: US1 funciona sozinha. Gerar A + J sem erros e `npm test` verde.
 

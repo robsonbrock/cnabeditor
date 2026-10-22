@@ -1,4 +1,5 @@
 import { loadFromFile, pasteOpen } from "../state/document";
+import { openGenerator } from "../state/generator";
 import { prefs, setPrefs } from "../state/prefs";
 import { Icon, Logo } from "./Icon";
 
@@ -42,6 +43,10 @@ export function Header() {
         <button type="button" class="btn" data-testid="paste" onClick={openPaste}>
           <Icon name="clipboard" />
           Colar conteúdo
+        </button>
+        <button type="button" class="btn" data-testid="generate" onClick={openGenerator}>
+          <Icon name="wand" />
+          Gerar massa de testes
         </button>
         <span class="divider" aria-hidden="true" />
         <button

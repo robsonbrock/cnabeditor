@@ -1,0 +1,1123 @@
+{
+  "$schema": "../../../specs/003-gerador-massa-testes/contracts/generation-metadata.schema.json",
+  "bankFieldId": "codigoBanco",
+  "groups": [
+    {
+      "header": "header-lote-pagamento-credito",
+      "variants": [
+        {
+          "id": "segmento-a-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "versaoLayoutLote": "046",
+              "formaLancamento": "01"
+            }
+          }
+        },
+        {
+          "id": "segmento-b-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "versaoLayoutLote": "046",
+              "formaLancamento": "01"
+            }
+          }
+        },
+        {
+          "id": "segmento-c-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "versaoLayoutLote": "046",
+              "formaLancamento": "01"
+            }
+          }
+        },
+        {
+          "id": "segmento-z-pagamento",
+          "directions": [
+            "retorno"
+          ],
+          "requires": "segmento-a-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "versaoLayoutLote": "046",
+              "formaLancamento": "01"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-pagamento-titulos",
+      "variants": [
+        {
+          "id": "segmento-j-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "formaLancamento": "31",
+              "versaoLayoutLote": "040"
+            }
+          }
+        },
+        {
+          "id": "segmento-j-52-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-j-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "formaLancamento": "31",
+              "versaoLayoutLote": "040"
+            }
+          }
+        },
+        {
+          "id": "segmento-j-52-pix-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-j-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "formaLancamento": "47",
+              "versaoLayoutLote": "040"
+            }
+          }
+        },
+        {
+          "id": "segmento-j-53-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-j-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "20",
+              "formaLancamento": "31",
+              "versaoLayoutLote": "040"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-pagamento-tributos",
+      "variants": [
+        {
+          "id": "segmento-o-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "11",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-w-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-o-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "11",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-w-fgts-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-o-pagamento",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "11",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "16",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-gps-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "17",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-darf-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "16",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-darf-simples-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "18",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-gare-sp-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "22",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-ipva-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "25",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-dpvat-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "27",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-licenciamento-pagamento",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "22",
+              "formaLancamento": "26",
+              "versaoLayoutLote": "012"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-cobranca",
+      "variants": [
+        {
+          "id": "segmento-p-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-q-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-r-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-s-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-s-3-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-01-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-04-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-05-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-50-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-51-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-52-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-53-cobranca",
+          "directions": [
+            "remessa"
+          ],
+          "requires": "segmento-p-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-t-cobranca",
+          "directions": [
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        },
+        {
+          "id": "segmento-u-cobranca",
+          "directions": [
+            "retorno"
+          ],
+          "requires": "segmento-t-cobranca",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "01",
+              "versaoLayoutLote": "060"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-boleto-eletronico",
+      "variants": [
+        {
+          "id": "segmento-g-boleto-eletronico",
+          "directions": [
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "03",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-h-boleto-eletronico",
+          "directions": [
+            "retorno"
+          ],
+          "requires": "segmento-g-boleto-eletronico",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "03",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-03-boleto-eletronico",
+          "directions": [
+            "retorno"
+          ],
+          "requires": "segmento-g-boleto-eletronico",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "03",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-51-boleto-eletronico",
+          "directions": [
+            "retorno"
+          ],
+          "requires": "segmento-g-boleto-eletronico",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "03",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-52-boleto-eletronico",
+          "directions": [
+            "retorno"
+          ],
+          "requires": "segmento-g-boleto-eletronico",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "03",
+              "versaoLayoutLote": "012"
+            }
+          }
+        },
+        {
+          "id": "segmento-y-53-boleto-eletronico",
+          "directions": [
+            "retorno"
+          ],
+          "requires": "segmento-g-boleto-eletronico",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "03",
+              "versaoLayoutLote": "012"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-alegacao-pagador",
+      "variants": [
+        {
+          "id": "segmento-y-02-alegacao-pagador",
+          "directions": [
+            "remessa"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "29",
+              "versaoLayoutLote": "010"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-debito",
+      "variants": [
+        {
+          "id": "segmento-a-debito",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "D",
+              "tipoServico": "05",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "045"
+            }
+          }
+        },
+        {
+          "id": "segmento-b-debito",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-debito",
+          "batch": {
+            "values": {
+              "tipoOperacao": "D",
+              "tipoServico": "05",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "045"
+            }
+          }
+        },
+        {
+          "id": "segmento-c-debito",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-debito",
+          "batch": {
+            "values": {
+              "tipoOperacao": "D",
+              "tipoServico": "05",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "045"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-conciliacao",
+      "variants": [
+        {
+          "id": "segmento-e-conciliacao",
+          "directions": [
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "E",
+              "tipoServico": "04",
+              "formaLancamento": "40",
+              "versaoLayoutLote": "033"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-gestao-caixa",
+      "variants": [
+        {
+          "id": "segmento-f-gestao-caixa",
+          "directions": [
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "G",
+              "tipoServico": "07",
+              "formaLancamento": "40",
+              "versaoLayoutLote": "041"
+            },
+            "initial": [
+              "saldo-inicial-gestao-caixa"
+            ],
+            "final": [
+              "saldo-final-gestao-caixa"
+            ]
+          }
+        },
+        {
+          "id": "segmento-i-gestao-caixa",
+          "directions": [
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "G",
+              "tipoServico": "07",
+              "formaLancamento": "40",
+              "versaoLayoutLote": "041"
+            },
+            "initial": [
+              "saldo-inicial-gestao-caixa"
+            ],
+            "final": [
+              "saldo-final-gestao-caixa"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-custodia",
+      "variants": [
+        {
+          "id": "segmento-d-custodia",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "06",
+              "versaoLayoutLote": "020"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-consignacao",
+      "variants": [
+        {
+          "id": "segmento-h-consignacao",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "modalidadeAverbacao": "1",
+              "tipoServico": "08",
+              "versaoLayoutLote": "010"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-vendor",
+      "variants": [
+        {
+          "id": "segmento-k-vendor",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "40",
+              "versaoLayoutLote": "010"
+            }
+          }
+        },
+        {
+          "id": "segmento-l-vendor",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-k-vendor",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "40",
+              "versaoLayoutLote": "010"
+            }
+          }
+        },
+        {
+          "id": "segmento-m-vendor",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-k-vendor",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "40",
+              "versaoLayoutLote": "010"
+            }
+          }
+        },
+        {
+          "id": "segmento-n-vendor",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-k-vendor",
+          "batch": {
+            "values": {
+              "tipoOperacao": {
+                "remessa": "R",
+                "retorno": "T"
+              },
+              "tipoServico": "40",
+              "versaoLayoutLote": "010"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "header": "header-lote-compror",
+      "variants": [
+        {
+          "id": "segmento-a-compror",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "25",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "020"
+            }
+          }
+        },
+        {
+          "id": "segmento-b-compror",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-compror",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "25",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "020"
+            }
+          }
+        },
+        {
+          "id": "segmento-c-compror",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-compror",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "25",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "020"
+            }
+          }
+        },
+        {
+          "id": "segmento-i-compror",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-compror",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "25",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "020"
+            }
+          }
+        },
+        {
+          "id": "segmento-i-11-compror",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-compror",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "25",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "020"
+            }
+          }
+        },
+        {
+          "id": "segmento-j-compror",
+          "directions": [
+            "remessa",
+            "retorno"
+          ],
+          "requires": "segmento-a-compror",
+          "batch": {
+            "values": {
+              "tipoOperacao": "C",
+              "tipoServico": "25",
+              "formaLancamento": "01",
+              "versaoLayoutLote": "020"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "company": {
+    "kinds": [
+      "fileHeader",
+      "batchHeader"
+    ],
+    "records": {
+      "segmento-e-conciliacao": [
+        "tipoInscricao",
+        "numeroInscricao",
+        "convenio",
+        "agencia",
+        "dvAgencia",
+        "conta",
+        "dvConta",
+        "dvAgenciaConta",
+        "nome"
+      ],
+      "segmento-h-consignacao": [
+        "agencia",
+        "dvAgencia",
+        "conta",
+        "dvConta"
+      ],
+      "segmento-p-cobranca": [
+        "agencia",
+        "dvAgencia",
+        "conta",
+        "dvConta",
+        "dvAgenciaConta"
+      ],
+      "segmento-t-cobranca": [
+        "agencia",
+        "dvAgencia",
+        "conta",
+        "dvConta",
+        "dvAgenciaConta"
+      ],
+      "segmento-y-50-cobranca": [
+        "agencia",
+        "dvAgencia",
+        "conta",
+        "dvConta",
+        "dvAgenciaConta"
+      ],
+      "trailer-lote-conciliacao": [
+        "tipoInscricao",
+        "numeroInscricao",
+        "convenio",
+        "agencia",
+        "dvAgencia",
+        "conta",
+        "dvConta",
+        "dvAgenciaConta"
+      ],
+      "trailer-lote-gestao-caixa": [
+        "tipoInscricao",
+        "numeroInscricao",
+        "convenio",
+        "agencia",
+        "dvAgencia",
+        "conta",
+        "dvConta",
+        "dvAgenciaConta",
+        "nome"
+      ]
+    }
+  },
+  "strategies": {
+    "G001": "banco",
+    "P002": "banco",
+    "G005": "inscricao",
+    "G006": "inscricao",
+    "G007": "documento",
+    "G008": "agencia",
+    "G009": "dv",
+    "G010": "conta",
+    "G011": "dv",
+    "G012": "dv",
+    "G013": "nomePessoa",
+    "G014": "nomeEmpresa",
+    "C060": "nomePessoa",
+    "G032": "endereco",
+    "G033": "cidade",
+    "G034": "cep",
+    "G035": "cep",
+    "G036": "uf",
+    "G042": "valor",
+    "G070": "valor",
+    "G090": "valor",
+    "G078": "valor",
+    "C052": "valor",
+    "D005": "valor",
+    "D011": "valor",
+    "H023": "valor",
+    "H024": "valor",
+    "H025": "valor",
+    "G044": "dataFutura",
+    "C012": "dataFutura",
+    "C003": "dataFutura",
+    "D010": "dataFutura",
+    "C065": "dataFutura",
+    "G071": "dataPassada",
+    "G068": "dataPassada",
+    "G088": "dataPassada",
+    "G089": "dataPassada",
+    "G080": "dataPassada",
+    "G097": "dataPassada",
+    "C056": "dataPassada",
+    "C057": "dataPassada",
+    "D004": "dataPassada",
+    "F002": "hora",
+    "F006": "hora",
+    "F010": "hora",
+    "G043": "documento",
+    "G064": "documento",
+    "G069": "documento",
+    "G072": "documento",
+    "C011": "documento",
+    "C067": "documento",
+    "G063": "codigoBarras44",
+    "G102": "pixKey",
+    "G004": "blank",
+    "G059": {
+      "remessa": "blank",
+      "retorno": "ocorrenciaRetorno"
+    }
+  },
+  "fixed": {
+    "header-arquivo.versaoLayoutArquivo": "103"
+  }
+}

@@ -107,6 +107,16 @@
           }
         }
       }
+    },
+    "fixed": {
+      "type": "object",
+      "description": "Valores fixos por 'recordId.fieldId' para registros que não são variações (ex.: versão do layout do arquivo).",
+      "propertyNames": {
+        "pattern": "^[a-z0-9-]+.[A-Za-z0-9]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/valueRef"
+      }
     }
   },
   "$defs": {
@@ -223,7 +233,7 @@
               "type": "object",
               "minProperties": 1,
               "additionalProperties": {
-                "type": "string"
+                "$ref": "#/$defs/valueRef"
               },
               "description": "Valor por id de campo do Header de Lote do grupo (tipoOperacao, tipoServico, formaLancamento, versaoLayoutLote)."
             },
@@ -247,10 +257,33 @@
           "type": "object",
           "description": "Valores fixos por id de campo do detalhe.",
           "additionalProperties": {
-            "type": "string"
+            "$ref": "#/$defs/valueRef"
           }
         }
       }
+    },
+    "valueRef": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "remessa",
+            "retorno"
+          ],
+          "properties": {
+            "remessa": {
+              "type": "string"
+            },
+            "retorno": {
+              "type": "string"
+            }
+          }
+        }
+      ]
     }
   }
 }
