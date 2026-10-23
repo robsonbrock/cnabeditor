@@ -2,7 +2,9 @@
 
 Editor de página única, sem login e sem backend, para importar ou colar, inspecionar campo a campo, editar com validação em tempo real, recalcular totais e exportar ou copiar arquivos **CNAB 240** (remessa e retorno), conforme o [Layout Padrão FEBRABAN CNAB 240 v10.11](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Layout%20padrao%20CNAB240%20V%2010%2011%20-%2021_08_2023.pdf).
 
-Todo o processamento acontece no navegador. O conteúdo dos arquivos nunca é enviado a um servidor nem gravado no navegador; só as preferências de interface ficam no `localStorage`.
+**Acesse:** https://cnabeditor.vercel.app/
+
+Todo o processamento acontece no navegador. O conteúdo dos arquivos nunca é enviado a um servidor nem gravado no navegador; só as preferências de interface ficam no `localStorage`. O site publicado mede apenas dados de uso anônimos (visitas e ações), sem nenhum conteúdo de arquivo; veja [Medição de uso](#medição-de-uso).
 
 ## Stack
 
@@ -27,14 +29,22 @@ npm run build               # gera dist/ estático
 npm run preview             # serve dist/ em http://localhost:4173
 ```
 
-O conteúdo de `dist/` pode ser publicado em qualquer host de arquivos estáticos. Recomenda-se HTTPS, exigido pela Clipboard API.
+O conteúdo de `dist/` pode ser publicado em qualquer host de arquivos estáticos. Recomenda-se HTTPS, exigido pela Clipboard API. A versão oficial está publicada na Vercel, em https://cnabeditor.vercel.app/.
+
+## Medição de uso
+
+- O build publicado (`npm run build`, modo `production`) usa o Google Analytics (`G-TKLBD459FS`) só para contar visitas e ações. Os eventos levam apenas números e valores de listas fechadas, nunca nomes de arquivo, valores ou dados dos registros. O rodapé avisa o usuário.
+- `npm run dev`, Vitest e Playwright (`--mode e2e`) não carregam o script do Google: os eventos ficam só no `window.dataLayer`, em memória.
+- O ID fica em `src/ui/analytics-id.ts`, e a CSP de produção é gerada por `src/build/csp.ts`.
+- Catálogo de eventos: [specs/005-google-analytics/contracts/analytics-events.md](specs/005-google-analytics/contracts/analytics-events.md).
 
 ## Testes
 
 ```sh
 npm run test             # Vitest: core, golden files, integridade do layout, componentes
 npm run test:golden      # só golden files: parse, round-trip byte a byte, validação, recálculo
-npm run test:e2e         # Playwright: cenários de aceitação nos 3 navegadores
+npm run test:e2e         # Playwright: cenários de aceitação nos 3 navegadores + projeto analytics-prod
+                         # (build production na porta 4174, com o Google bloqueado)
 npm run test:perf        # Playwright (Chromium): 10.000 e 100.000 linhas
 npm run lint             # ESLint (proíbe trim e APIs de rede em src/)
 npm run validate:layout  # valida src/layouts/** contra o JSON Schema

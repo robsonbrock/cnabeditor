@@ -2,6 +2,7 @@ import { signal } from "@preact/signals";
 import { buildReport, validateDocument } from "../../core/validate";
 import { FLAG_ERROR, type ValidationError, type ValidationReport } from "../../core/types";
 import type { WorkerIn, WorkerOut } from "../../workers/validation-runner";
+import { track } from "../analytics";
 import { doc, layout, requestSelect, selectedIndex, touchLines } from "./document";
 import { hooks } from "./hooks";
 
@@ -74,6 +75,7 @@ export function revalidate(): void {
 export function goToNextError(): void {
   const errors = report.value.errors;
   if (!errors.length) return;
+  track("proximo_erro", { erros: errors.length });
   const current = (selectedIndex.value ?? -1) + 1;
   if (cursor < 0 || errors[cursor]?.line !== current) {
     const after = errors.findIndex((e) => e.line > current);

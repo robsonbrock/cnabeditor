@@ -10,7 +10,7 @@ Catálogo fechado aceito por `track()` (research A5). Nenhum outro nome ou parâ
 - Exatamente um evento por execução da ação (US2, cenário 4).
 - Tipos usados abaixo:
   - `Direcao` = `remessa | retorno | desconhecida`
-  - `TipoRegistro` = `header_arquivo | header_lote | detalhe | trailer_lote | trailer_arquivo | desconhecido`
+  - `TipoRegistro` = `header_arquivo | header_lote | inicial_lote | detalhe | final_lote | trailer_lote | trailer_arquivo | desconhecido` (`inicial_lote` e `final_lote` são os registros 2 e 4 do lote, como `saldo-inicial-*` e `saldo-final-*`)
   - `Layout` = `cnab240` (único layout suportado hoje; a união cresce com novos layouts)
   - `Servico` = sufixo do `definitionId` do header do lote da linha (`pagamento`, `cobranca`, `debito`, …, como listado em `src/layouts/febraban-cnab240-v10.11/header-lote-*.json`), `geral` para `header-lote` sem sufixo, ou `nenhum` fora de lote
 

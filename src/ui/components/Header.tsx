@@ -1,3 +1,4 @@
+import { track } from "../analytics";
 import { loadFromFile, pasteOpen } from "../state/document";
 import { openGenerator } from "../state/generator";
 import { prefs, setPrefs } from "../state/prefs";
@@ -44,7 +45,7 @@ export function Header() {
           <Icon name="clipboard" />
           Colar conteúdo
         </button>
-        <button type="button" class="btn" data-testid="generate" onClick={openGenerator}>
+        <button type="button" class="btn" data-testid="generate" onClick={() => openGenerator("cabecalho")}>
           <Icon name="wand" />
           Gerar massa de testes
         </button>
@@ -55,7 +56,10 @@ export function Header() {
           data-testid="theme-toggle"
           aria-label={themeLabel}
           title={themeLabel}
-          onClick={() => setPrefs({ theme: dark ? "light" : "dark" })}
+          onClick={() => {
+            track("trocar_tema", { tema: dark ? "claro" : "escuro" });
+            setPrefs({ theme: dark ? "light" : "dark" });
+          }}
         >
           <Icon name={dark ? "sun" : "moon"} />
         </button>

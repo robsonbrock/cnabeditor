@@ -74,7 +74,7 @@ describe("proteção do conteúdo atual (US5, FR-029)", () => {
   it("importação mantém a mensagem original do diálogo", () => {
     render(<ReplaceContentDialog />);
     act(() => {
-      pendingReplace.value = { next: sample() };
+      pendingReplace.value = { next: sample(), origem: "arquivo" };
     });
     expect(screen.getByTestId("replace-content-dialog").textContent).toContain("Há alterações que ainda não foram exportadas.");
   });

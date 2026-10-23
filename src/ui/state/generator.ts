@@ -4,6 +4,7 @@ import { buildCatalog } from "../../core/generate/catalog";
 import { canGenerate, changeDirection, setQuantity, toggleVariant, validateConfig, type SelectionChange } from "../../core/generate/selection";
 import type { CompanyAccountInput, GenerationConfig, GenerationDirection, Selection } from "../../core/types";
 import type { GenIn, GenOut } from "../../workers/generation-runner";
+import { track, type AnalyticsEvents } from "../analytics";
 import { loadGenerated, layout } from "./document";
 import { showToast } from "./toasts";
 
@@ -27,8 +28,22 @@ export const config = computed<GenerationConfig>(() => ({
 export const issues = computed(() => validateConfig(config.value, layout.value));
 export const generateEnabled = computed(() => !running.value && canGenerate(issues.value));
 
+/** Parâmetros comuns de `gerar_massa`; o código do banco nunca vai para a medição (005). */
+function genParams(): Omit<AnalyticsEvents["gerar_massa"], "resultado" | "linhas"> {
+  const { direction: dir, selections: sel, companyAccount: account } = config.value;
+  return {
+    layout: "cnab240",
+    direcao: dir,
+    variantes: sel.map((s) => s.variantId).sort().join(",").slice(0, 100),
+    qtd_variantes: sel.length,
+    qtd_registros: sel.reduce((n, s) => n + s.quantity, 0),
+    com_conta_empresa: Object.values(account ?? {}).some((v) => v) ? "sim" : "nao",
+  };
+}
+
 /** A modal sempre abre com os valores padrão (spec, Assumptions). */
-export function openGenerator(): void {
+export function openGenerator(origem: "cabecalho" | "quadro_vazio" = "cabecalho"): void {
+  track("abrir_gerador", { origem });
   direction.value = "remessa";
   selections.value = [];
   bankCode.value = "";
@@ -40,6 +55,7 @@ export function openGenerator(): void {
 
 export function closeGenerator(): void {
   if (running.value) return;
+  track("gerar_massa", { resultado: "cancelada", ...genParams() });
   generatorOpen.value = false;
 }
 
@@ -95,11 +111,15 @@ function onResult(msg: GenOut): void {
   if (msg.jobId !== jobId) return;
   running.value = false;
   if (msg.type === "error") {
+    track("gerar_massa", { resultado: "erro", ...genParams() });
     showToast("error", `Massa de testes não gerada: ${msg.message}`);
     return;
   }
   // A modal só fecha quando a massa entra no quadro; cancelar a substituição volta para ela (FR-029).
-  loadGenerated(msg.text, `Massa de testes gerada: ${lines(msg.lines)}`, () => (generatorOpen.value = false));
+  loadGenerated(msg.text, `Massa de testes gerada: ${lines(msg.lines)}`, () => {
+    track("gerar_massa", { resultado: "concluida", ...genParams(), linhas: msg.lines });
+    generatorOpen.value = false;
+  });
 }
 
 /** Gera no Worker quando disponível; senão de forma síncrona (research G7). */

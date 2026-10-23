@@ -5,6 +5,7 @@ import { resolveAround } from "../../core/resolve";
 import { FLAG_CHANGED, FLAG_ERROR, type EditSession, type FieldView, type ValidationError } from "../../core/types";
 import { validateField } from "../../core/validate/field";
 import { validateRecord } from "../../core/validate/record";
+import { servico, tipoRegistro, track } from "../analytics";
 import { doc, layout, touchLines } from "./document";
 import { hooks } from "./hooks";
 import { showToast } from "./toasts";
@@ -94,6 +95,8 @@ export function setFocused(fieldId: string | null): void {
 export function discard(): void {
   const s = session.value;
   if (!s) return;
+  const rec = doc.value?.records[s.recordIndex];
+  if (rec) track("descartar_edicao", { tipo_registro: tipoRegistro(rec).tipo_registro });
   openSession(s.recordIndex, s.focusedFieldId);
 }
 
@@ -105,6 +108,7 @@ export function updateLine(): void {
   const d = doc.value;
   if (!s || !d) return;
   const rec = d.records[s.recordIndex];
+  const changedFields = Object.keys(s.values).filter((id) => s.values[id] !== s.baseline[id]).length;
   rec.current = applyEdits(rec.current, sessionFields.value.map((v) => v.def), s.values, s.baseline);
   // Tipo de registro, segmento ou contexto de lote podem ter mudado.
   resolveAround(d.records, layout.value, s.recordIndex);
@@ -115,6 +119,12 @@ export function updateLine(): void {
   d.hasUnexportedChanges = true;
   doc.value = { ...d };
   touchLines();
+  track("atualizar_linha", {
+    ...tipoRegistro(rec),
+    servico: servico(rec, d.records),
+    campos_alterados: changedFields,
+    com_erros: errors.length ? "sim" : "nao",
+  });
   openSession(s.recordIndex, s.focusedFieldId);
 
   const line = s.recordIndex + 1;

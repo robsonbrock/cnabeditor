@@ -1,4 +1,5 @@
 import { useRef } from "preact/hooks";
+import { track } from "../../analytics";
 import { loadFromPaste, pasteOpen } from "../../state/document";
 import { Dialog } from "./Dialog";
 
@@ -7,6 +8,10 @@ export function PasteDialog() {
   const ref = useRef<HTMLTextAreaElement>(null);
   const close = () => {
     pasteOpen.value = false;
+  };
+  const cancel = () => {
+    track("colar_conteudo", { resultado: "cancelada" });
+    close();
   };
   const confirm = () => {
     const text = ref.current?.value ?? "";
@@ -19,11 +24,11 @@ export function PasteDialog() {
       testId="paste-dialog"
       title="Colar conteúdo"
       open={pasteOpen.value}
-      onCancel={close}
+      onCancel={cancel}
       wide
       actions={
         <>
-          <button type="button" data-testid="paste-cancel" onClick={close}>
+          <button type="button" data-testid="paste-cancel" onClick={cancel}>
             Cancelar
           </button>
           <button type="button" class="primary" data-testid="paste-confirm" onClick={confirm}>
