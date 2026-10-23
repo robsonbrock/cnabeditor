@@ -1,4 +1,5 @@
 import type { JSX } from "preact";
+import { track } from "../analytics";
 import { doc, recalculate, requestSelect, selectedIndex } from "../state/document";
 import { prefs, setPrefs } from "../state/prefs";
 import { openGenerator } from "../state/generator";
@@ -86,7 +87,10 @@ export function MainPane() {
             data-testid="wrap-toggle"
             aria-checked={wrap ? "true" : "false"}
             title="Quebrar linhas longas ou manter cada registro numa linha com rolagem horizontal"
-            onClick={() => setPrefs({ wrap: !wrap })}
+            onClick={() => {
+              track("alternar_quebra", { quebra: wrap ? "desligada" : "ligada" });
+              setPrefs({ wrap: !wrap });
+            }}
           >
             Quebrar linhas
             <span class="switch-track" aria-hidden="true">
@@ -110,7 +114,7 @@ export function MainPane() {
                 <Icon name="clipboard" />
                 Colar conteúdo
               </button>
-              <button type="button" class="btn" data-testid="generate-empty" onClick={openGenerator}>
+              <button type="button" class="btn" data-testid="generate-empty" onClick={() => openGenerator("quadro_vazio")}>
                 <Icon name="wand" />
                 Gerar massa de testes
               </button>

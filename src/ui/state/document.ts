@@ -3,6 +3,7 @@ import { decodeFile, fromPastedText, isAcceptedExtension } from "../../core/docu
 import { FLAG_CHANGED, type CnabDocument, type LayoutDefinition, type RecalcChange, type ValidationError } from "../../core/types";
 import { recalculateTotals } from "../../core/validate/totals";
 import { febrabanCnab240 } from "../../layouts/loader";
+import { direcao, track } from "../analytics";
 import { hooks } from "./hooks";
 import { showToast } from "./toasts";
 
@@ -16,6 +17,8 @@ export const selectedIndex = signal<number | null>(null);
 export const pasteOpen = signal(false);
 export interface ReplaceRequest {
   next: CnabDocument;
+  /** Origem do conteúdo novo, para a medição (005). */
+  origem: "arquivo" | "colagem" | "gerador";
   toast?: string;
   /** Texto do diálogo; ausente ⇒ o aviso padrão de alterações não exportadas (FR-008). */
   message?: string;
@@ -72,7 +75,7 @@ export function requestSelect(index: number): void {
  * Substitui direto ou pede confirmação quando há alterações (FR-008); `always` pede sempre que o quadro
  * tiver conteúdo (FR-029). `toast` é anunciado ao aplicar.
  */
-function replaceOrConfirm(next: CnabDocument, opts: Omit<ReplaceRequest, "next"> & { always?: boolean } = {}): void {
+function replaceOrConfirm(next: CnabDocument, opts: Omit<ReplaceRequest, "next"> & { always?: boolean }): void {
   const { always, ...request } = opts;
   const current = doc.value;
   if (current && (current.hasUnexportedChanges || hooks.isDirty() || (always && current.records.length > 0))) {
@@ -90,20 +93,32 @@ function applyReplace(request: ReplaceRequest): void {
 
 export function confirmReplace(): void {
   const pending = pendingReplace.value;
-  if (pending) applyReplace(pending);
+  if (!pending) return;
+  track("substituir_conteudo", { resultado: "confirmada", origem: pending.origem });
+  applyReplace(pending);
 }
 
 export function cancelReplace(): void {
   const pending = pendingReplace.value;
   pendingReplace.value = null;
-  pending?.onCancel?.();
+  if (!pending) return;
+  track("substituir_conteudo", { resultado: "cancelada", origem: pending.origem });
+  pending.onCancel?.();
 }
 
 const lines = (n: number) => `${n} ${n === 1 ? "linha" : "linhas"}`;
 
+/** Só a extensão, numa união fechada: o nome do arquivo nunca entra na medição (FR-007). */
+function extensionOf(name: string): "rem" | "ret" | "txt" | "outra" {
+  const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
+  return ext === "rem" || ext === "ret" || ext === "txt" ? ext : "outra";
+}
+
 /** Importação (FR-005, FR-035). */
 export async function loadFromFile(file: File): Promise<void> {
+  const extensao = extensionOf(file.name);
   if (!isAcceptedExtension(file.name)) {
+    track("importar_arquivo", { resultado: "erro", motivo: "extensao", extensao: "outra", layout: "cnab240" });
     showToast("error", "Arquivo não importado: extensão não aceita. Use .rem, .ret ou .txt");
     return;
   }
@@ -111,15 +126,19 @@ export async function loadFromFile(file: File): Promise<void> {
   try {
     next = decodeFile(new Uint8Array(await file.arrayBuffer()), file.name, layout.value);
   } catch {
+    track("importar_arquivo", { resultado: "erro", motivo: "leitura", extensao, layout: "cnab240" });
     showToast("error", "Arquivo não importado: não foi possível ler o arquivo");
     return;
   }
-  replaceOrConfirm(next, { toast: `Arquivo "${file.name}" importado: ${lines(next.records.length)}` });
+  track("importar_arquivo", { resultado: "concluida", extensao, layout: "cnab240", direcao: direcao(next.direction), linhas: next.records.length });
+  replaceOrConfirm(next, { origem: "arquivo", toast: `Arquivo "${file.name}" importado: ${lines(next.records.length)}` });
 }
 
 /** Texto confirmado na janela "Colar conteúdo": vai sem alteração (FR-006b). */
 export function loadFromPaste(text: string): void {
-  replaceOrConfirm(fromPastedText(text, layout.value));
+  const next = fromPastedText(text, layout.value);
+  track("colar_conteudo", { resultado: "concluida", layout: "cnab240", direcao: direcao(next.direction), linhas: next.records.length });
+  replaceOrConfirm(next, { origem: "colagem" });
 }
 
 /**
@@ -130,7 +149,7 @@ export function loadFromPaste(text: string): void {
 export function loadGenerated(text: string, toast: string, onReplaced: () => void): void {
   const next = fromPastedText(text, layout.value);
   next.hasUnexportedChanges = true;
-  replaceOrConfirm(next, { toast, onReplaced, always: true, message: "O conteúdo atual do quadro principal será substituído pela massa gerada." });
+  replaceOrConfirm(next, { origem: "gerador", toast, onReplaced, always: true, message: "O conteúdo atual do quadro principal será substituído pela massa gerada." });
 }
 
 /**
@@ -154,4 +173,5 @@ export function recalculate(): void {
     hooks.onContentChanged();
   }
   recalcResult.value = { changes, errors };
+  track("recalcular_totais", { campos_alterados: changes.length, erros: errors.length });
 }

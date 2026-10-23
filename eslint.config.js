@@ -17,7 +17,7 @@ const noAnalyticsGlobals = ["gtag", "dataLayer"].map((name) => ({
 }));
 
 export default tseslint.config(
-  { ignores: ["dist/**", "node_modules/**", "tests/e2e/fixtures/**", "test-results/**", "playwright-report/**"] },
+  { ignores: ["dist/**", "dist-prod/**", "node_modules/**", "tests/e2e/fixtures/**", "test-results/**", "playwright-report/**"] },
   ...tseslint.configs.recommended,
   {
     languageOptions: { globals: { ...globals.browser, ...globals.node } },

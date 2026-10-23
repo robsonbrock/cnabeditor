@@ -1,7 +1,8 @@
 import { signal } from "@preact/signals";
 import { encodeForExport, exportFileName, toClipboardText } from "../../core/export";
-import type { ExportPlan } from "../../core/types";
+import type { CnabDocument, ExportPlan } from "../../core/types";
 import { validateDocument } from "../../core/validate";
+import { track } from "../analytics";
 import { doc, layout } from "./document";
 import { showToast } from "./toasts";
 import { report } from "./validation";
@@ -12,7 +13,13 @@ type Step = "ext" | "errors" | "charset";
 /** Diálogo de exportação aberto, na ordem extensão → erros → charset (contracts/ui-contract.md). */
 export const exportStep = signal<{ step: Step; errorCount: number; plan: ExportPlan | null } | null>(null);
 
-let pending: { at: Date; ext: Ext | null } | null = null;
+/** `errors`: contado uma vez na primeira passagem, reaproveitado pela medição (005). */
+let pending: { at: Date; ext: Ext | null; errors?: number } | null = null;
+
+function trackExport(resultado: "concluida" | "cancelada", linhas: number): void {
+  const erros = pending?.errors ?? 0;
+  track("exportar_arquivo", { resultado, extensao: pending?.ext ?? "indefinida", com_erros: erros ? "sim" : "nao", erros, linhas });
+}
 
 const errorCount = () => {
   const r = report.value;
@@ -29,6 +36,7 @@ function advance(from: Step | null): void {
   }
   if (from === null || from === "ext") {
     const count = errorCount();
+    pending.errors = count;
     if (count > 0) {
       exportStep.value = { step: "errors", errorCount: count, plan: null };
       return;
@@ -40,11 +48,11 @@ function advance(from: Step | null): void {
     return;
   }
   exportStep.value = null;
-  download(plan, exportFileName(pending.at, pending.ext));
+  if (download(plan, exportFileName(pending.at, pending.ext))) trackExport("concluida", d.records.length);
   pending = null;
 }
 
-function download(plan: ExportPlan, name: string): void {
+function download(plan: ExportPlan, name: string): boolean {
   try {
     const url = URL.createObjectURL(new Blob([plan.bytes as BlobPart], { type: "application/octet-stream" }));
     const a = document.createElement("a");
@@ -57,11 +65,12 @@ function download(plan: ExportPlan, name: string): void {
     setTimeout(() => URL.revokeObjectURL(url), 0);
   } catch (e) {
     showToast("error", `Arquivo não exportado: ${e instanceof Error ? e.message : "falha ao gerar o download"}`);
-    return;
+    return false;
   }
   // Flags "alterada" são mantidas: comparam com o conteúdo original (data-model §5).
   doc.value!.hasUnexportedChanges = false;
   showToast("success", `Arquivo "${name}" exportado`);
+  return true;
 }
 
 /** "Exportar" (FR-024): nome pelo relógio local no momento do clique (FR-024a). */
@@ -86,6 +95,7 @@ export function confirmExportStep(): void {
 
 export function cancelExport(): void {
   exportStep.value = null;
+  if (pending) trackExport("cancelada", doc.value?.records.length ?? 0);
   pending = null;
 }
 
@@ -93,6 +103,12 @@ export function cancelExport(): void {
 export async function copyToClipboard(): Promise<boolean> {
   const d = doc.value;
   if (!d) return false;
+  const ok = await writeClipboard(d);
+  track("copiar_conteudo", { resultado: ok ? "concluida" : "erro", linhas: d.records.length });
+  return ok;
+}
+
+async function writeClipboard(d: CnabDocument): Promise<boolean> {
   const text = toClipboardText(d);
   try {
     if (navigator.clipboard?.writeText) {

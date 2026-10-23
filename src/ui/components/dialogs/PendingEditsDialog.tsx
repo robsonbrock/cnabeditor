@@ -1,3 +1,4 @@
+import { track } from "../../analytics";
 import { pendingSelect, selectLine } from "../../state/document";
 import { discard, updateLine } from "../../state/editSession";
 import { Dialog } from "./Dialog";
@@ -5,8 +6,12 @@ import { Dialog } from "./Dialog";
 /** FR-022: trocar de linha com edições não confirmadas. */
 export function PendingEditsDialog() {
   const target = pendingSelect.value;
-  const cancel = () => (pendingSelect.value = null);
-  const proceed = (before: () => void) => () => {
+  const cancel = () => {
+    track("edicoes_pendentes", { escolha: "cancelar" });
+    pendingSelect.value = null;
+  };
+  const proceed = (escolha: "atualizar" | "descartar", before: () => void) => () => {
+    track("edicoes_pendentes", { escolha });
     before();
     pendingSelect.value = null;
     if (target !== null) selectLine(target);
@@ -23,10 +28,10 @@ export function PendingEditsDialog() {
           <button type="button" data-testid="pending-cancel" onClick={cancel}>
             Cancelar
           </button>
-          <button type="button" data-testid="pending-discard" onClick={proceed(discard)}>
+          <button type="button" data-testid="pending-discard" onClick={proceed("descartar", discard)}>
             Descartar
           </button>
-          <button type="button" class="primary" data-testid="pending-update" onClick={proceed(updateLine)}>
+          <button type="button" class="primary" data-testid="pending-update" onClick={proceed("atualizar", updateLine)}>
             Atualizar
           </button>
         </>

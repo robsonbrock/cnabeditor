@@ -1,6 +1,7 @@
 venv/
 node_modules/
 dist/
+dist-prod/
 coverage/
 *.log
 .env*
