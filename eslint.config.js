@@ -11,6 +11,11 @@ const noNetwork = ["fetch", "XMLHttpRequest", "WebSocket", "EventSource"].map((n
   message: "Nenhuma requisição de rede é permitida (FR-033, SC-008).",
 }));
 
+const noAnalyticsGlobals = ["gtag", "dataLayer"].map((name) => ({
+  name,
+  message: "Use track() de src/ui/analytics.ts (005, research A13).",
+}));
+
 export default tseslint.config(
   { ignores: ["dist/**", "node_modules/**", "tests/e2e/fixtures/**", "test-results/**", "playwright-report/**"] },
   ...tseslint.configs.recommended,
@@ -26,6 +31,10 @@ export default tseslint.config(
   },
   {
     files: ["src/**"],
+    rules: { "no-restricted-globals": ["error", ...noNetwork, ...noAnalyticsGlobals] },
+  },
+  {
+    files: ["src/ui/analytics.ts"],
     rules: { "no-restricted-globals": ["error", ...noNetwork] },
   },
 );
