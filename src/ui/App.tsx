@@ -7,6 +7,7 @@ import { MainPane } from "./components/MainPane";
 import { Splitter } from "./components/Splitter";
 import { Toasts } from "./components/Toasts";
 import { ExportCharsetDialog, ExportErrorsDialog, ExportExtDialog } from "./components/dialogs/ExportDialogs";
+import { GeneratorDialog } from "./components/dialogs/GeneratorDialog";
 import { PasteDialog } from "./components/dialogs/PasteDialog";
 import { PendingEditsDialog } from "./components/dialogs/PendingEditsDialog";
 import { RecalcDialog } from "./components/dialogs/RecalcDialog";
@@ -66,6 +67,7 @@ export function App() {
       <Footer />
       <Toasts />
       <PasteDialog />
+      <GeneratorDialog />
       <ReplaceContentDialog />
       <PendingEditsDialog />
       <RecalcDialog />

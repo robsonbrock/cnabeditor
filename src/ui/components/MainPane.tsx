@@ -1,6 +1,7 @@
 import type { JSX } from "preact";
 import { doc, recalculate, requestSelect, selectedIndex } from "../state/document";
 import { prefs, setPrefs } from "../state/prefs";
+import { openGenerator } from "../state/generator";
 import { goToNextError, report } from "../state/validation";
 import { openImport, openPaste } from "./Header";
 import { Icon } from "./Icon";
@@ -99,7 +100,7 @@ export function MainPane() {
           <div class="empty-card">
             <Icon name="file-up" size={40} />
             <h2>Não há conteúdo para exibir</h2>
-            <p class="muted">Importe um arquivo CNAB 240 (.rem, .ret ou .txt) ou cole o conteúdo.</p>
+            <p class="muted">Importe um arquivo CNAB 240 (.rem, .ret ou .txt), cole o conteúdo ou gere uma massa de testes.</p>
             <div class="empty-actions">
               <button type="button" class="btn btn-primary" onClick={openImport}>
                 <Icon name="upload" />
@@ -108,6 +109,10 @@ export function MainPane() {
               <button type="button" class="btn" onClick={openPaste}>
                 <Icon name="clipboard" />
                 Colar conteúdo
+              </button>
+              <button type="button" class="btn" data-testid="generate-empty" onClick={openGenerator}>
+                <Icon name="wand" />
+                Gerar massa de testes
               </button>
             </div>
             <p class="faint">O arquivo é lido apenas no seu navegador e não é enviado a nenhum servidor.</p>

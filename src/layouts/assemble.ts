@@ -1,12 +1,12 @@
-import type { FieldDefinition, LayoutDefinition, RecordDefinition } from "../core/types";
+import type { FieldDefinition, GenerationMeta, LayoutDefinition, RecordDefinition } from "../core/types";
 
 type RawField = Omit<FieldDefinition, "size">;
 type RawRecord = Omit<RecordDefinition, "fields"> & { fields: RawField[] };
 export type RawLayoutMeta = Omit<LayoutDefinition, "records"> & { domains?: LayoutDefinition["domains"] };
 
-/** Monta a LayoutDefinition a partir de layout.json + um JSON por RecordDefinition (R5). */
-export function assembleLayout(meta: RawLayoutMeta, records: RawRecord[]): LayoutDefinition {
-  return {
+/** Monta a LayoutDefinition a partir de layout.json + um JSON por RecordDefinition (R5) + generation.json opcional. */
+export function assembleLayout(meta: RawLayoutMeta, records: RawRecord[], generation?: GenerationMeta): LayoutDefinition {
+  const layout: LayoutDefinition = {
     ...meta,
     domains: meta.domains ?? {},
     records: records.map((r) => ({
@@ -18,4 +18,6 @@ export function assembleLayout(meta: RawLayoutMeta, records: RawRecord[]): Layou
         .sort((a, b) => a.start - b.start),
     })),
   };
+  if (generation) layout.generation = generation;
+  return layout;
 }

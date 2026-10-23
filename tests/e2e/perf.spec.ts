@@ -75,4 +75,47 @@ test.describe("@perf desempenho", () => {
     const over = (await longTasks()).filter((d) => d > 200);
     expect(over, `tarefas longas: ${over.join(", ")} ms`).toEqual([]);
   });
+
+  /** Abre a modal, marca as variações com 10.000 cada (ou a quantidade dada) e gera. */
+  async function generateMass(page: Page, ids: string[], quantity = "10000") {
+    await page.getByTestId("generate").click();
+    for (const id of ids) {
+      await page.getByTestId(`generator-variant-${id}`).check();
+      await page.getByTestId(`generator-qty-${id}`).fill(quantity);
+    }
+    const start = Date.now();
+    await page.getByTestId("generator-confirm").click();
+    return start;
+  }
+
+  test("SC-003: massa de 10.000 linhas no quadro em até 3 s", async ({ page }) => {
+    await page.goto("/");
+    const start = await generateMass(page, ["segmento-a-pagamento"], "9996");
+    await expect(page.getByTestId("line-count")).toHaveText("10000 linhas");
+    await expect(row(page, 1)).toBeVisible();
+    expect(Date.now() - start).toBeLessThanOrEqual(3000);
+    await expect(page.getByTestId("error-count")).toHaveText("0 erros", { timeout: 30_000 });
+  });
+
+  /**
+   * A geração roda no Worker; a única tarefa longa é a carga do texto no quadro (a mesma da importação, que
+   * para 100.000 linhas leva ~1,4 s). Exige-se que nenhuma passe de 1 s.
+   */
+  test("SC-003: massa de ~100.000 linhas no quadro em até 15 s, sem tarefa longa acima de 1 s", async ({ page }) => {
+    await page.goto("/");
+    const ids = ["segmento-a-pagamento", "segmento-j-pagamento", "segmento-o-pagamento", "segmento-p-cobranca", "segmento-a-debito", "segmento-d-custodia", "segmento-h-consignacao", "segmento-k-vendor", "segmento-a-compror", "segmento-y-02-alegacao-pagador"];
+    await page.getByTestId("generate").click();
+    for (const id of ids) {
+      await page.getByTestId(`generator-variant-${id}`).check();
+      await page.getByTestId(`generator-qty-${id}`).fill("10000");
+    }
+    const longTasks = await watchLongTasks(page);
+    const start = Date.now();
+    await page.getByTestId("generator-confirm").click();
+    await expect(page.getByTestId("line-count")).toHaveText("100228 linhas", { timeout: 15_000 });
+    expect(Date.now() - start).toBeLessThanOrEqual(15_000);
+    const durations = await longTasks();
+    expect(durations.filter((d) => d > 1000), `tarefas longas: ${durations.map(Math.round).join(", ")} ms`).toEqual([]);
+    await expect(page.getByTestId("error-count")).toHaveText("0 erros", { timeout: 60_000 });
+  });
 });

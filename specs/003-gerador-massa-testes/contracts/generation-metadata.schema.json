@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cnabeditor.local/schemas/generation-metadata.schema.json",
+  "title": "Metadados de geração de massa de testes (generation.json)",
+  "description": "Dados do layout usados pelo gerador: catálogo de variações, lotes, campos da empresa e estratégias de valor (research.md G1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bankFieldId",
+    "groups",
+    "company",
+    "strategies"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "bankFieldId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Id do campo 'Código do Banco na Compensação' presente em todas as definições de registro."
+    },
+    "groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/group"
+      }
+    },
+    "company": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kinds",
+        "records"
+      ],
+      "properties": {
+        "kinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "fileHeader",
+              "batchHeader",
+              "batchInitial",
+              "detail",
+              "batchFinal",
+              "batchTrailer",
+              "fileTrailer"
+            ]
+          },
+          "uniqueItems": true,
+          "description": "Nesses tipos de registro, os campos com notas G005–G013 são da empresa."
+        },
+        "records": {
+          "type": "object",
+          "description": "Id da definição → ids de campo que representam a conta/identificação da empresa.",
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "strategies": {
+      "type": "object",
+      "description": "Nota FEBRABAN (FieldDefinition.reference) → estratégia.",
+      "propertyNames": {
+        "pattern": "^[A-Z][0-9]{3}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/strategyRef"
+      }
+    },
+    "fieldStrategies": {
+      "type": "object",
+      "description": "Exceções por 'recordId.fieldId'; prevalecem sobre 'strategies'.",
+      "propertyNames": {
+        "pattern": "^[a-z0-9-]+\\.[A-Za-z0-9]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/strategyRef"
+      }
+    },
+    "excluded": {
+      "type": "array",
+      "description": "Detalhes do layout fora da geração (FR-003), com motivo.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "fixed": {
+      "type": "object",
+      "description": "Valores fixos por 'recordId.fieldId' para registros que não são variações (ex.: versão do layout do arquivo).",
+      "propertyNames": {
+        "pattern": "^[a-z0-9-]+.[A-Za-z0-9]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/valueRef"
+      }
+    }
+  },
+  "$defs": {
+    "direction": {
+      "enum": [
+        "remessa",
+        "retorno"
+      ]
+    },
+    "strategyName": {
+      "enum": [
+        "blank",
+        "inscricao",
+        "agencia",
+        "conta",
+        "dv",
+        "banco",
+        "nomePessoa",
+        "nomeEmpresa",
+        "valor",
+        "dataFutura",
+        "dataPassada",
+        "hora",
+        "codigoBarras44",
+        "pixKey",
+        "endereco",
+        "cidade",
+        "cep",
+        "uf",
+        "documento",
+        "ocorrenciaRetorno"
+      ]
+    },
+    "strategyRef": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/strategyName"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "remessa",
+            "retorno"
+          ],
+          "properties": {
+            "remessa": {
+              "$ref": "#/$defs/strategyName"
+            },
+            "retorno": {
+              "$ref": "#/$defs/strategyName"
+            }
+          }
+        }
+      ]
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "header",
+        "variants"
+      ],
+      "properties": {
+        "header": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Id da RecordDefinition de Header de Lote do serviço. O nome exibido do grupo é o title desse header sem \"Header de Lote – \"."
+        },
+        "variants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/variant"
+          }
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "directions",
+        "batch"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Id de uma RecordDefinition com kind = detail. O nome exibido é o title dessa definição sem \"Detalhe – \"."
+        },
+        "directions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/direction"
+          }
+        },
+        "requires": {
+          "description": "Id da variação principal (mesmo grupo); string ou um id por direção.",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "remessa",
+                "retorno"
+              ],
+              "properties": {
+                "remessa": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                },
+                "retorno": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                }
+              }
+            }
+          ]
+        },
+        "batch": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "values"
+          ],
+          "properties": {
+            "values": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "$ref": "#/$defs/valueRef"
+              },
+              "description": "Valor por id de campo do Header de Lote do grupo (tipoOperacao, tipoServico, formaLancamento, versaoLayoutLote)."
+            },
+            "initial": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]+$"
+              }
+            },
+            "final": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]+$"
+              }
+            }
+          }
+        },
+        "fixed": {
+          "type": "object",
+          "description": "Valores fixos por id de campo do detalhe.",
+          "additionalProperties": {
+            "$ref": "#/$defs/valueRef"
+          }
+        }
+      }
+    },
+    "valueRef": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "remessa",
+            "retorno"
+          ],
+          "properties": {
+            "remessa": {
+              "type": "string"
+            },
+            "retorno": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -92,6 +92,12 @@ const PATHS = {
     </>
   ),
   external: <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />,
+  wand: (
+    <>
+      <path d="M4 20 15 9" />
+      <path d="M15 4v2M15 12v2M11 8h2M17 8h2M18.5 4.5l-1 1M12.5 4.5l1 1" />
+    </>
+  ),
 } satisfies Record<string, JSX.Element>;
 
 export type IconName = keyof typeof PATHS;

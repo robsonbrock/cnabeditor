@@ -70,6 +70,133 @@ export interface LayoutDefinition {
   recordLength: number;
   domains: Record<string, AllowedValue[]>;
   records: RecordDefinition[];
+  /** generation.json da pasta do layout; ausente ⇒ layout sem gerador de massa. */
+  generation?: GenerationMeta;
+}
+
+// ---------- Metadados de geração de massa (generation.json, dado do layout) ----------
+
+export type GenerationDirection = "remessa" | "retorno";
+
+export type StrategyName =
+  | "blank"
+  | "inscricao"
+  | "agencia"
+  | "conta"
+  | "dv"
+  | "banco"
+  | "nomePessoa"
+  | "nomeEmpresa"
+  | "valor"
+  | "dataFutura"
+  | "dataPassada"
+  | "hora"
+  | "codigoBarras44"
+  | "pixKey"
+  | "endereco"
+  | "cidade"
+  | "cep"
+  | "uf"
+  | "documento"
+  | "ocorrenciaRetorno";
+
+export type StrategyRef = StrategyName | Record<GenerationDirection, StrategyName>;
+
+/** Valor fixo, igual nas duas direções ou um por direção. */
+export type ValueRef = string | Record<GenerationDirection, string>;
+
+export interface VariantMeta {
+  /** Id de uma RecordDefinition de detalhe; o nome exibido é o title dela sem "Detalhe – ". */
+  id: string;
+  directions: GenerationDirection[];
+  /** Id da variação principal do mesmo grupo; pode variar com a direção (ex.: Y-01 depende de P na remessa e de T no retorno). */
+  requires?: ValueRef;
+  batch: {
+    /** Valor por id de campo do Header de Lote do grupo. */
+    values: Record<string, ValueRef>;
+    initial?: string[];
+    final?: string[];
+  };
+  /** Valores fixos por id de campo do detalhe. */
+  fixed?: Record<string, ValueRef>;
+}
+
+export interface GroupMeta {
+  /** Id do Header de Lote; o nome exibido é o title dele sem "Header de Lote – ". */
+  header: string;
+  variants: VariantMeta[];
+}
+
+export interface CompanyMeta {
+  kinds: RecordKind[];
+  records: Record<string, string[]>;
+}
+
+export interface GenerationMeta {
+  bankFieldId: string;
+  groups: GroupMeta[];
+  company: CompanyMeta;
+  /** Nota FEBRABAN → estratégia. */
+  strategies: Record<string, StrategyRef>;
+  /** "recordId.fieldId" → estratégia; prevalece sobre `strategies`. */
+  fieldStrategies?: Record<string, StrategyRef>;
+  /** "recordId.fieldId" → valor fixo, para registros que não são variações (ex.: Header de Arquivo). */
+  fixed?: Record<string, ValueRef>;
+  excluded?: { id: string; reason: string }[];
+}
+
+// ---------- Configuração e resultado da geração ----------
+
+export interface Selection {
+  variantId: string;
+  /** Quantidade efetiva (1–10.000). */
+  quantity: number;
+  /** Texto como digitado no campo de quantidade; ausente ⇒ quantity. */
+  input?: string;
+  /** Incluída automaticamente como principal de um dependente (FR-011). */
+  auto: boolean;
+}
+
+export interface CompanyAccountInput {
+  agencia?: string;
+  digitoAgencia?: string;
+  conta?: string;
+  digitoConta?: string;
+  digitoAgenciaConta?: string;
+}
+
+export interface GenerationConfig {
+  direction: GenerationDirection;
+  selections: Selection[];
+  bankCode?: string;
+  companyAccount: CompanyAccountInput;
+}
+
+export interface PlannedSet {
+  principal: string;
+  dependents: string[];
+}
+
+export interface PlannedBatch {
+  key: string;
+  header: string;
+  /** Trailer de Lote que fecha o lote ("" se nenhum aceita os valores: erro de metadados). */
+  trailer: string;
+  values: Record<string, string>;
+  initial: string[];
+  final: string[];
+  sets: PlannedSet[];
+}
+
+export interface GenerationPlan {
+  batches: PlannedBatch[];
+  estimatedLines: number;
+  maxLines: number;
+}
+
+export interface GenerationResult {
+  text: string;
+  lines: number;
 }
 
 // ---------- Estado do documento (runtime) ----------
