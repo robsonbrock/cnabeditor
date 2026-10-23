@@ -8,9 +8,9 @@ Constante do módulo `src/ui/analytics.ts`.
 
 | Campo | Valor | Origem |
 |---|---|---|
-| `measurementId` | `G-6QQBTELE2T` | spec FR-001 |
+| `measurementId` | `G-TKLBD459FS` | spec FR-001 |
 | `load` | `import.meta.env.MODE === "production"` | research A2 |
-| `scriptSrc` | `https://www.googletagmanager.com/gtag/js?id=G-6QQBTELE2T` | tag fornecida |
+| `scriptSrc` | `https://www.googletagmanager.com/gtag/js?id=${measurementId}` | tag fornecida |
 | `configParams` | `allow_google_signals: false`, `allow_ad_personalization_signals: false`, `page_title: "CNAB Editor"`, `page_location: origem + "/"` | research A4 |
 
 ## AnalyticsEvent

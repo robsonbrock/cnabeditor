@@ -22,7 +22,7 @@ description: "Task list for feature 005-google-analytics"
 
 ## Phase 1: Setup
 
-**Purpose**: garantir, antes de existir qualquer medição, que dev e testes nunca falem com a propriedade `G-6QQBTELE2T` (FR-002, research A2).
+**Purpose**: garantir, antes de existir qualquer medição, que dev e testes nunca falem com a propriedade `G-TKLBD459FS` (FR-002, research A2).
 
 - [ ] T001 Em `playwright.config.ts`, trocar o `webServer.command` de `"npm run build && npm run preview"` para `"npm run build -- --mode e2e && npm run preview"`. O npm acrescenta `--mode e2e` ao `vite build` do script `build`. Rodar `npm run test:e2e` e confirmar que a suíte inteira continua verde, sem nenhum outro ajuste.
 - [X] T002 [P] Em `eslint.config.js`, acrescentar ao bloco `files: ["src/**"]` as entradas `{ name: "gtag", message: "Use track() de src/ui/analytics.ts (005, research A13)." }` e `{ name: "dataLayer", message: "Use track() de src/ui/analytics.ts (005, research A13)." }` em `no-restricted-globals`, mantendo as de `noNetwork`. Adicionar um bloco final `{ files: ["src/ui/analytics.ts"], rules: { "no-restricted-globals": ["error", ...noNetwork] } }` para liberar só esse arquivo. Rodar `npm run lint`: deve passar.
@@ -34,7 +34,7 @@ description: "Task list for feature 005-google-analytics"
 
 ## Phase 2: User Story 1 - Saber quantas pessoas usam o editor (Priority: P1) 🎯 MVP
 
-**Goal**: o build publicado carrega o gtag.js com `G-6QQBTELE2T`, registra a visita com sinais de publicidade desligados e título e endereço fixos, e libera na CSP só os domínios do GA4. Fora de produção nada é carregado, e o Google bloqueado não afeta o editor.
+**Goal**: o build publicado carrega o gtag.js com `G-TKLBD459FS`, registra a visita com sinais de publicidade desligados e título e endereço fixos, e libera na CSP só os domínios do GA4. Fora de produção nada é carregado, e o Google bloqueado não afeta o editor.
 
 **Independent Test**: `npx playwright test --project=analytics-prod` verde (script pedido com o ID, CSP de produção, editor funcionando com o Google bloqueado). Depois de publicar, a visita aparece no relatório em tempo real (quickstart Q6).
 
@@ -49,14 +49,16 @@ description: "Task list for feature 005-google-analytics"
   - (d) `default-src 'self'`, `style-src 'self' 'unsafe-inline'` e `worker-src 'self' blob:` ficam idênticas;
   - (e) a ordem das diretivas é preservada e nenhuma diretiva nova aparece.
 - [ ] T005 [P] [US1] Criar `tests/unit/analytics.test.ts` (projeto Vitest `node`, com `globalThis.window`, `document` e `location` simulados por objetos mínimos, ou mover para `tests/component/analytics.test.tsx` se happy-dom for mais simples). Testar `initAnalytics({ load, doc?, win? })` de `src/ui/analytics.ts`:
-  - (a) Com `load: false`, `win.dataLayer` recebe, nesta ordem, `["js", <Date>]` e `["config", "G-6QQBTELE2T", { allow_google_signals: false, allow_ad_personalization_signals: false, page_title: "CNAB Editor", page_location: "<origin>/" }]`, e nenhum `<script>` é criado.
-  - (b) Com `load: true`, existe exatamente um `<script>` com `async === true` e `src === "https://www.googletagmanager.com/gtag/js?id=G-6QQBTELE2T"` no `<head>`.
+  - (a) Com `load: false`, `win.dataLayer` recebe, nesta ordem, `["js", <Date>]` e `["config", MEASUREMENT_ID, { allow_google_signals: false, allow_ad_personalization_signals: false, page_title: "CNAB Editor", page_location: "<origin>/" }]`, e nenhum `<script>` é criado.
+  - (b) Com `load: true`, existe exatamente um `<script>` com `async === true` e `src === GTAG_SRC` no `<head>`.
+
+  `MEASUREMENT_ID` e `GTAG_SRC` vêm de `src/ui/analytics-id.ts` (T010); o teste não repete o ID literal.
   - (c) Chamar `initAnalytics` duas vezes não duplica o script nem o `config`.
   - (d) `page_location` ignora `location.search` e `location.hash`: com `href` `https://x.test/?nome=a#b`, o valor é `https://x.test/`.
   - (e) Disparar o `onerror` do script não lança e não registra nada no console.
   - (f) `ANALYTICS_ENABLED` exportado é `false` no Vitest (modo `test`).
 - [ ] T006 [P] [US1] Criar `tests/e2e/analytics-prod.spec.ts`. No `beforeEach`, `await context.route(/https:\/\/([^/]+\.)?(googletagmanager|google-analytics|analytics\.google)\.com\//, r => { requested.push(r.request().url()); return r.abort(); })`. Casos:
-  - (a) depois de `page.goto("/")`, `requested` contém uma URL que começa com `https://www.googletagmanager.com/gtag/js?id=G-6QQBTELE2T`;
+  - (a) depois de `page.goto("/")`, `requested` contém `GTAG_SRC`, importado de `src/ui/analytics-id.ts`;
   - (b) a CSP do `<meta http-equiv="Content-Security-Policy">` é a de produção do `contracts/ui-contract.md`;
   - (c) importar `golden("valid/pagamento-remessa.rem")`, editar `valorPagamento` da linha 3, `update-line`, `recalc`/`recalc-close` e `export` com download concluído funcionam, e nenhum toast de erro aparece (FR-003, SC-003);
   - (d) `page.on("console")` não registra erros além dos de requisições bloqueadas para domínios do Google.
@@ -79,8 +81,12 @@ description: "Task list for feature 005-google-analytics"
   - trocar `defineConfig({...})` por `defineConfig(({ command, mode }) => ({...}))`;
   - acrescentar a `plugins` um plugin inline `{ name: "analytics-csp", transformIndexHtml: (html) => command === "build" && mode === "production" ? html.replace(/(http-equiv="Content-Security-Policy" content=")([^"]+)/, (_, a, csp) => a + analyticsCsp(csp)) : html }`, importando `analyticsCsp` de `./src/build/csp`;
   - atualizar o comentário de `assetsInlineLimit` para "Tudo empacotado localmente: nenhum asset externo no bundle (Princípio V); só o build production carrega o gtag.js (005)".
-- [ ] T010 [US1] Criar `src/ui/analytics.ts` com:
-  - as constantes `MEASUREMENT_ID = "G-6QQBTELE2T"`, `GTAG_SRC` e `export const ANALYTICS_ENABLED = import.meta.env.MODE === "production"`;
+- [ ] T010 [US1] Criar `src/ui/analytics-id.ts`, única fonte do ID de medição no código, sem `import.meta` para poder ser importado pelo Playwright no Node:
+  - `export const MEASUREMENT_ID = "G-TKLBD459FS";`
+  - `export const GTAG_SRC = \`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}\`;`
+
+  Criar `src/ui/analytics.ts` com:
+  - `MEASUREMENT_ID` e `GTAG_SRC` importados de `./analytics-id`, e `export const ANALYTICS_ENABLED = import.meta.env.MODE === "production"`;
   - a declaração global `interface Window { dataLayer?: unknown[] }`;
   - uma função `gtag` **no nível do módulo**, não exportada, com a assinatura `function gtag(..._args: unknown[]): void { (window.dataLayer ??= []).push(arguments); }`. Precisa ser `arguments`, não array: o gtag.js exige o objeto `arguments`, como na tag original. Ela cria o `dataLayer` sob demanda, para funcionar antes de `initAnalytics`. Para os testes poderem injetar `win`, aceitar `win` via uma variável de módulo `target: Window = window` que `initAnalytics` sobrescreve, e usar `target` no lugar de `window`. `initAnalytics` (abaixo) e `track` (T016) usam essa mesma função; nenhuma outra cópia;
   - `export function initAnalytics({ load = ANALYTICS_ENABLED, doc = document, win = window } = {})`, idempotente (flag de módulo), que:
@@ -223,7 +229,7 @@ description: "Task list for feature 005-google-analytics"
 ## Phase 5: Polish & Cross-Cutting
 
 - [ ] T028 [P] Em `README.md`, acrescentar a seção "Medição de uso" depois de "Rodando a aplicação", com estes pontos:
-  - o build publicado (`npm run build`) usa o Google Analytics (`G-6QQBTELE2T`) só para visitas e ações, sem conteúdo de arquivos;
+  - o build publicado (`npm run build`) usa o Google Analytics (`G-TKLBD459FS`) só para visitas e ações, sem conteúdo de arquivos;
   - dev, Vitest e Playwright (`--mode e2e`) não carregam o script;
   - a CSP de produção é gerada por `src/build/csp.ts`;
   - o catálogo de eventos está em `specs/005-google-analytics/contracts/analytics-events.md`.
@@ -231,7 +237,7 @@ description: "Task list for feature 005-google-analytics"
   Ajustar a frase "O conteúdo dos arquivos nunca é enviado a um servidor nem gravado no navegador" para deixar explícito que isso continua valendo, e que só dados de uso anônimos são medidos. Na seção de testes, listar o projeto `analytics-prod`.
 - [ ] T029 [P] Rodar `npm run test:perf` (mediana de 3 execuções) e comparar com `specs/005-google-analytics/perf-baseline.md` (T003): cada tempo pode subir no máximo 5% (SC-004). Registrar as duas tabelas no PR.
 - [ ] T030 Rodar a suíte completa: `npm run lint`, `npm run test`, `npm run test:golden`, `npm run test:e2e` (inclui `analytics-prod`), `npm run validate:layout` e `npm run build`. Tudo verde. Conferir `git status`: nenhum `dist-prod/` versionado.
-- [ ] T031 Antes do primeiro deploy, manual, pelo criador do site: aplicar o quickstart Q7 na propriedade `G-6QQBTELE2T`: medição aprimorada sem interações com formulários nem pesquisa no site; retenção de 2 meses; sinais do Google desativados; dimensões personalizadas, incluindo `layout`, `servico` e a métrica `qtd_registros`. **Bloqueia a publicação** (research A12).
+- [ ] T031 Antes do primeiro deploy, manual, pelo criador do site: aplicar o quickstart Q7 na propriedade `G-TKLBD459FS`: medição aprimorada sem interações com formulários nem pesquisa no site; retenção de 2 meses; sinais do Google desativados; dimensões personalizadas, incluindo `layout`, `servico` e a métrica `qtd_registros`. **Bloqueia a publicação** (research A12).
 - [ ] T032 Depois do deploy, manual, pelo criador do site: executar o quickstart Q6 (tempo real e DebugView, SC-001).
 
 ---

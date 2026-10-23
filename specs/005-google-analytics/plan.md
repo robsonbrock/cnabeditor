@@ -8,7 +8,7 @@
 
 ## Summary
 
-O site publicado passa a medir visitas e as ações do usuário na propriedade do Google Analytics `G-6QQBTELE2T`. A medição fica sempre ativa e é informada no rodapé, sem consentimento (opção C), e nunca leva dados dos arquivos.
+O site publicado passa a medir visitas e as ações do usuário na propriedade do Google Analytics `G-TKLBD459FS`. A medição fica sempre ativa e é informada no rodapé, sem consentimento (opção C), e nunca leva dados dos arquivos.
 
 **Abordagem técnica**:
 - **Carregamento**: um módulo `src/ui/analytics.ts` reproduz a tag fornecida (`dataLayer`, `gtag('js')`, `gtag('config')`) e injeta o gtag.js `async`. O script só entra no build `production`. Dev, Vitest e Playwright (`--mode e2e`) mantêm o `dataLayer` só em memória.
@@ -101,6 +101,7 @@ src/
 ├── build/
 │   └── csp.ts                      # novo: analyticsCsp(base) — função pura usada pelo plugin e testada
 └── ui/
+    ├── analytics-id.ts             # novo: MEASUREMENT_ID e GTAG_SRC, única fonte do ID no código
     ├── analytics.ts                # novo: initAnalytics, track, sanitize, tipo AnalyticsEvents
     ├── state/
     │   ├── document.ts             # importar_arquivo, colar_conteudo, substituir_conteudo, recalcular_totais

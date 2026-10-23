@@ -32,5 +32,5 @@
 ## Notes
 
 - FR-009 resolvido em 2026-10-23: opção C (medição sempre ativa, só aviso no rodapé, sem consentimento). US3, FR-010, Key Entities e Assumptions ajustados.
-- "Google Analytics" e o ID `G-6QQBTELE2T` aparecem por serem o próprio requisito, não uma escolha de implementação.
+- "Google Analytics" e o ID `G-TKLBD459FS` aparecem por serem o próprio requisito, não uma escolha de implementação.
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`

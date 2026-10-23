@@ -6,13 +6,13 @@
 
 **Status**: Draft
 
-**Input**: User description: "vamos incluir uma tag do google analytics no site, conforme abaixo. deve pegar em todas as ações. me informa se tiver dúvidas ou sugestões sobre a tag. Segue a tag: Google tag (gtag.js) com o ID de medição G-6QQBTELE2T (carrega o script do Google, inicializa a fila de eventos e configura o ID)."
+**Input**: User description: "vamos incluir uma tag do google analytics no site, conforme abaixo. deve pegar em todas as ações. me informa se tiver dúvidas ou sugestões sobre a tag. Segue a tag: Google tag (gtag.js) com o ID de medição G-TKLBD459FS (carrega o script do Google, inicializa a fila de eventos e configura o ID)."
 
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Saber quantas pessoas usam o editor (Priority: P1)
 
-O criador do site quer saber se o editor está sendo usado: quantas visitas recebe, quantos usuários distintos, de onde vêm (acesso direto, busca, links) e em que dispositivos. Ele abre o painel do Google Analytics da propriedade `G-6QQBTELE2T` e vê as visitas do editor publicado.
+O criador do site quer saber se o editor está sendo usado: quantas visitas recebe, quantos usuários distintos, de onde vêm (acesso direto, busca, links) e em que dispositivos. Ele abre o painel do Google Analytics da propriedade `G-TKLBD459FS` e vê as visitas do editor publicado.
 
 **Why this priority**: É o mínimo que a tag entrega e a base de todas as outras medições. Sem ela, nenhuma ação pode ser medida.
 
@@ -20,7 +20,7 @@ O criador do site quer saber se o editor está sendo usado: quantas visitas rece
 
 **Acceptance Scenarios**:
 
-1. **Given** o editor publicado, **When** um usuário abre o site, **Then** uma visita é registrada na propriedade `G-6QQBTELE2T`.
+1. **Given** o editor publicado, **When** um usuário abre o site, **Then** uma visita é registrada na propriedade `G-TKLBD459FS`.
 2. **Given** o editor rodando em ambiente de desenvolvimento ou em testes automatizados, **When** o site é aberto, **Then** nenhuma visita é registrada.
 3. **Given** o usuário com bloqueador de anúncios ou sem internet, **When** abre o editor, **Then** o editor funciona por completo, sem erros visíveis e sem atraso perceptível.
 
@@ -74,7 +74,7 @@ O usuário do editor lida com arquivos que contêm dados pessoais e bancários. 
 
 ### Functional Requirements
 
-- **FR-001**: O sistema MUST registrar visitas na propriedade do Google Analytics de ID `G-6QQBTELE2T`.
+- **FR-001**: O sistema MUST registrar visitas na propriedade do Google Analytics de ID `G-TKLBD459FS`.
 - **FR-002**: O sistema MUST registrar visitas e eventos somente no site publicado; ambientes de desenvolvimento, pré-visualização local e testes automatizados MUST NOT enviar dados à propriedade.
 - **FR-003**: Falha ao carregar ou enviar a medição (bloqueio, falta de rede, lentidão do serviço) MUST NOT impedir, atrasar perceptivelmente ou exibir erro em nenhuma funcionalidade do editor.
 - **FR-004**: As regras de segurança do site que hoje impedem qualquer conexão externa MUST ser ajustadas para liberar apenas os endereços necessários à medição do Google Analytics, mantendo todo o resto bloqueado.
@@ -103,7 +103,7 @@ O usuário do editor lida com arquivos que contêm dados pessoais e bancários. 
 
 ## Assumptions
 
-- A propriedade `G-6QQBTELE2T` já existe, pertence ao criador do site e é configurada no painel do Google Analytics por ele (retenção de dados, filtros, relatórios); essa configuração fica fora do escopo, exceto o que FR-008 pede.
+- A propriedade `G-TKLBD459FS` já existe, pertence ao criador do site e é configurada no painel do Google Analytics por ele (retenção de dados, filtros, relatórios); essa configuração fica fora do escopo, exceto o que FR-008 pede.
 - A tag fornecida é a base, mas não é colada literalmente: as regras de segurança do site bloqueiam scripts embutidos e conexões externas, então a mesma configuração é aplicada de forma compatível com elas (FR-004).
 - "Todas as ações" significa as ações do usuário listadas em FR-005, não cada tecla digitada, rolagem ou movimento do mouse; digitar em um campo não gera evento, só a atualização da linha.
 - Os nomes dos eventos e parâmetros seguem o padrão do Google Analytics (minúsculas, separados por sublinhado) e ficam documentados no plano para o criador montar os relatórios.
