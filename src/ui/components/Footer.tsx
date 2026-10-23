@@ -5,8 +5,11 @@ import { Icon } from "./Icon";
 
 const COPIED_MS = 2000;
 const EXPORT_TEXT = { remessa: "Exportar .rem", retorno: "Exportar .ret", unknown: "Exportar" } as const;
+/** Formulário de feedback (004, FR-002): endereço fixo, sem dados do documento (FR-004). */
+export const FEEDBACK_URL = "https://forms.gle/vtu9hDoSFQvkiWfo6";
+const FEEDBACK_LABEL = "Enviar feedback (abre o formulário em nova aba)";
 
-/** Rodapé (FR-004, FR-027, FR-028). */
+/** Rodapé (FR-004, FR-027, FR-028; 004: link de feedback). */
 export function Footer() {
   const d = doc.value;
   const empty = !d || d.records.length === 0;
@@ -43,6 +46,17 @@ export function Footer() {
             <Icon name="external" size={12} />
           </a>
         </span>
+        <a
+          data-testid="feedback-link"
+          href={FEEDBACK_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={FEEDBACK_LABEL}
+          title={FEEDBACK_LABEL}
+        >
+          Enviar feedback
+          <Icon name="external" size={12} />
+        </a>
       </div>
     </footer>
   );
