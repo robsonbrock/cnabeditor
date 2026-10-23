@@ -48,7 +48,7 @@ Esperado: o editor funciona normalmente, sem erro visível. A CSP é a de produ�
 ## Q6. Chegada na propriedade (SC-001), manual e só depois de publicar
 
 1. Abra o site publicado sem bloqueador.
-2. No Google Analytics da propriedade `G-6QQBTELE2T`, vá em **Relatórios → Tempo real**: a visita aparece em até 1 minuto.
+2. No Google Analytics da propriedade `G-TKLBD459FS`, vá em **Relatórios → Tempo real**: a visita aparece em até 1 minuto.
 3. Execute cada ação do catálogo. Em **Administrador → DebugView**, ou em Tempo real → "Contagem de eventos por nome do evento", cada evento aparece com seus parâmetros.
 
 ## Q7. Configuração recomendada no painel do GA (fora do código, research A12)

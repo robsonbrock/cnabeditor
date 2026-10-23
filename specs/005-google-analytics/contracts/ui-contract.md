@@ -30,5 +30,5 @@ As demais diretivas (`default-src 'self'`, `style-src 'self' 'unsafe-inline'`, `
 
 ## Script do Google (FR-001, FR-002)
 
-- Só no modo `production`: um único `<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QQBTELE2T">` injetado no `<head>` por `initAnalytics`.
+- Só no modo `production`: um único `<script async src="https://www.googletagmanager.com/gtag/js?id=G-TKLBD459FS">` injetado no `<head>` por `initAnalytics`.
 - Em qualquer modo, `window.dataLayer` existe e recebe `js`, `config` e os eventos do [catálogo](analytics-events.md).

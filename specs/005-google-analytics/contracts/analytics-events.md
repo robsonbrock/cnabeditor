@@ -19,7 +19,7 @@ Catálogo fechado aceito por `track()` (research A5). Nenhum outro nome ou parâ
 | Chamada | Parâmetros |
 |---|---|
 | `gtag('js', new Date())` | — |
-| `gtag('config', 'G-6QQBTELE2T', …)` | `allow_google_signals: false`, `allow_ad_personalization_signals: false`, `page_title: 'CNAB Editor'`, `page_location: <origem>/` |
+| `gtag('config', 'G-TKLBD459FS', …)` | `allow_google_signals: false`, `allow_ad_personalization_signals: false`, `page_title: 'CNAB Editor'`, `page_location: <origem>/` |
 
 ## Eventos
 

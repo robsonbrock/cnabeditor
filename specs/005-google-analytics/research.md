@@ -7,8 +7,8 @@
 **Decision**: a tag fornecida não é colada no `index.html`. Um módulo próprio, `src/ui/analytics.ts`, faz o mesmo que ela:
 1. cria `window.dataLayer`;
 2. define `gtag()`;
-3. chama `gtag('js', new Date())` e `gtag('config', 'G-6QQBTELE2T', …)`;
-4. injeta `<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QQBTELE2T">`.
+3. chama `gtag('js', new Date())` e `gtag('config', 'G-TKLBD459FS', …)`;
+4. injeta `<script async src="https://www.googletagmanager.com/gtag/js?id=G-TKLBD459FS">`.
 
 O módulo é chamado uma vez em `src/main.tsx`, logo depois do `render` (A7).
 
@@ -63,7 +63,7 @@ A função que monta a CSP é exportada (`analyticsCsp(base)`) para o teste unit
 **Decision**:
 
 ```text
-gtag('config', 'G-6QQBTELE2T', {
+gtag('config', 'G-TKLBD459FS', {
   allow_google_signals: false,
   allow_ad_personalization_signals: false,
   page_title: 'CNAB Editor',
@@ -117,7 +117,7 @@ Bloqueadores, falta de rede e lentidão do Google só fazem o `dataLayer` cresce
   - Auditoria (SC-002): depois de importar, editar, gerar e exportar um golden file, o `dataLayer` serializado não contém o nome do arquivo nem nenhum dos valores do arquivo (nomes, documentos, contas, valores).
 - **E2E de produção**: o projeto Playwright `analytics-prod`, só Chromium, sobe um segundo servidor com `vite build --outDir dist-prod`, em modo `production`, na porta 4174.
   - Todas as requisições a `*.google*.com` e `*.googletagmanager.com` são abortadas com `page.route`, então nada chega à propriedade real.
-  - O teste verifica que o gtag.js foi pedido com `id=G-6QQBTELE2T`, que a CSP de produção é a de A3, e que importar, editar e exportar funcionam com o Google bloqueado, sem mensagens de erro (SC-003).
+  - O teste verifica que o gtag.js foi pedido com `id=G-TKLBD459FS`, que a CSP de produção é a de A3, e que importar, editar e exportar funcionam com o Google bloqueado, sem mensagens de erro (SC-003).
 
 **Rationale**: SC-001 (o evento aparece no relatório em tempo real) só é verificável manualmente no painel do GA; o [quickstart.md](quickstart.md), em Q6, descreve o roteiro. Todo o resto é automatizado sem tocar a propriedade.
 
